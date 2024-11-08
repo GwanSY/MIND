@@ -1,0 +1,908 @@
+﻿\documentclass[conference]{IEEEtran}
+%DIF LATEXDIFF DIFFERENCE FILE
+%DIF DEL 0822.tex   Wed Aug 28 16:56:17 2024
+%DIF ADD 0828.tex   Wed Aug 28 17:16:44 2024
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+%Template version as of 6/27/2024
+\usepackage{amsmath,amsfonts}
+\usepackage{stmaryrd}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,citecolor = blue}
+\newcommand{\Spt}{\texttt{Spt}}
+\newcommand{\Rec}{\texttt{Rec}}
+\newcommand{\DEnc}{\texttt{DEnc}}
+\newcommand{\PEnc}{\texttt{PEnc}}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{algorithmic}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{subfigure}
+\usepackage{changepage}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF UNDERLINE PREAMBLE %DIF PREAMBLE
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFaddtex}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+\providecommand{\DIFdeltex}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+\providecommand{\DIFmodbegin}{} %DIF PREAMBLE
+\providecommand{\DIFmodend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF HYPERREF PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{\texorpdfstring{\DIFaddtex{#1}}{#1}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{\texorpdfstring{\DIFdeltex{#1}}{}} %DIF PREAMBLE
+\newcommand{\DIFscaledelfig}{0.5}
+%DIF HIGHLIGHTGRAPHICS PREAMBLE %DIF PREAMBLE
+\RequirePackage{settobox} %DIF PREAMBLE
+\RequirePackage{letltxmacro} %DIF PREAMBLE
+\newsavebox{\DIFdelgraphicsbox} %DIF PREAMBLE
+\newlength{\DIFdelgraphicswidth} %DIF PREAMBLE
+\newlength{\DIFdelgraphicsheight} %DIF PREAMBLE
+% store original definition of \includegraphics %DIF PREAMBLE
+\LetLtxMacro{\DIFOincludegraphics}{\includegraphics} %DIF PREAMBLE
+\newcommand{\DIFaddincludegraphics}[2][]{{\color{blue}\fbox{\DIFOincludegraphics[#1]{#2}}}} %DIF PREAMBLE
+\newcommand{\DIFdelincludegraphics}[2][]{% %DIF PREAMBLE
+\sbox{\DIFdelgraphicsbox}{\DIFOincludegraphics[#1]{#2}}% %DIF PREAMBLE
+\settoboxwidth{\DIFdelgraphicswidth}{\DIFdelgraphicsbox} %DIF PREAMBLE
+\settoboxtotalheight{\DIFdelgraphicsheight}{\DIFdelgraphicsbox} %DIF PREAMBLE
+\scalebox{\DIFscaledelfig}{% %DIF PREAMBLE
+\parbox[b]{\DIFdelgraphicswidth}{\usebox{\DIFdelgraphicsbox}\\[-\baselineskip] \rule{\DIFdelgraphicswidth}{0em}}\llap{\resizebox{\DIFdelgraphicswidth}{\DIFdelgraphicsheight}{% %DIF PREAMBLE
+\setlength{\unitlength}{\DIFdelgraphicswidth}% %DIF PREAMBLE
+\begin{picture}(1,1)% %DIF PREAMBLE
+\thicklines\linethickness{2pt} %DIF PREAMBLE
+{\color[rgb]{1,0,0}\put(0,0){\framebox(1,1){}}}% %DIF PREAMBLE
+{\color[rgb]{1,0,0}\put(0,0){\line( 1,1){1}}}% %DIF PREAMBLE
+{\color[rgb]{1,0,0}\put(0,1){\line(1,-1){1}}}% %DIF PREAMBLE
+\end{picture}% %DIF PREAMBLE
+}\hspace*{3pt}}} %DIF PREAMBLE
+} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddbegin}{\DIFaddbegin} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddend}{\DIFaddend} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelbegin}{\DIFdelbegin} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelend}{\DIFdelend} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddbegin}{\DIFOaddbegin \let\includegraphics\DIFaddincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddend}{\DIFOaddend \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelbegin}{\DIFOdelbegin \let\includegraphics\DIFdelincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelend}{\DIFOaddend \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddbeginFL}{\DIFaddbeginFL} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddendFL}{\DIFaddendFL} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelbeginFL}{\DIFdelbeginFL} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelendFL}{\DIFdelendFL} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddbeginFL}{\DIFOaddbeginFL \let\includegraphics\DIFaddincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddendFL}{\DIFOaddendFL \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelbeginFL}{\DIFOdelbeginFL \let\includegraphics\DIFdelincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelendFL}{\DIFOaddendFL \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+%DIF COLORLISTINGS PREAMBLE %DIF PREAMBLE
+\RequirePackage{listings} %DIF PREAMBLE
+\RequirePackage{color} %DIF PREAMBLE
+\lstdefinelanguage{DIFcode}{ %DIF PREAMBLE
+%DIF DIFCODE_UNDERLINE %DIF PREAMBLE
+  moredelim=[il][\color{red}\sout]{\%DIF\ <\ }, %DIF PREAMBLE
+  moredelim=[il][\color{blue}\uwave]{\%DIF\ >\ } %DIF PREAMBLE
+} %DIF PREAMBLE
+\lstdefinestyle{DIFverbatimstyle}{ %DIF PREAMBLE
+	language=DIFcode, %DIF PREAMBLE
+	basicstyle=\ttfamily, %DIF PREAMBLE
+	columns=fullflexible, %DIF PREAMBLE
+	keepspaces=true %DIF PREAMBLE
+} %DIF PREAMBLE
+\lstnewenvironment{DIFverbatim}{\lstset{style=DIFverbatimstyle}}{} %DIF PREAMBLE
+\lstnewenvironment{DIFverbatim*}{\lstset{style=DIFverbatimstyle,showspaces=true}}{} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+
+\begin{document}
+
+\title{MIND: A Privacy-Preserving Model Inference Framework via End-Cloud Collaboration*\\
+{\footnotesize \textsuperscript{*}Note: Sub-titles are not captured for https://ieeexplore.ieee.org  and
+should not be used}
+\thanks{Identify applicable funding agency here. If none, delete this.}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{2\textsuperscript{nd} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{3\textsuperscript{rd} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{4\textsuperscript{th} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{5\textsuperscript{th} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{6\textsuperscript{th} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+}
+
+\maketitle
+
+\begin{abstract}
+Image processing and analysis capabilities have been revolutionized by the rapid advancement of deep learning technologies. \DIFdelbegin \DIFdel{Complex neural networks}\DIFdelend \DIFaddbegin \DIFadd{Model inference enables powerful image analytics}\DIFaddend , however, \DIFdelbegin \DIFdel{often demand computational resources that exceed those available on }\DIFdelend \DIFaddbegin \DIFadd{complex neural networks often require more computational resources than }\DIFaddend end-user devices \DIFdelbegin \DIFdel{. This limitation has led to the widespread adoption of cloud-based image inference, where resource-intensive computations are offloaded to powerful cloud servers .Although cloud servers }\DIFdelend \DIFaddbegin \DIFadd{can provide. While cloud servers }\DIFaddend help alleviate the resource constraints of these devices, transferring \DIFaddbegin \DIFadd{sensitive }\DIFaddend image data between \DIFdelbegin \DIFdel{the end device }\DIFdelend \DIFaddbegin \DIFadd{end-user devices }\DIFaddend and the cloud \DIFdelbegin \DIFdel{is associated with }\DIFdelend \DIFaddbegin \DIFadd{introduces }\DIFaddend high computational costs and significant privacy risks. \DIFdelbegin \DIFdel{Furthermore}\DIFdelend \DIFaddbegin \DIFadd{In addition}\DIFaddend , traditional collaborative inference encryption methods \DIFdelbegin \DIFdel{typically }\DIFdelend \DIFaddbegin \DIFadd{usually }\DIFaddend involve directly encrypting image data, but \DIFdelbegin \DIFdel{this approach often fails to efficiently }\DIFdelend \DIFaddbegin \DIFadd{such methods often fail to effectively }\DIFaddend balance security and performance. To \DIFdelbegin \DIFdel{this end, in this paper, we propose }\DIFdelend \DIFaddbegin \DIFadd{address this issue, we propose MIND, }\DIFaddend a novel cloud-based collaborative encryption method \DIFdelbegin \DIFdel{called MIND, }\DIFdelend designed to enhance \DIFdelbegin \DIFdel{computational efficiency and reduce communication overhead}\DIFdelend \DIFaddbegin \DIFadd{both privacy protection and computational efficiency}\DIFaddend . MIND divides the encryption process \DIFdelbegin \DIFdel{into two parts: model parameter encryption and image data encryption, applying these techniques to different layers of a neural network. Specifically, }\DIFdelend \DIFaddbegin \DIFadd{between the end device and the cloud server, with }\DIFaddend the end device \DIFdelbegin \DIFdel{encrypts }\DIFdelend \DIFaddbegin \DIFadd{encrypting }\DIFaddend part of the model parameters \DIFdelbegin \DIFdel{, while }\DIFdelend \DIFaddbegin \DIFadd{and }\DIFaddend the cloud server \DIFdelbegin \DIFdel{encrypts }\DIFdelend \DIFaddbegin \DIFadd{encrypting }\DIFaddend the image data and \DIFdelbegin \DIFdel{the remaining model parameters. Our experiments show }\DIFdelend \DIFaddbegin \DIFadd{remaining parameters. This approach leverages the strengths of both end devices and cloud resources to achieve a balance between security and performance. Our experimental results demonstrate }\DIFaddend that MIND effectively \DIFdelbegin \DIFdel{balances usability with privacy protection}\DIFdelend \DIFaddbegin \DIFadd{protects user privacy while maintaining high efficiency, successfully integrating end devices into the secure inference process}\DIFaddend . 
+\end{abstract}
+
+\begin{IEEEkeywords}
+Homomorphic encryption, Secret sharing, Hierarchical Encryption, Privacy protection.
+\end{IEEEkeywords}
+
+\section{Introduction}
+Artificial intelligence and cloud computing advancements have revolutionized image processing and analysis capabilities across various industries \cite{makridakis2017forthcoming} \cite{zhang2010cloud}. \DIFdelbegin \DIFdel{The integration }\DIFdelend \DIFaddbegin \DIFadd{Model inference has become a critical component in cloud-based image processing and analysis, leveraging the power }\DIFaddend of deep learning models \DIFdelbegin \DIFdel{with cloud infrastructure has enabled unprecedented levels of visual datainterpretation}\DIFdelend \DIFaddbegin \DIFadd{to extract valuable insights from visual data. \mbox{%DIFAUXCMD
+\cite{shokri2017membership}}\hskip0pt%DIFAUXCMD
+. This approach enables sophisticated image interpretation across various domains}\DIFaddend , from medical \DIFdelbegin \DIFdel{imaging to autonomous vehicle navigation. Within this technological landscape, }\DIFdelend \DIFaddbegin \DIFadd{diagnostics to autonomous systems. However, the widespread adoption of }\DIFaddend cloud-based \DIFdelbegin \DIFdel{image inference techniques have gained significant traction, offering solutions to scenarios requiring efficient and secure processing of visual data \mbox{%DIFAUXCMD
+\cite{shokri2017membership} }\hskip0pt%DIFAUXCMD
+. This shift towards cloud-powered image analysis has dramatically enhanced the ability to extract meaningful insights from vast amounts of visual information, while simultaneously raising important questions about data privacy and security.The widespread adoption of cloud computing compels users to provide their data to technical agencies in order to access corresponding services }\DIFdelend \DIFaddbegin \DIFadd{model inference raises significant privacy concerns, as it often requires the transmission and processing of sensitive personal data \mbox{%DIFAUXCMD
+\cite{shokri2017membership} }\hskip0pt%DIFAUXCMD
+}\DIFaddend \cite{wang2018stealing}. For instance, \DIFdelbegin \DIFdel{certain residential areas may mandate the use of facial recognition gate systems , requiring residents to utilize their facial data as the sole method for entering and exiting the community \mbox{%DIFAUXCMD
+\cite{cui2018security}}\hskip0pt%DIFAUXCMD
+. Similarly, the financial services industry may collect and analyze users' image information }\DIFdelend \DIFaddbegin \DIFadd{facial recognition systems in residential areas and financial institutions' use of image data }\DIFaddend for commercial purposes \DIFdelbegin \DIFdel{without obtaining consumer consent. Given that these data contain sensitive personal information, such practices clearly fail to meet users' expectations for data protection.
+On one hand, we aspire to leverage new technologies to enhance our quality of life; on the other hand, we are unwilling to compromise our personal privacy. Therefore, additional measures must be implemented to safeguard the privacy and security of data }\DIFdelend \DIFaddbegin \DIFadd{exemplify scenarios where user privacy may be compromised \mbox{%DIFAUXCMD
+\cite{cui2018security}}\hskip0pt%DIFAUXCMD
+. These practices highlight the tension between leveraging advanced technologies and protecting individual privacy rights \mbox{%DIFAUXCMD
+\cite{van2014datafication}}\hskip0pt%DIFAUXCMD
+.
+}
+
+\DIFadd{The conventional approach to image analysis typically involves encrypting the entire image before uploading it to the cloud server. This method, however, results in significant storage and communication overhead due to the large size of encrypted images. Moreover, conducting image analysis during transmission presents considerable privacy protection challenges, as sensitive data must be securely handled to prevent unauthorized access \mbox{%DIFAUXCMD
+\cite{cui2018security} }\hskip0pt%DIFAUXCMD
+}\DIFaddend \cite{van2014datafication}.
+
+\DIFdelbegin \DIFdel{In cloud computing environments, model inference typically relies on the processing and analysis of large volumes of data, which often involves sensitive information \mbox{%DIFAUXCMD
+\cite{fu2020vfl}}\hskip0pt%DIFAUXCMD
+. If these data are not effectively protected during transmission and storage, it can lead to data breaches \mbox{%DIFAUXCMD
+\cite{yang2012efficient}}\hskip0pt%DIFAUXCMD
+. While traditional encryption methodscan provide a certain level }\DIFdelend \DIFaddbegin \DIFadd{Existing privacy-preserving schemes for model inference attempt to address these concerns through various encryption techniques \mbox{%DIFAUXCMD
+\cite{fu2020vfl} }\hskip0pt%DIFAUXCMD
+\mbox{%DIFAUXCMD
+\cite{yang2012efficient}}\hskip0pt%DIFAUXCMD
+. Traditional encryption methods, while providing a degree }\DIFaddend of data security, \DIFdelbegin \DIFdel{they also }\DIFdelend \DIFaddbegin \DIFadd{often }\DIFaddend introduce substantial computational overhead and communication costs \cite{kerschbaum2012outsourced}. This \DIFdelbegin \DIFdel{issue is particularly evident when handling }\DIFdelend \DIFaddbegin \DIFadd{inefficiency becomes particularly pronounced when dealing with }\DIFaddend large-scale data, \DIFdelbegin \DIFdel{where the use of traditional encryption methods can result in inefficiencies \mbox{%DIFAUXCMD
+\cite{li2015encdb}}\hskip0pt%DIFAUXCMD
+. }\DIFdelend \DIFaddbegin \DIFadd{hindering the practicality of such approaches in real-world scenarios \mbox{%DIFAUXCMD
+\cite{li2015encdb}}\hskip0pt%DIFAUXCMD
+. Moreover, current solutions struggle to strike an optimal balance between privacy protection, computational efficiency, and communication overhead, especially in the context of edge-cloud collaborative environments.
+%DIF >  \subsection{Contribution}
+}
+
+\DIFaddend To address these \DIFdelbegin \DIFdel{challenges}\DIFdelend \DIFaddbegin \DIFadd{limitations}\DIFaddend , we propose MIND, a \DIFaddbegin \DIFadd{novel }\DIFaddend privacy-preserving model inference framework enabled by edge-cloud collaboration. \DIFdelbegin \DIFdel{By employing }\DIFdelend \DIFaddbegin \DIFadd{MIND employs }\DIFaddend advanced encryption technologies\DIFdelbegin \DIFdel{such as }\DIFdelend \DIFaddbegin \DIFadd{, including }\DIFaddend homomorphic encryption and secret sharing, \DIFdelbegin \DIFdel{MIND ensures }\DIFdelend \DIFaddbegin \DIFadd{to ensure }\DIFaddend the security of \DIFaddbegin \DIFadd{both }\DIFaddend data and model parameters during the inference process. By distributing computational tasks between edge devices and cloud servers, MIND \DIFdelbegin \DIFdel{can maintain the efficiency of model inference while protecting }\DIFdelend \DIFaddbegin \DIFadd{maintains inference efficiency while enhancing }\DIFaddend data privacy and reducing communication overhead. \DIFdelbegin \DIFdel{Within the MIND framework , we introduce }\DIFdelend \DIFaddbegin \DIFadd{Our framework introduces }\DIFaddend a layered encryption scheme that dynamically adjusts encryption methods based on the model's structure, significantly \DIFdelbegin \DIFdel{reducing }\DIFdelend \DIFaddbegin \DIFadd{optimizing }\DIFaddend both computational and communication \DIFdelbegin \DIFdel{overhead. This innovative approach not only enhances system efficiency but also effectively safeguards data security without compromising model inference performance. MIND offers a practical privacy-preserving solution for model inference in cloud computing environments, striking a balance between privacy, security, and efficiency. This demonstrates its potential in future data encryption and privacy protection technologies.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\subsection{\DIFdel{Contribution}}
+%DIFAUXCMD
+\addtocounter{subsection}{-1}%DIFAUXCMD
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{The conventional approach to image analysis typically involves encrypting the entire image before uploading it to the cloud server. However, this method results in significant storage and communication overhead, as the size of the encrypted images can be quite large. Additionally, conducting image analysis during transmission presents considerable privacy protection challenges, as sensitive data must be securely handled to prevent unauthorized access. Existing schemes exhibit deficiencies in several areas, including communication convenience, storage overhead, and privacy protection. These shortcomings can impede the practicality and effectiveness of image processing operations, particularly in scenarios involving large-scale data transmission and storage. To address these issues, we propose a novel approach designed to mitigate the computational burden caused by directly encrypting images transmitted by multiple parties. Our method involves a two-step process: feature extraction and selective encryption. Overall, our contributions }\DIFdelend \DIFaddbegin \DIFadd{costs. The main contributions of our work }\DIFaddend are as follows:
+
+\begin{itemize}
+    \item We propose \DIFdelbegin \DIFdel{MIND, a }\DIFdelend \DIFaddbegin \DIFadd{a novel }\DIFaddend privacy-preserving \DIFdelbegin \DIFdel{Model Inference framework via End-Cloud collaboration}\DIFdelend \DIFaddbegin \DIFadd{model inference framework via end-cloud collaboration, named MIND}\footnote{\DIFadd{MIND: a privacy-preserving }\underline{\DIFadd{m}}\DIFadd{odel }\underline{\DIFadd{i}}\DIFadd{nference e}\underline{\DIFadd{n}}\DIFadd{d-clou}\underline{\DIFadd{d}} \DIFadd{collaboration}}\DIFaddend . MIND incorporates secret sharing and homomorphic encryption to safeguard sensitive information in both data and models. Additionally, MIND enables collaborative computations between cloud servers while ensuring that privacy is not compromised.
+
+    \item We novelly present a method that employs hierarchical encryption, which introduces layered encryption using both data and parameter encryption. MIND overcomes the limitations of existing solutions while maintaining the original recognition accuracy.
+
+    \item We conduct extensive experiments on two classical datasets (i.e., MNIST and CIFAR-10) to demonstrate the effectiveness and efficiency of MIND. Experimental evaluations show that MIND outperforms baseline in terms of communication cost and runtime.  
+%绗笁鐐硅繕闇€瑕佷慨鏀?   
+\end{itemize}
+\section{Related work}
+As the demand for secure data processing in cloud computing environments increases, researchers have conducted various studies to improve the efficiency and privacy protection of collaborative inference methods between cloud servers and terminal devices. \DIFdelbegin \DIFdel{Traditional approaches often involve encrypting image data before transmitting it to the cloud server, which ensures data privacy but also incurs significant computational and communication overhead. To address this issue}\DIFdelend \DIFaddbegin \DIFadd{To address these challenges}\DIFaddend , researchers have proposed numerous solutions based on various technologies. \DIFaddbegin \DIFadd{We categorize the previous work into three main subcategories.
+}\DIFaddend 
+
+\DIFdelbegin \DIFdel{In recent years, researchers have attempted to overcome the limitations of traditional methods by using hybrid encryption techniques. For example, SecureML \mbox{%DIFAUXCMD
+\cite{mohassel2017secureml} }\hskip0pt%DIFAUXCMD
+combines secure multi-party computation with homomorphic encryption to ensure the secure execution of machine learning tasks while balancing computational efficiency and dataprivacy. However, it still faces high communication costs when dealing with complex modelstructures, making it challenging to meet practical needs.
+Gilad }\textit{\DIFdel{et al.}} %DIFAUXCMD
+\DIFdel{\mbox{%DIFAUXCMD
+\cite{gilad2016cryptonets} }\hskip0pt%DIFAUXCMD
+proposed Cryptonets, which allows computations to be performed without decrypting the data and has been widely studied and applied in cloud-based machine learning. Despite its guaranteed security, the high computational complexity and significant latency of homomorphic encryption result in substantial communication overhead. Secret sharing schemes represent another category of privacy-preserving technologies, which ensure that no single party can access the complete data without collaboration by dividing the data into several shares and distributing them among multiple participants \mbox{%DIFAUXCMD
+\cite{bogdanov2008sharemind}}\hskip0pt%DIFAUXCMD
+. Yang }\textit{\DIFdel{et al.}} %DIFAUXCMD
+\DIFdel{\mbox{%DIFAUXCMD
+\cite{yang2021distributed} }\hskip0pt%DIFAUXCMD
+proposed a distributed network system that integrates homomorphic encryption and secret sharing, enhancing the system's security and privacy protection. Akshaya and Khadir }\textit{\DIFdel{et al.}} %DIFAUXCMD
+\DIFdel{\mbox{%DIFAUXCMD
+\cite{kakkad2019biometric} }\hskip0pt%DIFAUXCMD
+explored approaches to enhance image security in cloud frameworks using biometric authentication and image encryption.
+Mao }\textit{\DIFdel{et al.}} %DIFAUXCMD
+\DIFdel{\mbox{%DIFAUXCMD
+\cite{mao2017survey} }\hskip0pt%DIFAUXCMD
+proposed an edge-cloud collaborative model that leverages the advantages of edge computing and cloud computing}\DIFdelend \DIFaddbegin \DIFadd{Federated Learning (FL) is an innovative approach in machine learning that prioritizes the privacy of training data. In horizontal FL (e.g., \mbox{%DIFAUXCMD
+\cite{pmlr-v54-mcmahan17a}}\hskip0pt%DIFAUXCMD
+, \mbox{%DIFAUXCMD
+\cite{Gupta2018DistributedLO}}\hskip0pt%DIFAUXCMD
+, \mbox{%DIFAUXCMD
+\cite{9252066}}\hskip0pt%DIFAUXCMD
+), each client (i.e., Data Owner or ED) independently trains a local model using its private data and then submits the obfuscated local models to a central model aggregator (i.e., Model Owner or S). However, because the global model is synchronized during each training iteration, FL does not adequately address the privacy concerns of the global model. Furthermore, FL tends to disproportionately favor EDs, as each ED gains access to the global model even if they contribute only a small portion of the training data}\DIFaddend . \DIFaddbegin \DIFadd{Consequently, when the S has an exclusive proprietary interest in the final model, FL is not an ideal solution.
+}
+
+\DIFadd{To safeguard both data and model privacy, the research community has developed a range of distributed training methods centered on secure multiparty computation (MPC, e.g., \mbox{%DIFAUXCMD
+\cite{7958569}}\hskip0pt%DIFAUXCMD
+, \mbox{%DIFAUXCMD
+\cite{Escudero2020ImprovedPF}}\hskip0pt%DIFAUXCMD
+, \mbox{%DIFAUXCMD
+\cite{Dalskov2020FantasticFH}}\hskip0pt%DIFAUXCMD
+). In these approaches, the typical scenario involves a server-assisted framework where a group of Data Owners (EDs) upload secret-shared versions of their private data to at least two independent, non-colluding third-party servers. These servers collaboratively train the model using the secret-shared data. During the training process, the model itself is also secret-shared across all servers, ensuring complete protection of model privacy. }\DIFaddend However, \DIFdelbegin \DIFdel{it imposes certain performance requirements on the terminal devices and does not effectively address the issue of reducing communication overhead.
+One of the foundational works in this field is the application of homomorphic encryption in cloud computing }\DIFdelend \DIFaddbegin \DIFadd{as previously mentioned, these approaches face a significant trade off between the requirement for non-collusion and the need for extensibility.
+}
+
+\DIFadd{The third subcategory of research depends on homomorphic encryption (HE, e.g, \mbox{%DIFAUXCMD
+\cite{Nandakumar2019TowardsDN}}\hskip0pt%DIFAUXCMD
+, \mbox{%DIFAUXCMD
+\cite{CiC-1-2-22}}\hskip0pt%DIFAUXCMD
+). In cloud computing \mbox{%DIFAUXCMD
+\cite{gentry2009fully}}\hskip0pt%DIFAUXCMD
+}\DIFaddend , which allows computations to be performed on encrypted data without the need for decryption\DIFdelbegin \DIFdel{, making }\DIFdelend \DIFaddbegin \DIFadd{. This approach makes }\DIFaddend it feasible to execute complex operations on cloud servers \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{gentry2009fully}}\hskip0pt%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{while maintaining data privacy}\DIFaddend . However, the computational overhead associated with fully homomorphic encryption remains non-trivial when dealing with large-scale data \cite{xu2019cryptonn}. \DIFdelbegin \DIFdel{Cheon et al. }\DIFdelend \DIFaddbegin \DIFadd{Although Cheon }\textit{\DIFadd{et al.}} \DIFadd{\mbox{%DIFAUXCMD
+\cite{cheon2017homomorphic} }\hskip0pt%DIFAUXCMD
+}\DIFaddend have attempted to optimize homomorphic encryption schemes to reduce this overhead, \DIFdelbegin \DIFdel{but }\DIFdelend the trade-off between computational efficiency and security continues to be a critical issue\DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{cheon2017homomorphic}}\hskip0pt%DIFAUXCMD
+}\DIFdelend .
+
+\DIFdelbegin \DIFdel{In summary, the traditional encryption methods for collaborative inference between cloud servers and terminals typically involve directly encrypting image data. }\DIFdelend \DIFaddbegin \DIFadd{As research progresses, there's a growing interest in leveraging the strengths of both edge and cloud computing to enhance security and efficiency. To leverage the advantages of both edge and cloud computing, Mao }\textit{\DIFadd{et al.}} \DIFadd{\mbox{%DIFAUXCMD
+\cite{mao2017survey} }\hskip0pt%DIFAUXCMD
+proposed an edge-cloud collaborative model. }\DIFaddend While this approach \DIFdelbegin \DIFdel{can protect data privacy, it has certain limitations in terms of computational efficiency and }\DIFdelend \DIFaddbegin \DIFadd{shows promise, it imposes certain performance requirements on the terminal devices and does not effectively address the issue of reducing }\DIFaddend communication overhead. \DIFdelbegin \DIFdel{The edge-cloud collaboration has proven to be a promising approach for privacy-preserving data processing, with various models and techniques contributing to its development.  The MIND framework advances this field by addressing the limitations of existing methods and offering a efficient and secure solution for model inference in cloud computing environments}\DIFdelend \DIFaddbegin \DIFadd{In a related effort, Akshaya and Khadir }\textit{\DIFadd{et al.}} \DIFadd{\mbox{%DIFAUXCMD
+\cite{kakkad2019biometric} }\hskip0pt%DIFAUXCMD
+explored approaches to enhance image security in cloud frameworks using biometric authentication and image encryption}\DIFaddend .
+
+%DIF >  In summary, the traditional encryption methods for collaborative inference between cloud servers and terminals typically involve directly encrypting image data. While this approach can protect data privacy, it has certain limitations in terms of computational efficiency and communication overhead. The edge-cloud collaboration has proven to be a promising approach for privacy-preserving data processing, with various models and techniques contributing to its development.  The MIND framework advances this field by addressing the limitations of existing methods and offering a efficient and secure solution for model inference in cloud computing environments.
+\DIFaddbegin 
+
+\DIFaddend \section{Preliminaries}
+This section provides some preliminaries of MIND, with a particular focus on homomorphic encryption and additive secret sharing.
+\begin{table}[h]
+\centering
+\caption{Notations}
+\label{table:notations}
+\begin{tabular}{cc}
+\toprule
+\textbf{Notation} & \textbf{Meaning} \\ \midrule
+$pk_e$                                   & The public key of the end device. \\
+$pk_s$                                   & The public key of the cloud server. \\
+$\llbracket \cdot \rrbracket_{pk_e}$     & The ciphertext under public key $pk_e$. \\
+$\llbracket \cdot \rrbracket_{pk_s}$     & The ciphertext under public key $pk_s$. \\
+$\langle \cdot \rangle_i$                & The secret share between end device and cloud server. \\
+$r_i$                                    & Random vector generated by end device and cloud server. \\
+$w_p$                                    & The model weights of parametric encryption (\PEnc).\\
+$w_d$                                    & The model weights of data encryption (\DEnc).\\
+$w_j$                                      & The model weights of each layer. \\
+$b_j$                                      & The model bias parameters of each layer. \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Homomorphic Encryption}\label{HE}
+In this work, we consider the BFV-level homomorphic encryption homomorphic encryption cryptosystem, which is based on the Ring-Learning With Errors (RLWE) problem with residual number system (RNS) optimization \cite{bajard2016full}. Specifically, the BFV scheme takes a set of parameters $\{N, t, q\}$ as input, where $N$ represents the polynomial degree with a power of two, and $t$, $q$ denote the modulus of the plaintext and the ciphertext, respectively. $\mathcal{R}_{t,N} = \mathbb{Z}_t [X]/(X^N + 1)$ is the polynomial ring that denotes the plaintext space, and $\mathcal{R}_{q, N}^2$ defines the ciphertext space.
+
+The BFV scheme based on RLWE supports additive homomorphism and multiplication homomorphism. Given two ciphertexts $\llbracket x \rrbracket_{pk}$ and $\llbracket y \rrbracket_{pk}$ encrypted with public key $pk$, the addition $\oplus$ (also subtraction $\ominus$) and multiplication $\otimes$ of polynomials in the encrypted domain are formulated in the following:
+\begin{equation*}
+\begin{array}{c}
+    \llbracket x \rrbracket_{pk} \oplus \llbracket y \rrbracket_{pk} = \llbracket x + y \rrbracket_{pk}. \\
+    \llbracket x \rrbracket_{pk} \otimes \llbracket y \rrbracket_{pk} = \llbracket x \times y \rrbracket_{pk}.    
+\end{array}
+\end{equation*}
+
+\subsection{Secret Sharing}\label{SS}
+We utilize an additive secret sharing scheme upon the ring $\mathbb{Z}_t$ (integers modulo $t$) with $t = 2^\lambda$, which comprises a split function and a recovery function in the following:
+\begin{itemize}
+\item \textbf{Split} (\Spt): \texttt{Spt} takes an origin secret $x \in \mathbb{Z}_t$ as input and outputs two secret shares $\langle x \rangle_1 \in \mathbb{Z}_t$ and $\langle x \rangle_2 \in \mathbb{Z}_t$, denoted as
+\begin{equation}
+    (\langle x \rangle_1, \langle x \rangle_2) \gets \Spt(x) = (r, x - r\!\!\!\mod t),
+\end{equation}
+where $r$ is a randomly chosen from $\mathbb{Z}_t$.
+
+\item \textbf{Recovery} (\Rec): \texttt{Rec} takes two secret shares $\langle x \rangle_1 \in \mathbb{Z}_t$ and $\langle x \rangle_2 \in \mathbb{Z}_t$, and outputs the origin secret $x \in \mathbb{Z}_t$, formulated as
+\begin{equation}
+     x \gets \Rec(\langle x \rangle_1, \langle x \rangle_2) = \langle x \rangle_1 + \langle x \rangle_2\!\!\!\mod t.
+\end{equation}
+\end{itemize}
+
+Considering the BFV scheme and integer-based secret sharing, input data may involve decimal numbers rather than integers. The work \cite{liu2024pencilprivateextensiblecollaborative,8611203} convert decimal numbers to integers. In this work, we adopt a fixed-point representation of decimal numbers with a precision of $\ell$ bits, formulated as $x \gets \lfloor \tilde{x} \cdot 2^\ell \rfloor \in \mathbb{Z}$, where $\tilde{x} \in \mathbb{R}$. To avoid overflow, truncation is required after each multiplication operation, and all intermediate results must not exceed $\pm t/2^{2\ell + 1}$ in their decimal form.
+
+\subsection{Forward Propagation in Neural Networks}
+
+In neural network inference, forward propagation refers to the process of passing input data through each layer of the network to obtain the final output. For linear layers, this process can be abstracted by the equation:
+\begin{equation*}
+\begin{array}{c}
+       y=f(x)=f(x;W,b)=W\circ x+b
+\end{array}
+\end{equation*}
+Here, $W$ denotes the weight matrix, $x$ represents the input vector, and $b$ is the bias vector. The operator $\circ$ s a linear operator that satisfies the distributive property:
+\begin{equation*}
+\begin{array}{c}
+       (u_0+u_1) \circ (v_0+v_1)=u_0 \circ v_0+u_1 \circ v_0+ u_0\circ v_1+ u_1\circ v_1
+\end{array}
+\end{equation*}
+
+In different types of layers, this operator $\circ$ takes on different meanings. In fully connected layers, $\circ$ represents matrix-vector multiplication, defined as $y=W路x+b$ , where $W$ is a matrix and $x$ is a vector. In 2-dimensional convolution layers, $\circ$ represents the convolution operation, expressed as $W\circ x=\text{Conv}2\text{d}(x;W)$ where the convolution operation is applied between the input $x$ and the weight $W$ to produce the output.
+
+\DIFdelbegin %DIFDELCMD < \begin{itemize}
+\begin{itemize}%DIFAUXCMD
+%DIFDELCMD < \item %%%
+\item%DIFAUXCMD
+\DIFdel{Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as ``3.5-inch disk drive''.
+}%DIFDELCMD < \item %%%
+\item%DIFAUXCMD
+\DIFdel{Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
+}%DIFDELCMD < \item %%%
+\item%DIFAUXCMD
+\DIFdel{Do not mix complete spellings and abbreviations of units: ``Wb/m\textsuperscript{2}'' or ``webers per square meter'', not ``webers/m\textsuperscript{2}''. Spell out units when they appear in text: ``. . . a few henries'', not ``. . . a few H''.
+}%DIFDELCMD < \item %%%
+\item%DIFAUXCMD
+\DIFdel{Use a zero before decimal points: ``0.25'', not ``.25''. Use ``cm\textsuperscript{3}'', not ``cc''.)
+}
+\end{itemize}%DIFAUXCMD
+%DIFDELCMD < \end{itemize}
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdelend \section{Models and Security Goal}
+In this section, we formalize the system model, threat model, and security goal. The system model defines the entities and their capabilities, the threat model outlines the adversary's attack strategies, and the security goal sets the protection needed to defend against these threats.
+\subsection{System Model}
+ In MIND, we propose a model of a cloud image encryption system based on homomorphic encryption and additive secret sharing as shown in Fig \ref{fig:system_model}. The model consists of three entities: Person, End Device ($ED$), and Cloud Server ($S$). Each entity is described in detail as follows. Notations used in this work are listed in Table \ref{table:notations}.
+\begin{figure}[ht]
+\includegraphics[width=1\linewidth]{fig1.pdf}
+\caption{System model} \label{fig:system_model}
+\end{figure}
+
+Person: Persons are the people who input the image to the $ED$. 
+
+$ED$: $ED$ receives the image sent by the user and extracts its features locally. These features are then split using additive secret sharing, with one part stored locally and the other sent to the cloud server. Finally, $ED$ combines the results from the cloud and local computations to produce the inference outcome.
+
+$S$: $S$ is an auxiliary computational cloud server that receives the feature data sent by $ED$ after secret sharing. $S$ performs the necessary computations on the received data and then sends the computed results back to $ED$. 
+
+%  TODO: 涓嬮潰杩欐璇濆簲璇ユ斁鍒板悗闈?
+%  This architecture ensures both security and efficiency in face recognition processes by distributing computational tasks and securely handling sensitive data. Moreover, it leverages advanced cryptographic techniques to protect data privacy throughout the entire workflow.	
+
+\subsection{Threat Model and Security Goal}
+In our system, the main threats include: attackers intercepting and tampering with image data, feature data, or computation results transmitted between the $ED$ and $S$, leading to unauthorized access or data manipulation; the cloud server, or a compromised part of it, analyzing shared data to infer the original image or its features, thereby violating user privacy; and attackers targeting the $ED$ or cloud server to gain access to raw or secretly shared data, compromising the security of the entire system. Based on the above threat model, our security goals are listed as follows:
+\begin{itemize}
+     \item \textit{Data integrity and confidentiality}: Additive secret sharing to split the vectors into parts (e.g., $\langle x \rangle_1$ and $\langle x \rangle_2$) before uploading them to $S$. This ensures that no single server holds enough information to reconstruct the original data. Protect the image and its features from being exposed to unauthorized parties during transmission and at rest. Ensure that the data transmitted between $ED$ and the $S$ is not tampered with. 
+     \item \textit{Collusion Resistance}: Ensure that only authorized entities $ED$ and $S$ can access and process encrypted feature vectors, preventing unauthorized inference of biometric information. If one of the servers is compromised or colludes with an attacker, they cannot reconstruct the original feature vectors without the shares from the other server.
+ \end{itemize}
+
+\section{MIND Design}
+In this section, we first describe how images are shared using additive secret sharing at the $ED$, then detail the hierarchical cryptographic inference model, and finally illustrate the overall inference process. The notations utilized in this work are summarized in Table \ref{table:notations}.
+% \subsection{Scheme Construction}
+% 璇︾粏瑙ｉ噴绯荤粺濡備綍瀹炵幇鍔犳硶绉樺瘑鍏变韩鍜屽悓鎬佸姞瀵嗭紝鍖呮嫭鎶€鏈粏鑺傚拰绠楁硶銆?
+
+\subsection{Secret sharing of image features}
+% In MIND, multiple organizations collaborate on tasks related to model training and data interaction. The data owned by these organizations are temporary and cannot be directly shared. It is assumed that all institutions involved in the training process are rigorously verified as non-malicious participants, ensuring they do not engage in activities such as poisoning attacks that could compromise the model or the training process.
+
+As shown in Fig. \ref{fig:system_model}, $ED$ plays a dual role in this system. It is both a data receiver and a sender. As an end device, $ED$ first collects images. It then uses a local feature extraction model to extract image feature information. Fig. \ref{fig:ED_Models} shows the detailed data processing flow. To ensure data security, $ED$ uses additive secret sharing to securely split the feature information. After collecting an image, $ED$ first generates an n-dimensional random vector $\langle x \rangle_1$, with each element randomly selected from $\mathbb{Z}_t$. It then creates a second share, $\langle x \rangle_2$, by subtracting this random vector $\langle x \rangle_1$ from the original image vector $v$. This process is represented by the following formula:
+$\langle x \rangle_2 = v - \langle x \rangle_1$
+The sum of share $\langle x \rangle_1$ and share $\langle x \rangle_2$ equals the original image vector $v$. This design protects the privacy of feature information. It also enables secure distributed storage. Even when data is split and stored in a distributed manner, it can be securely reconstructed. This mechanism greatly enhances the system's security and privacy protection. At the same time, it maintains data usability and integrity.
+
+\begin{figure}[ht]
+\includegraphics[width=1\linewidth]{fig2.pdf}
+\caption{ED Secret Sharing Model} \label{fig:ED_Models}
+\end{figure}
+
+% In MIND, multiple institutions jointly perform tasks related to model training and data interaction.
+
+% \subsection{Server homomorphic encryption}
+%  The traditional method for encrypting the model training process between cloud servers involves directly encrypting the image data. Our research found that encrypting parameters in certain neural network layers, such as convolutional layers, can improve computational efficiency and reduce communication overhead without compromising model accuracy. We propose two encryption methods: data encryption and parameter encryption. By alternating between these two encryption methods during model training, we can effectively enhance the efficiency of the training process and reduce communication overhead. These methods are detailed below.
+
+ \subsection{Parameter and Data Encryption}
+Traditional encryption methods for collaborative inference between cloud servers and end devices often encrypt image data directly. While this approach protects data privacy, it has limitations in terms of computational efficiency and communication overhead. To address these issues, we propose MIND, a novel eNd-clouD collaborative encryption method. This new approach divides the encryption process into two parts: Model parameter encryption, Image data encryption. Our method applies these two encryption techniques to different network layers. This division allows for a more efficient and flexible approach to data protection.
+
+As described in \PEnc~(Algorithm \ref{alg:Parameter}), $S$ encrypts the model weights $w_p$ using public key $pk_s$ and transmitting the encrypted weights $\llbracket w \rrbracket_{pk_s}$ to $ED$. Upon receiving $\llbracket w_p \rrbracket_{pk_s}$, $ED$ performs a homomorphic multiplication operation to evaluate the product of $\llbracket w_p \rrbracket_{pk_s}$ and $\langle x \rangle_1$, yielding the result $\llbracket w_p \langle x \rangle_1\rrbracket_{pk_s} = \llbracket w_p \times \langle x \rangle_1 \rrbracket_{pk_s}$. Subsequently, $ED$ introduces a random number $r_1\in \mathbb{Z}_t$ and calculates the encrypted result $\llbracket C \rrbracket_{pk_s}=\llbracket w_p \langle x \rangle_1 + r_1 \rrbracket_{pk_s}$, which is then sent back to $S$. $S$ decrypts $\llbracket C \rrbracket_{pk_s}$ to retrieve the value $w_p\langle x \rangle_1+r_1$. Next, $S$ calculates the result $\langle y_p\rangle_2= w_p(\langle x \rangle_1 + \langle x \rangle_2)+r_1+b=w_px+r_1+b$, $ED$ obtains the result $\langle y_p\rangle_1=-r_1$. 
+\begin{algorithm}[htbp]
+	\caption{\PEnc($\langle x \rangle_1,\langle x \rangle_2,w,b) \rightarrow (\langle y_p\rangle_1, \langle y_p\rangle_2$)}
+    \label{alg:Parameter}
+    \LinesNumbered
+	\KwIn{$ED$ holds $\langle x \rangle_1$. \\
+	\hspace{33pt}$S$ holds $\langle x \rangle_2$, $w$, and $b$.}
+    \KwOut {Secret shares $\langle y_p \rangle_1 $ and $\langle y_p \rangle_2$.}
+     $S$ sends $\llbracket w_p\rrbracket_{pk_s}$ to $ED$;
+
+     $ED$ evaluates $\llbracket w_p\langle x \rangle_1 \rrbracket_{pk_s} = \llbracket w_p \rrbracket_{pk_s} \otimes \llbracket \langle x \rangle_1 \rrbracket_{pk_s}$;
+
+     $ED$  calculates $\llbracket C\rrbracket_{pk_s} = \llbracket w_p\langle x \rangle_1 \rrbracket_{pk_s} \oplus \llbracket r_1 \rrbracket_{pk_s}$;
+
+     $ED$ sends $\llbracket C\rrbracket_{pk_s}$ back to $S$;
+
+     $S$ decrypts $\llbracket C\rrbracket_{pk_s}$ to get $w_p\langle x \rangle_1 + r_1$;
+
+     $ED$ obtains $\langle y_p\rangle_1=-r_1$ and $S$ obtains $\langle y_p\rangle_2 = w_p x  + b_1 + r_1$.
+\end{algorithm}
+
+As illustrated in \DEnc~(Algorithm \ref{alg:DataHE}), $ED$ encrypts its secret share $\langle y_p \rangle_1$ of the held data using the public key $pk_e$ and transmits $\llbracket\langle y_p \rangle_1\rrbracket_{pk_e}$ to server $S$ for model inference. Upon receiving the encrypted secret share, $S$ performs a homomorphic addition operation to combine the two encrypted portions of the secret share, $\llbracket\langle y_p \rangle_1\rrbracket_{pk_e}$ and $\llbracket\langle y_p \rangle_2\rrbracket_{pk_e}$, into a single encrypted value $\llbracket y_p \rrbracket_{pk_e}=\llbracket \langle y_p \rangle_1 +  \langle y_p \rangle_2\rrbracket_{pk_e}$. After that, $S$ performs homomorphic multiplication between the $\llbracket y_p \rrbracket_{pk_e}$ and the model weights $w_d$ as $\llbracket y_p\times w_d \rrbracket_{pk_e}$. Simultaneously, a random number $r_2 \in \mathbb{Z}_t$ is generated and summed with the result. This step ensures that the data remains encrypted throughout the computation process, maintaining data privacy and security during inference.
+
+After $S$ completes the homomorphic encryption operations, it sends its computed share back to $ED$. At this point, both servers possess partial results, $\langle y_d \rangle_1$ and $\langle y_d \rangle_2$, which are the respective secret shares. These secret shares are then combined through a secure protocol to reconstruct the complete result $y_d$.
+\begin{algorithm}[htbp]
+	\caption{DEnc($\langle y_p \rangle_1,\langle y_p \rangle_2,w,b) \rightarrow (\langle y_d\rangle_1,\langle y_d\rangle_2$)}
+    \label{alg:DataHE}
+    \LinesNumbered
+	\KwIn{$ED$ holds $\langle y_p \rangle_1$.\\
+	\hspace{32pt}$S$ holds $\langle y_p \rangle_2, w$, and $b$.}
+    \KwOut{Secret shares $\langle y_d \rangle_1 $ and $\langle y_d \rangle_2$.}
+    $ED$ sends $\llbracket\langle y_p \rangle_1\rrbracket_{pk_e}$ to $S$;
+
+    $S$ evaluates $\llbracket\langle y_p \rangle_1\rrbracket_{pk_e} = \llbracket \langle y_p \rangle_1 \rrbracket_{pk_e}  \oplus  \llbracket\langle y_p\rangle_2\rrbracket_{pk_e}$;
+
+    $S$ computes $\llbracket w_d \times y_p \rrbracket_{pk_e} = \llbracket w_d \rrbracket_{pk_e} \otimes \llbracket  y_p \rrbracket_{pk_e}$;
+
+    $S$ calculates $\llbracket C \rrbracket_{pk_e} = \llbracket w_d \times y_p \rrbracket_{pk_e} \oplus \llbracket r_2 \rrbracket_{pk_e}$;
+
+    $S$ returns $\llbracket C \rrbracket_{pk_e}$ to $ED$;
+
+    $ED$ obtains $\langle y_d\rangle_1=w_d \times y_p+r_2$ and $S$ obtains $\langle y_d \rangle_2 = w_d \times y_p-r_2+b_2$.
+\end{algorithm}
+
+This approach not only preserves the confidentiality of the input data but also allows for secure computations on encrypted data, enabling privacy-preserving machine learning in cloud environments. The use of homomorphic encryption techniques in this manner facilitates collaborative model training and inference without exposing sensitive information to potential security threats.
+
+
+% While experimenting we found that the computational consumption of different layers in a neural network varies significantly. Typically, the number of parameters in the convolutional layer is less than the amount of data, while the number of parameters in the linear layer is greater than the amount of data. However, if the batch size of the training is large, the number of parameters may be less than the amount of data. The number of parameters for the linear layer can be determined by defining a fully connected layer with a specified number of input features and output features. In this context, the number of parameters is calculated by multiplying the number of input features by the number of output features. The amount of input data is calculated by multiplying the number of input features by the batch size. To ensure optimal performance, the batch size needs to be larger than the output features.
+
+
+% Then $ED$ and $S$ are safely combined to reconstruct the complete result $y=wx+b$.
+
+\subsection{Inference Overview}
+
+\begin{algorithm}[htbp]
+	\caption{The Search Procedure}
+	\label{algo:search}
+	\LinesNumbered
+	\KwIn{
+	$ED$ holds an image $x$ and batchsize $B$.
+	Server $S$ holds the network model $M = M_1 || M_2 \dots || M_n$.
+	The weights and biases of each layer $M_j$ are $w_j$ and $b_j$, respectively.
+	Define $k$ as the number of model cut layers
+	}
+	\KwOut{
+
+	}
+    $ED$ sets $\langle x_0 \rangle_1=x$ and  $S$ sets the $\langle x_0 \rangle_2 = 0$.
+
+    % $S$ sends $\llbracket w \rrbracket_{pk_s}$ to $ED$.
+
+	\For{$j=1$ to $n$}{
+	    \eIf{$ j \leq k$}{
+	            ($\langle x_{j} \rangle_1$, $\langle x_{j} \rangle_2 ) \leftarrow$ $\PEnc(\langle x_{j - 1}\rangle_1,\langle x_{j-1}\rangle_2,w_j,b_j$);
+	        }{
+	             ($\langle x_{j} \rangle_1$, $\langle x_{j} \rangle_2 ) \leftarrow$ $\DEnc(\langle x_{j - 1}\rangle_1,\langle x_{j-1}\rangle_2,w_j,b_j$);
+
+	           % $ED$ and $S$ call \DEnc~$(\langle y_{p_j} \rangle_1,\langle y_{p_j} \rangle_2,w_j,b_j \rightarrow \langle y_{d_j}\rangle_1, \langle y_{d_j}\rangle_2)$ to get $\langle y_{d} \rangle_1$ and $\langle y_{d} \rangle_2$, respectively;
+	        }
+	}
+
+    $ED$ defines $\langle y \rangle_1=\langle x_n \rangle_1$ and  $S$ defines the $\langle y \rangle_2=\langle x_n \rangle_2$.
+
+   $S$ sends $\langle y \rangle_2$ to $ED$.
+
+    $ED$ reconstructs the final inference result by computing $y = \langle y \rangle_1 + \langle y \rangle_2$.
+\end{algorithm}
+
+\begin{figure*}[ht]
+\centering
+\includegraphics[scale=0.6]{fig3.pdf}
+\caption{Serve Models} \label{fig:Serve_Models}
+\end{figure*}
+In this inference process, assume $ED$ holds an image $img$ with the size $n\times m$. $S$ is the main computational cloud server where the model $M$ is stored. The overall model $M$ is composed of multiple sub-models $M=M_1 || M_2 \dots M_n$. Each layer of the model $M_j$ is associated with specific weights $w_{j}$ and biases $b_{j}$ for $j \in \{1, 2, \dots, n\}$.
+Formally, model $M$ can be represented as a collection of layer-specific parameters $M=\{(w_{1},b_{1}),(w_{2},b_{2}),\dots,(w_{n},b_{n})\}$, where $n$ denotes the number of layers in $M$.
+
+The computation at each layer is denoted as $x_j = f_j(x_{j-1})$, where $j$ denotes the current network layer and $x_j=\langle x_j \rangle_1 + \langle x_j \rangle_2$. All intermediate outputs of each layer are secretly shared between $ED$ and $S$, except for the final output $y$. At the beginning, we keep the secret sharing form for all layers $f_j$. Here, $f_j$ represents a secure computation protocol running on secret sharing. The protocol obtains the secret share $\langle x_{j-1} \rangle_i$ of the previous layer's output from both parties and generates the secret share $\langle x_j \rangle_i$ of the current layer. This can be expressed as:
+\begin{equation}
+    \langle x_j \rangle_1+\langle x_j \rangle_2 = f_j(\langle x_{j-1} \rangle_1 + \langle x_{j-1} \rangle_2).
+\end{equation}
+
+The process begins with the server $S$ encrypting a subset of the model parameters $w_j$ for $j \in [1,k]$ and transmitting these encrypted parameters $\llbracket w_j \rrbracket_{pk_s}$ to $ED$. Upon receiving the encrypted parameters , the $ED$ uses homomorphic encryption to perform inference on the initial layers of the model. The $ED$ then encrypts the resulting intermediate results and sends them to $S$. Subsequently, $S$ continues the inference on the remaining layers of the model using the encrypted data provided by the $ED$. This process ensures that both the sensitive parameters and image data are protected through encryption before further processing or transmission.
+
+% as shown in Fig. \ref{fig:ED_Models} and \ref{fig:Serve_Models}, $ED$ separates the original image feature vector $x$ using an additive secret sharing scheme. 
+Specifically, as described in Algorithm \ref{algo:search}, the initial input is $x_0=x$ split between  $ED$ and $S$, with $ED$ setting $\langle x_0\rangle_1=x$ and $S$ setting the $\langle x_0\rangle_2=0$. 
+
+For each layer $j$ from 1 to $n$, if $j \leq k$ (where $k$ is the number of layers processed by the $ED$), the $ED$ and $S$ use the \PEnc~method to compute the encrypted shares $\langle x_j \rangle_1$ and $\langle x_j \rangle_2$. Otherwise, we use \DEnc~method.
+ After all layers are processed, $ED$ holds $\langle y \rangle_1=\langle x_n\rangle_1$ and $S$ holds $\langle y \rangle_2=\langle x_n\rangle_2$. Finally, $S$ then sends $\langle y \rangle_2$ to $ED$, which then reconstructs the final inference result by computing $y=\langle y \rangle_1+\langle y \rangle_2$.
+
+In summary, this algorithm ensures that the computational process is carried out securely and efficiently, with each server only having access to a share of the data. By employing secret sharing and encryption techniques, the privacy of the input image is preserved throughout the inference procedure, thereby providing a robust solution for secure cloud-based neural network computations.
+%In forward propagation, $ED$ draws a batch of input data $\langle x_0\rangle_1$ to feed into the model $M_1$.  
+
+
+% The overall model $m$ is composed of multiple sub-models $m=\{m_1,m_2,\dots,m_n\}$. Each sub-model $m_i$ consists of several layers, and for each layer $j$ in the sub-model $m_i$, there are associated weights $w_{ij}$ and biases $b_{ij}$. 
+% Formally, each sub-model $m_i$ can be represented as a collection of layer-specific parameters $m_i=\{(w_{i1},b_{i1}),(w_{i2},b_{i2}),\dots,(w_{ik},b_{ik})\}$, where $k_i$ denotes the number of layers in $m_i$. Therefore, the overall model m can be expressed as $m =\{(w_{i1}, b_{i1}), (w_{i2}, b_{i2}), \dots,$ $(w_{ik_i}, b_{ik_i}) | i=1,2,\dots,n\}$, with each $m_i$ containing its corresponding set of weights and biases for each layer.
+
+\section{Experiment and Result}
+In the MIND experiments, we conduct comparison studies, evaluating the layered encryption method against the encryption method proposed in this paper. The evaluation criteria include accuracy, F1 score, recall, runtime, and communication cost.
+
+\subsection{Setting}
+\subsubsection{Environment.} Our solution is implemented in python, and the experiments run on two servers that both equipped with an AMD EPYC 7402 CPU and 128 GB of RAM.
+\subsubsection{Dataset.} 
+We employ the widely-used MNIST datasets \cite{xiao2017fashion} to train and evaluate our models. To ensure the data is suitable for model input, the following preprocessing steps are applied. The MNIST dataset comprises 60,000 training images and 10,000 test images, each a 28$\times$28 pixel grayscale image of handwritten digits. We normalize the pixel values to the [0, 1] range and implemented data augmentation techniques such as random rotations and translations during training. The CIFAR-10 dataset\DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{krizhevsky2009learning} }\hskip0pt%DIFAUXCMD
+}\DIFaddend consists of 50,000 training images and 10,000 test images, each a 32$\times$32 pixel color image categorized into 10 classes. We standardize the images so that the pixel values for each channel have zero mean and unit variance. We trained each image neural network using the training dataset for 10 epochs. Additionally, we employ data augmentation techniques, including random cropping, horizontal flipping, and color jittering, to enhance the model's generalization capability.
+
+
+
+
+\subsubsection{Parameters.} 
+The learning rate $\eta$ is set to 0.01 to accelerate model convergence while maintaining stability. For the MNIST dataset, a batch size $B$ of 32 is used, while a batch size $B$ of 64 is employed for the CIFAR-10 dataset. The momentum $\gamma$ is configured at 0.8 to effectively smooth the update process and reduce gradient oscillations during training. Additionally, the gradient bound estimation $C$ is set to 8 to limit the maximum gradient value and prevent gradient explosion.
+
+\subsection{Effectiveness}
+In this subsection, we evaluate the effectiveness of the scheme. The MIND scheme we propose employs hierarchical encryption, whereas the non-hierarchical encryption scheme is referred to as the Naive scheme. We achieve this by utilizing models with different architectures on the MNIST dataset, specifically mnist aby3\DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{10.1145/3243734.3243760}}\hskip0pt%DIFAUXCMD
+}\DIFaddend , mnist sphinx\DIFdelbegin \DIFdel{, mnist quotient 3$\times$128, }\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{Tian2022SphinxEP}}\hskip0pt%DIFAUXCMD
+, mnist chameleon\mbox{%DIFAUXCMD
+\cite{10.1145/3196494.3196522} }\hskip0pt%DIFAUXCMD
+}\DIFaddend and mnist quotient 2$\times$\DIFdelbegin \DIFdel{512. }\DIFdelend \DIFaddbegin \DIFadd{512\mbox{%DIFAUXCMD
+\cite{10.1145/3319535.3339819}}\hskip0pt%DIFAUXCMD
+. On the CIFAR10 dataset, we used AlexNet\mbox{%DIFAUXCMD
+\cite{NIPS2012_c399862d} }\hskip0pt%DIFAUXCMD
+and ResNet50\mbox{%DIFAUXCMD
+\cite{7780459}}\hskip0pt%DIFAUXCMD
+. }\DIFaddend We compare the Accuracy, Precision, Recall, and F1 Score between hierarchical encryption schemes and non-hierarchical encryption schemes based on these MNIST models.
+
+\DIFdelbegin %DIFDELCMD < \begin{table*}[ht]
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Based on the results presented in Figure \ref{fig:ACC}, we observe no significant difference in recognition accuracy between the layered and non-layered encryption schemes. This demonstrates that our proposed MIND successfully maintains model performance while implementing enhanced privacy protection measures.
+}
+
+\DIFaddFL{As the data in Table \ref{tab:performance_comparison_schemes} shows, the performance of all tested models is consistent in both the native and MIND environments. In the MNIST task, models like ABY3, Chameleon, Sphinx, and Quotient show nearly identical precision, recall, and F1 scores in both environments. Similarly, AlexNet and ResNet50 maintain consistent performance in the CIFAR10 task, albeit with lower overall scores due to the task's complexity.
+}
+
+\DIFaddFL{Notably, integrating privacy protection mechanisms does not significantly impact model performance, especially in simpler tasks. Even in more complex tasks, while there's a slight overall performance decrease, the consistency between environments persists. This underscores the MIND mechanism's effectiveness in achieving privacy protection goals while preserving model accuracy.
+}\begin{table}[ht]
+\DIFaddendFL \centering
+\DIFdelbeginFL %DIFDELCMD < \caption{%
+{%DIFAUXCMD
+\DIFdelFL{Feasibility Evaluation}}
+%DIFAUXCMD
+%DIFDELCMD < \label{tab:effectiveness}
+%DIFDELCMD < \begin{tabular}{lcccccc}
+%DIFDELCMD < \toprule[1pt]
+%DIFDELCMD < %%%
+\DIFdelFL{Model }\DIFdelendFL \DIFaddbeginFL \begin{tabular}{ c|c|c c c c } 
+\hline
+\multirow{2}{*}{Task} \DIFaddendFL & \DIFdelbeginFL \DIFdelFL{Schemes }\DIFdelendFL \DIFaddbeginFL \multirow{2}{*}{Model} \DIFaddendFL & \DIFdelbeginFL \DIFdelFL{Accuracy }\DIFdelendFL \DIFaddbeginFL \multirow{2}{*}{Schemes} \DIFaddendFL & \DIFaddbeginFL \multicolumn{3}{c}{Metric} \\ 
+\cline{4-6}
+                      &                        &                        & \DIFaddendFL Precision & Recall & F1 Score \\ 
+\DIFdelbeginFL %DIFDELCMD < \midrule[1pt]
+%DIFDELCMD < \multirow{2}{*}{mnist aby3} %%%
+\DIFdelendFL \DIFaddbeginFL \hline
+\multirow{10}{*}{MNIST}   \DIFaddendFL & \DIFdelbeginFL \DIFdelFL{Naive }\DIFdelendFL \DIFaddbeginFL \centering \DIFaddFL{ABY3      }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.978 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Native }\DIFaddendFL & 0.978 & 0.978 & 0.978\\ 
+                      &            \DIFaddbeginFL & \DIFaddendFL MIND    & 0.978 & 0.978 & 0.978 \DIFdelbeginFL %DIFDELCMD < & %%%
+\DIFdelFL{0.978  }\DIFdelendFL \\ 
+\DIFdelbeginFL %DIFDELCMD < \cline{1-6}
+%DIFDELCMD < \multirow{2}{*}{mnist sphinx} %%%
+\DIFdelendFL \DIFaddbeginFL \cline{2-6}
+                      \DIFaddendFL & \DIFdelbeginFL \DIFdelFL{Naive }\DIFdelendFL \DIFaddbeginFL \centering \DIFaddFL{Chameleon  }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.991 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Native }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.991 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.985}\DIFaddendFL &\DIFdelbeginFL \DIFdelFL{0.990 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.985}\DIFaddendFL &\DIFdelbeginFL \DIFdelFL{0.991  }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.985           }\DIFaddendFL \\ 
+                      &            \DIFaddbeginFL & \DIFaddendFL MIND    & \DIFdelbeginFL \DIFdelFL{0.991 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.985  }\DIFaddendFL &\DIFaddbeginFL \DIFaddFL{0.985 }& \DIFaddFL{0.985   }\\ 
+\cline{2-6}
+                      & \centering \DIFaddFL{Sphinx     }& \DIFaddFL{Native  }& \DIFaddendFL 0.991 & 0.990 & 0.991 \\ 
+                      \DIFdelbeginFL %DIFDELCMD < \cline{1-6}
+%DIFDELCMD < \multirow{2}{*}{mnist quotient 3$\times$128} %%%
+\DIFdelendFL &            \DIFdelbeginFL \DIFdelFL{Naive }\DIFdelendFL & \DIFdelbeginFL \DIFdelFL{0.978 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{MIND    }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.978 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.991 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.978 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.990 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.978  }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.991}\DIFaddendFL \\ 
+\DIFaddbeginFL \cline{2-6}
+                      \DIFaddendFL & \DIFdelbeginFL \DIFdelFL{MIND }\DIFdelendFL \DIFaddbeginFL \centering \DIFaddFL{Quotient   }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.978 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Native  }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.978 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.980 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.978 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.980 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.978  }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.980 }\DIFaddendFL \\ 
+                      \DIFdelbeginFL %DIFDELCMD < \cline{1-6}
+%DIFDELCMD < \multirow{2}{*}{mnist quotient 2$\times$512} %%%
+\DIFdelendFL &            \DIFdelbeginFL \DIFdelFL{Naive }\DIFdelendFL & \DIFdelbeginFL \DIFdelFL{0.980 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{MIND    }\DIFaddendFL & 0.980 & 0.980 & 0.980 \\ 
+\DIFaddbeginFL \hline
+\multirow{6}{*}{CIFAR10} \DIFaddendFL & \DIFaddbeginFL \centering \DIFaddFL{AlexNet   }& \DIFaddFL{Native  }&  \DIFaddFL{0.867  }& \DIFaddFL{0.866  }& \DIFaddFL{0.867   }\\ 
+                      &            & \DIFaddendFL MIND    &  \DIFdelbeginFL \DIFdelFL{0.980 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.867  }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.980 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.866  }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.980 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.867  }\\ 
+\cline{2-6}
+                      \DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.980  }\DIFdelendFL \DIFaddbeginFL \centering \DIFaddFL{ResNet50   }& \DIFaddFL{Native  }& \DIFaddFL{0.805 }& \DIFaddFL{0.767 }& \DIFaddFL{0.785 }\DIFaddendFL \\ 
+                      \DIFdelbeginFL %DIFDELCMD < \bottomrule[1pt]
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL &            & \DIFaddFL{MIND    }& \DIFaddFL{0.805 }& \DIFaddFL{0.767 }& \DIFaddFL{0.785}\\ 
+\cline{2-6}
+                    %DIF >    & \centering DenseNet121 & Native  & 0.649 & 0.597 &0.622  \\ 
+                    %DIF >    &            & MIND    & 0.649 & 0.597 &0.622 \\ 
+
+\hline
+\DIFaddendFL \end{tabular}
+\vspace{-6pt}
+\begin{flushleft}
+\DIFdelbeginFL %DIFDELCMD < \begin{adjustwidth}{90pt}{70pt}  %%%
+\DIFdelendFL \DIFaddbeginFL \begin{adjustwidth}{2pt}{2pt}  \DIFaddendFL % 杩欓噷璋冩暣Note涓庡乏鍙宠竟鐣岀殑璺濈
+\textbf{Note.}
+$\text{Accuracy} = \frac{\text{TP} + \text{TN}}{\text{TP} + \text{TN} + \text{FP} + \text{FP}}$,
+$\text{Precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}$,
+$\text{Recall} = \frac{\text{TP}}{\text{TP} + \text{FP}}$,
+$\text{F1 Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$ 
+(TP: True Positive, TN: True Negative, FP: False Positive, FN: False Negative).
+\end{adjustwidth}
+\end{flushleft}
+\DIFdelbeginFL %DIFDELCMD < \end{table*}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \caption{\DIFadd{Performance comparison between Native and MIND models for different tasks.}}
+\label{tab:performance_comparison_schemes}
+\end{table}
+\DIFaddend 
+
+
+
+
+\DIFdelbegin \DIFdel{According to the results shown in Table \ref{tab:effectiveness}, we can observe that there is no difference in the recognition accuracy between the hierarchical encryption scheme and the non-hierarchical encryption scheme. Therefore, we can conclude that there is no significant difference between hierarchical encryption and non-hierarchical encryption when performing facial recognition. This indicates that MIND is a feasible and effective privacy protection scheme for facial recognition. }\DIFdelend %DIF >  \begin{table*}[ht]
+%DIF >  \centering
+%DIF >  \caption{Feasibility Evaluation}
+%DIF >  \label{tab:effectiveness}
+%DIF >  \begin{tabular}{lcccccc}
+%DIF >  \toprule[1pt]
+%DIF >  Model & Schemes & Precision & Recall & F1 Score  \\
+%DIF >  \midrule[1pt]
+%DIF >  \multirow{2}{*}{mnist aby3} & Naive & 0.978 & 0.978 & 0.978  \\
+%DIF >                              & MIND & 0.978 & 0.978 & 0.978  \\ \cline{1-6}
+%DIF >  \multirow{2}{*}{mnist sphinx} & Naive & 0.991 & 0.990 & 0.991  \\
+%DIF >                              & MIND & 0.991 & 0.990 & 0.991  \\ \cline{1-6}
+%DIF >  \multirow{2}{*}{mnist quotient 3$\times$128} & Naive & 0.978 & 0.978 & 0.978  \\
+%DIF >                              & MIND & 0.978 & 0.978 & 0.978  \\ \cline{1-6}
+%DIF >  \multirow{2}{*}{mnist quotient 2$\times$512} & Naive & 0.980 & 0.980 & 0.980  \\
+%DIF >                              & MIND & 0.980 & 0.980 & 0.980  \\ \cline{1-6}
+%DIF >  \bottomrule[1pt]
+%DIF >  \end{tabular}
+%DIF >  \vspace{-6pt}
+%DIF >  \begin{flushleft}
+%DIF >  \begin{adjustwidth}{90pt}{70pt}  % 杩欓噷璋冩暣Note涓庡乏鍙宠竟鐣岀殑璺濈
+%DIF >  \textbf{Note.}
+%DIF >  $\text{Accuracy} = \frac{\text{TP} + \text{TN}}{\text{TP} + \text{TN} + \text{FP} + \text{FP}}$,
+%DIF >  $\text{Precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}$,
+%DIF >  $\text{Recall} = \frac{\text{TP}}{\text{TP} + \text{FP}}$,
+%DIF >  $\text{F1 Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$ 
+%DIF >  (TP: True Positive, TN: True Negative, FP: False Positive, FN: False Negative).
+%DIF >  \end{adjustwidth}
+%DIF >  \end{flushleft}
+%DIF >  \end{table*}
+
+\subsection{Efficiency}
+\DIFdelbegin \DIFdel{To demonstrate that MIND can reduce both runtime and communication cost, we evaluated and compared the hierarchical encryption scheme of }\DIFdelend \DIFaddbegin \DIFadd{To demonstrate the efficiency of MIND, in this subsection, we evaluate and compare the computational overhead of Native and }\DIFaddend MIND \DIFdelbegin \DIFdel{with the Naive scheme in terms of runtime and communication cost. As illustrated in Figure \ref{fig:efficiency}, we can observe }\DIFdelend \DIFaddbegin \DIFadd{under different models. We take the average results of multiple experiments to reduce the bias caused by random noise.
+%DIF >  In the experiment, we use two publicly available datasets, MNIST and CIFAR-10, and apply various models to each dataset. Pretrained models, such as AlexNet and ResNet50, are utilized as feature extractors. As shown in Figure \ref{fig:ACC}, across different models, the accuracy remains almost unchanged when using the MIND method (represented by the pink bars) compared to the native method (represented by the blue bars). This indicates that the impact of the MIND method on model accuracy is almost negligible.
+}
+
+\DIFadd{Our experiments demonstrate the superior efficiency of the MIND scenario compared to the Naive scenario across various models and datasets. Figure \ref{subfig:aby3}, \ref{subfig:sphinx}, \ref{subfig:chameleon}, and \ref{subfig:quotient_2x512} show }\DIFaddend that for the \DIFdelbegin \DIFdel{four MNIST models: mnist aby3, mnist sphinx, mnist quotient 3$\times$128, and mnist quotient }\DIFdelend \DIFaddbegin \DIFadd{MNIST dataset, MIND consistently requires less transmission and runtime across all four models (MNIST ABY3, MNIST SPHINX, MNIST Chameleon, and MNIST Quotient }\DIFaddend 2$\times$512\DIFdelbegin \DIFdel{, the transmission required by the MIND scheme is consistently lower than that of the Naive scheme. This reduction is attributed to the efficiency gains achieved through the hierarchical encryption, which effectively enhances performance and consequently lowers the runtime of MIND.
+}\DIFdelend \DIFaddbegin \DIFadd{).
+}\DIFaddend 
+
+\DIFdelbegin \DIFdel{According to }\DIFdelend \DIFaddbegin \DIFadd{Specifically, the MIND scheme demonstrates varying degrees of effectiveness across different models. As shown in }\DIFaddend Figure \ref{subfig:aby3}, it \DIFdelbegin \DIFdel{can be observed that the MIND scheme }\DIFdelend is most effective in reducing communication cost when applied to the \DIFdelbegin \DIFdel{mnist aby3 model and is }\DIFdelend \DIFaddbegin \DIFadd{MNIST ABY3 model and }\DIFaddend most effective in reducing runtime when applied to the \DIFdelbegin \DIFdel{mnist quotient }\DIFdelend \DIFaddbegin \DIFadd{MNIST Quotient }\DIFaddend 2x512 model. \DIFdelbegin \DIFdel{In our experiments , using }\DIFdelend \DIFaddbegin \DIFadd{Our experiments reveal that while }\DIFaddend the Naive encryption scheme \DIFdelbegin \DIFdel{required }\DIFdelend \DIFaddbegin \DIFadd{requires }\DIFaddend a communication cost of 1933MB, \DIFdelbegin \DIFdel{whereas the MIND scheme only required }\DIFdelend \DIFaddbegin \DIFadd{MIND only requires }\DIFaddend 1008MB, resulting in a \DIFaddbegin \DIFadd{significant }\DIFaddend reduction of approximately 49.42\% in communication cost\DIFdelbegin \DIFdel{, and The MIND scheme reduced }\DIFdelend \DIFaddbegin \DIFadd{. Additionally, MIND reduces }\DIFaddend the runtime by approximately 10.34\% compared to the Naive scheme.
+
+\DIFaddbegin \DIFadd{To further validate MIND's efficiency, we conduct experiments on more complex neural networks. Figures \ref{subfig:alexnet} and \ref{subfig:resnet} reveal that for both AlexNet and ResNet models, MIND maintains lower communication and running times compared to the Native scenario. This trend extends to the CIFAR10 dataset, where these complex models exhibit consistently lower transmission rates under the MIND scheme. The reduction in transmission is attributed to the increased efficiency of layered encryption, which enhances performance and consequently reduces MIND's runtime.
+}
+
+\DIFadd{These results consistently highlight MIND's ability to optimize both communication costs and runtime across various neural network architectures and datasets, showcasing its potential for improving efficiency in privacy-preserving machine learning applications.
+}
+
+\DIFaddend \begin{figure}[ht]
+\centering
+\DIFaddbeginFL \includegraphics[width=1\linewidth]{ACC.pdf}
+\caption{\DIFaddFL{Accuracy}} \label{fig:ACC}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \DIFaddendFL \subfigure[mnist aby3]{\includegraphics[width=.45\columnwidth]{exp/minst_aby3.pdf}\label{subfig:aby3}} \hspace{5pt}
+    \DIFdelbeginFL %DIFDELCMD < \subfigure[mnist sphinx]{\includegraphics[width=.45\columnwidth]{exp/spinx.pdf}\label{subfig:sphinx}} %%%
+\DIFdelendFL \DIFaddbeginFL \subfigure[mnist sphinx]{\includegraphics[width=.45\columnwidth]{exp/sphinx.pdf}\label{subfig:sphinx}} \DIFaddendFL \\
+    \DIFdelbeginFL %DIFDELCMD < \subfigure[mnist quotient 3$\times$128]{\includegraphics[width=.45\columnwidth]{exp/quotient_3.pdf}\label{subfig:quotient_3x128}} %%%
+\DIFdelFL{\hspace{5pt}
+     }%DIFDELCMD < \subfigure[mnist quotient 2$\times$512]{\includegraphics[width=.46\columnwidth]{exp/quotient_2.pdf}\label{subfig:quotient_2x512}}
+%DIFDELCMD <     %%%
+\DIFdelendFL %DIF >  \subfigure[mnist quotient 3$\times$128]{\includegraphics[width=.45\columnwidth]{exp/quotient_3.pdf}\label{subfig:quotient_3x128}} \hspace{5pt}
+    \DIFaddbeginFL \subfigure[mnist chameleon]{\includegraphics[width=.45\columnwidth]{exp/chameleon.pdf}\label{subfig:chameleon}} \DIFaddFL{\hspace{5pt}
+     }\subfigure[mnist quotient %2$\times$512%
+     ]{\includegraphics[width=.46\columnwidth]{exp/quotient_2.pdf}\label{subfig:quotient_2x512}}
+
+    \subfigure[alexnet]{\includegraphics[width=.45\columnwidth]{exp/alexnet.pdf}\label{subfig:alexnet}} \DIFaddFL{\hspace{5pt}
+    }\subfigure[resnet50]{\includegraphics[width=.45\columnwidth]{exp/resnet.pdf}\label{subfig:resnet}} \DIFaddFL{\hspace{5pt}
+    }\DIFaddendFL \caption{Efficiency evaluation.}
+    \label{fig:efficiency}
+\end{figure}
+\DIFdelbegin %DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdelend % \begin{figure}[ht]
+% \centering
+% \includegraphics[width=1\linewidth]{Communication_cost.pdf}
+% \caption{Communication cost} \label{fig:cost}
+% \end{figure}
+
+\section{Conclusion}
+In this paper, we introduce MIND, a privacy-preserving inference framework designed to address the privacy challenges associated with the task of collaborative inference computation in the end-cloud. MIND utilizes advanced encryption techniques, including secret sharing and homomorphic encryption, to secure data and model parameters throughout the cloud inference process. Within the MIND framework, we design a layered encryption scheme that dynamically adapts encryption methods between the end device and cloud servers to significantly reduce computation and communication overheads.
+
+Our experimental results show that this innovative solution not only greatly enhances data protection but also effectively ensures that the performance of the inference model remains unaffected. As a result, MIND provides robust privacy protection without compromising operational efficiency, establishing itself as a secure and efficient cloud-based collaborative inference model with significant practical value and relevance.
+
+
+% \subsection{Equations}
+% Number equations consecutively. To make your 
+% equations more compact, you may use the solidus (~/~), the exp function, or 
+% appropriate exponents. Italicize Roman symbols for quantities and variables, 
+% but not Greek symbols. Use a long dash rather than a hyphen for a minus 
+% sign. Punctuate equations with commas or periods when they are part of a 
+% sentence, as in:
+% \begin{equation}
+% a+b=\gamma\label{eq}
+% \end{equation}
+
+% Be sure that the 
+% symbols in your equation have been defined before or immediately following 
+% the equation. Use ``\eqref{eq}'', not ``Eq.~\eqref{eq}'' or ``equation \eqref{eq}'', except at 
+% the beginning of a sentence: ``Equation \eqref{eq} is . . .''
+
+% \subsection{\LaTeX-Specific Advice}
+
+% Please use ``soft'' (e.g., \verb|\eqref{Eq}|) cross references instead
+% of ``hard'' references (e.g., \verb|(1)|). That will make it possible
+% to combine sections, add equations, or change the order of figures or
+% citations without having to go through the file line by line.
+
+% Please don't use the \verb|{eqnarray}| equation environment. Use
+% \verb|{align}| or \verb|{IEEEeqnarray}| instead. The \verb|{eqnarray}|
+% environment leaves unsightly spaces around relation symbols.
+
+% Please note that the \verb|{subequations}| environment in {\LaTeX}
+% will increment the main equation counter even when there are no
+% equation numbers displayed. If you forget that, you might write an
+% article in which the equation numbers skip from (17) to (20), causing
+% the copy editors to wonder if you've discovered a new method of
+% counting.
+
+% {\BibTeX} does not work by magic. It doesn't get the bibliographic
+% data from thin air but from .bib files. If you use {\BibTeX} to produce a
+% bibliography you must send the .bib files. 
+
+% {\LaTeX} can't read your mind. If you assign the same label to a
+% subsubsection and a table, you might find that Table I has been cross
+% referenced as Table IV-B3. 
+
+% {\LaTeX} does not have precognitive abilities. If you put a
+% \verb|\label| command before the command that updates the counter it's
+% supposed to be using, the label will pick up the last counter to be
+% cross referenced instead. In particular, a \verb|\label| command
+% should not go before the caption of a figure or a table.
+
+% Do not use \verb|\nonumber| inside the \verb|{array}| environment. It
+% will not stop equation numbers inside \verb|{array}| (there won't be
+% any anyway) and it might stop a wanted equation number in the
+% surrounding equation.
+
+% \subsection{Some Common Mistakes}\label{SCM}
+% \begin{itemize}
+% \item The word ``data'' is plural, not singular.
+% \item The subscript for the permeability of vacuum $\mu_{0}$, and other common scientific constants, is zero with subscript formatting, not a lowercase letter ``o''.
+% \item In American English, commas, semicolons, periods, question and exclamation marks are located within quotation marks only when a complete thought or name is cited, such as a title or full quotation. When quotation marks are used, instead of a bold or italic typeface, to highlight a word or phrase, punctuation should appear outside of the quotation marks. A parenthetical phrase or statement at the end of a sentence is punctuated outside of the closing parenthesis (like this). (A parenthetical sentence is punctuated within the parentheses.)
+% \item A graph within a graph is an ``inset'', not an ``insert''. The word alternatively is preferred to the word ``alternately'' (unless you really mean something that alternates).
+% \item Do not use the word ``essentially'' to mean ``approximately'' or ``effectively''.
+% \item In your paper title, if the words ``that uses'' can accurately replace the word ``using'', capitalize the ``u''; if not, keep using lower-cased.
+% \item Be aware of the different meanings of the homophones ``affect'' and ``effect'', ``complement'' and ``compliment'', ``discreet'' and ``discrete'', ``principal'' and ``principle''.
+% \item Do not confuse ``imply'' and ``infer''.
+% \item The prefix ``non'' is not a word; it should be joined to the word it modifies, usually without a hyphen.
+% \item There is no period after the ``et'' in the Latin abbreviation ``et al.''.
+% \item The abbreviation ``i.e.'' means ``that is'', and the abbreviation ``e.g.'' means ``for example''.
+% \end{itemize}
+% An excellent style manual for science writers is \cite{b7}.
+
+% \subsection{Authors and Affiliations}\label{AAA}
+% \textbf{The class file is designed for, but not limited to, six authors.} A 
+% minimum of one author is required for all conference articles. Author names 
+% should be listed starting from left to right and then moving down to the 
+% next line. This is the author sequence that will be used in future citations 
+% and by indexing services. Names should not be listed in columns nor group by 
+% affiliation. Please keep your affiliations as succinct as possible (for 
+% example, do not differentiate among departments of the same organization).
+
+% \subsection{Identify the Headings}\label{ITH}
+% Headings, or heads, are organizational devices that guide the reader through 
+% your paper. There are two types: component heads and text heads.
+
+% Component heads identify the different components of your paper and are not 
+% topically subordinate to each other. Examples include Acknowledgments and 
+% References and, for these, the correct style to use is ``Heading 5''. Use 
+% ``figure caption'' for your Figure captions, and ``table head'' for your 
+% table title. Run-in heads, such as ``Abstract'', will require you to apply a 
+% style (in this case, italic) in addition to the style provided by the drop 
+% down menu to differentiate the head from the text.
+
+% Text heads organize the topics on a relational, hierarchical basis. For 
+% example, the paper title is the primary text head because all subsequent 
+% material relates and elaborates on this one topic. If there are two or more 
+% sub-topics, the next level head (uppercase Roman numerals) should be used 
+% and, conversely, if there are not at least two sub-topics, then no subheads 
+% should be introduced.
+
+% \subsection{Figures and Tables}\label{FAT}
+% \paragraph{Positioning Figures and Tables} Place figures and tables at the top and 
+% bottom of columns. Avoid placing them in the middle of columns. Large 
+% figures and tables may span across both columns. Figure captions should be 
+% below the figures; table heads should appear above the tables. Insert 
+% figures and tables after they are cited in the text. Use the abbreviation 
+% ``Fig.~\ref{fig}'', even at the beginning of a sentence.
+
+% \begin{table}[htbp]
+% \caption{Table Type Styles}
+% \begin{center}
+% \begin{tabular}{|c|c|c|c|}
+% \hline
+% \textbf{Table}&\multicolumn{3}{|c|}{\textbf{Table Column Head}} \\
+% \cline{2-4} 
+% \textbf{Head} & \textbf{\textit{Table column subhead}}& \textbf{\textit{Subhead}}& \textbf{\textit{Subhead}} \\
+% \hline
+% copy& More table copy$^{\mathrm{a}}$& &  \\
+% \hline
+% \multicolumn{4}{l}{$^{\mathrm{a}}$Sample of a Table footnote.}
+% \end{tabular}
+% \label{tab1}
+% \end{center}
+% \end{table}
+
+% \begin{figure}[htbp]
+% \centerline{\includegraphics{fig1.png}}
+% \caption{Example of a figure caption.}
+% \label{fig}
+% \end{figure}
+
+% Figure Labels: Use 8 point Times New Roman for Figure labels. Use words 
+% rather than symbols or abbreviations when writing Figure axis labels to 
+% avoid confusing the reader. As an example, write the quantity 
+% ``Magnetization'', or ``Magnetization, M'', not just ``M''. If including 
+% units in the label, present them within parentheses. Do not label axes only 
+% with units. In the example, write ``Magnetization (A/m)'' or ``Magnetization 
+% \{A[m(1)]\}'', not just ``A/m''. Do not label axes with a ratio of 
+% quantities and units. For example, write ``Temperature (K)'', not 
+% ``Temperature/K''.
+
+% \section*{Acknowledgment}
+
+% The preferred spelling of the word ``acknowledgment'' in America is without 
+% an ``e'' after the ``g''. Avoid the stilted expression ``one of us (R. B. 
+% G.) thanks $\ldots$''. Instead, try ``R. B. G. thanks$\ldots$''. Put sponsor 
+% acknowledgments in the unnumbered footnote on the first page.
+
+% \begin{thebibliography}{00}
+% \bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
+% \bibitem{b2} J. Clerk Maxwell, A Treatise on Electricity and Magnetism, 3rd ed., vol. 2. Oxford: Clarendon, 1892, pp.68--73.
+% \bibitem{b3} I. S. Jacobs and C. P. Bean, ``Fine particles, thin films and exchange anisotropy,'' in Magnetism, vol. III, G. T. Rado and H. Suhl, Eds. New York: Academic, 1963, pp. 271--350.
+% \bibitem{b4} K. Elissa, ``Title of paper if known,'' unpublished.
+% \bibitem{b5} R. Nicole, ``Title of paper with only first word capitalized,'' J. Name Stand. Abbrev., in press.
+% \bibitem{b6} Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, ``Electron spectroscopy studies on magneto-optical media and plastic substrate interface,'' IEEE Transl. J. Magn. Japan, vol. 2, pp. 740--741, August 1987 [Digests 9th Annual Conf. Magnetics Japan, p. 301, 1982].
+% \bibitem{b7} M. Young, The Technical Writer's Handbook. Mill Valley, CA: University Science, 1989.
+% \bibitem{b8} D. P. Kingma and M. Welling, ``Auto-encoding variational Bayes,'' 2013, arXiv:1312.6114. [Online]. Available: https://arxiv.org/abs/1312.6114
+% \bibitem{b9} S. Liu, ``Wi-Fi Energy Detection Testbed (12MTC),'' 2023, gitHub repository. [Online]. Available: https://github.com/liustone99/Wi-Fi-Energy-Detection-Testbed-12MTC
+% \bibitem{b10} ``Treatment episode data set: discharges (TEDS-D): concatenated, 2006 to 2009.'' U.S. Department of Health and Human Services, Substance Abuse and Mental Health Services Administration, Office of Applied Studies, August, 2013, DOI:10.3886/ICPSR30122.v2
+% \bibitem{b11} K. Eves and J. Valasek, ``Adaptive control for singularly perturbed systems examples,'' Code Ocean, Aug. 2023. [Online]. Available: https://codeocean.com/capsule/4989235/tree
+% \end{thebibliography}
+\bibliographystyle{IEEEtran}
+\bibliography{ref}
+
+\vspace{12pt}
+\color{red}
+IEEE conference templates contain guidance text for composing and formatting conference papers. Please ensure that all template text is removed from your conference paper prior to submission to the conference. Failure to remove the template text from your paper may result in your paper not being published.
+
+\end{document}
