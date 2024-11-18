@@ -165,6 +165,8 @@ $b_j$                                      & The model bias parameters of each l
 % \multirow{2}{*}{$y_p$}                                    & The intermediate computed result after the encryption \\
 %                                               & of model parameters on the end devices.\\
 $y_j$                                    & The calculation result after encryption of each layer.\\
+$N_{p}$          &The number of bits of parameters in the model.\\
+$N_{d}$          &The number of bits of data in the model.\\
 \circ            &The linear operator.\\
 \oplus           &The addition of two encrypted values in the HE scheme.\\
 \ominus          &The subtraction of two encrypted values in the HE scheme.\\
@@ -247,68 +249,59 @@ In this section, we first detail the hierarchical cryptographic inference algori
 % \subsection{Scheme Construction}
 % 详细解释系统如何实现加法秘密共享和同态加密，包括技术细节和算法。
 
-\subsection{Secret sharing of image features}
-% In MIND, multiple organizations collaborate on tasks related to model training and data interaction. The data owned by these organizations are temporary and cannot be directly shared. It is assumed that all institutions involved in the training process are rigorously verified as non-malicious participants, ensuring they do not engage in activities such as poisoning attacks that could compromise the model or the training process.
+% \subsection{Secret sharing of image features}
+% % In MIND, multiple organizations collaborate on tasks related to model training and data interaction. The data owned by these organizations are temporary and cannot be directly shared. It is assumed that all institutions involved in the training process are rigorously verified as non-malicious participants, ensuring they do not engage in activities such as poisoning attacks that could compromise the model or the training process.
 
-As shown in Fig. \ref{fig:system_model}, $ED$ plays a dual role in this system. It is both a data receiver and a sender. As an end device, $ED$ first collects images. It then uses a local feature extraction model to extract feature vector. Fig. \ref{fig:ED_Models} shows the detailed data processing flow. To ensure data security, $ED$ uses additive secret sharing to securely split the feature vector. After extracting the feature vector from the collected image, $ED$ first generates an $n$-dimensional random vector $\langle x \rangle_1$, with each element randomly selected from $\mathbb{Z}_t$. $ED$ then creates a second share $\langle x \rangle_2$, by subtracting this random vector $\langle x \rangle_1$ from the original feature vector $v$. This process is represented by the following formula:
-$\langle x \rangle_2 = v - \langle x \rangle_1$
-The sum of share $\langle x \rangle_1$ and share $\langle x \rangle_2$ equals the original feature vector $v$. This design protects the privacy of feature information. It also enables secure distributed storage. Even when data is split and stored in a distributed manner, it can be securely reconstructed. This mechanism greatly enhances the system's security and privacy protection. At the same time, it maintains data usability and integrity.
+% As shown in Fig. \ref{fig:system_model}, $ED$ plays a dual role in this system. It is both a data receiver and a sender. As an end device, $ED$ first collects images. It then uses a local feature extraction model to extract feature vector. Fig. \ref{fig:ED_Models} shows the detailed data processing flow. To ensure data security, $ED$ uses additive secret sharing to securely split the feature vector. After extracting the feature vector from the collected image, $ED$ first generates an $n$-dimensional random vector $\langle x \rangle_1$, with each element randomly selected from $\mathbb{Z}_t$. $ED$ then creates a second share $\langle x \rangle_2$, by subtracting this random vector $\langle x \rangle_1$ from the original feature vector $v$. This process is represented by the following formula:
+% $\langle x \rangle_2 = v - \langle x \rangle_1$
+% The sum of share $\langle x \rangle_1$ and share $\langle x \rangle_2$ equals the original feature vector $v$. This design protects the privacy of feature information. It also enables secure distributed storage. Even when data is split and stored in a distributed manner, it can be securely reconstructed. This mechanism greatly enhances the system's security and privacy protection. At the same time, it maintains data usability and integrity.
 
-\begin{figure}[ht]
-\includegraphics[width=1\linewidth]{fig2.pdf}
-\caption{ED Secret Sharing Model.} \label{fig:ED_Models}
-\end{figure}
 
-% In MIND, multiple institutions jointly perform tasks related to model training and data interaction.
+\subsection{Parameter and Data Encryption}
+Traditional encryption methods for collaborative inference between cloud servers and end devices often encrypt image data directly. Although this approach protects data privacy, it has limitations in terms of computational efficiency and communication overhead. To address these issues, we propose MIND, a novel end-cloud collaborative encryption method. This new approach divides the encryption process into two parts: model parameter encryption and image data encryption. Our method applies these two encryption techniques to different linear network layers. This division allows for a more efficient and flexible approach to data protection.
 
-% \subsection{Server homomorphic encryption}
-%  The traditional method for encrypting the model training process between cloud server involves directly encrypting the image data. Our research found that encrypting parameters in certain neural network layers, such as convolutional layers, can improve computational efficiency and reduce communication overhead without compromising model accuracy. We propose two encryption methods: data encryption and parameter encryption. By alternating between these two encryption methods during model training, we can effectively enhance the efficiency of the training process and reduce communication overhead. These methods are detailed below.
-
- \subsection{Parameter and Data Encryption}
-Traditional encryption methods for collaborative inference between cloud servers and end devices often encrypt image data directly. Although this approach protects data privacy, it has limitations in terms of computational efficiency and communication overhead. To address these issues, we propose MIND, a novel end-cloud collaborative encryption method. This new approach divides the encryption process into two parts: model parameter encryption and image data encryption. Our method applies these two encryption techniques to different network layers. This division allows for a more efficient and flexible approach to data protection.
-
-In the \PEnc~algorithm, the inputs include $\langle x\rangle_1$ and $\langle x\rangle_2$ as the feature vector to be encryted, the weight $w$, and the bias $b$. Specifically, $ED$ holds $\langle x\rangle_1$, while $S$ holds $\langle x\rangle_2$, $w$ and $b$. As described in \PEnc~(Algorithm \ref{alg:Parameter}), $S$ encrypts the model weights $w_p$ using the public key $pk_s$ and transmitting the encrypted weights $\llbracket w \rrbracket_{pk_s}$ to $ED$. Upon receiving $\llbracket w_p \rrbracket_{pk_s}$, $ED$ performs a homomorphic multiplication operation to evaluate the product of $\llbracket w_p \rrbracket_{pk_s}$ and $\langle x \rangle_1$, yielding the result $\llbracket w_p \langle x \rangle_1\rrbracket_{pk_s} = \llbracket w_p \times \langle x \rangle_1 \rrbracket_{pk_s}$. Subsequently, $ED$ introduces a random number $r_1\in \mathbb{Z}_t$ and calculates the encrypted result $\llbracket C \rrbracket_{pk_s}=\llbracket w_p \langle x \rangle_1 + r_1 \rrbracket_{pk_s}$, which is then sent back to $S$. $S$ decrypts $\llbracket C \rrbracket_{pk_s}$ to retrieve the value $w_p\langle x \rangle_1+r_1$. Next, $S$ calculates the result $\langle y_p\rangle_2= w_p(\langle x \rangle_1 + \langle x \rangle_2)+r_1+b=w_px+r_1+b$, $ED$ obtains the result $\langle y_p\rangle_1=-r_1$. 
+In the \PEnc~algorithm, the inputs include $\langle x_{j-1}\rangle_1$ and $\langle x_{j-1}\rangle_2$ as the feature vector to be encryted, the weight $w_{j-1}$, and the bias $b_{j-1}$. Specifically, $ED$ holds $\langle x_{j-1}\rangle_1$, while $S$ holds $\langle x_{j-1}\rangle_2$, $w_{j-1}$ and $b_{j-1}$. As described in \PEnc~(Algorithm \ref{alg:Parameter}), $S$ encrypts the model weights $w_{j-1}$ using the public key $pk_s$ and transmitting the encrypted weights $\llbracket w_{j-1} \rrbracket_{pk_s}$ to $ED$. Upon receiving $\llbracket w_{j-1} \rrbracket_{pk_s}$, $ED$ performs a homomorphic multiplication operation to evaluate the product of $\llbracket w_{j-1} \rrbracket_{pk_s}$ and $\langle x_{j-1} \rangle_1$, yielding the result $\llbracket w_{j-1} \langle x_{j-1} \rangle_1\rrbracket_{pk_s} = \llbracket w_{j-1} \times \langle x_{j-1} \rangle_1 \rrbracket_{pk_s}$. Subsequently, $ED$ introduces a random number $r_{j-1}\in \mathbb{Z}_t$ and calculates the encrypted result $\llbracket C \rrbracket_{pk_s}=\llbracket w_{j-1} \langle x_{j-1} \rangle_1 + r_{j-1} \rrbracket_{pk_s}$, which is then sent back to $S$. $S$ decrypts $\llbracket C \rrbracket_{pk_s}$ to retrieve the value $w_{j-1}\langle x_{j-1} \rangle_1+r_{j-1}$. Next, $S$ calculates the result $\langle y_j\rangle_2= w_{j-1}(\langle x_{j-1} \rangle_1 + \langle x_{j-1} \rangle_2)+r_{j-1}+b_{j-1}=w_{j-1}x+r_{j-1}+b_{j-1}$, $ED$ obtains the result $\langle y_j\rangle_1=-r_{j-1}$. 
 \begin{algorithm}[htbp]
-	\caption{\PEnc$(\langle x \rangle_1,\langle x \rangle_2,w,b) \rightarrow (\langle y_j\rangle_1, \langle y_j\rangle_2)$}
+	\caption{\PEnc$(\langle x_{j-1} \rangle_1,\langle x_{j-1} \rangle_2,w_{j-1},b_{j-1}) \rightarrow (\langle y_j\rangle_1, \langle y_j\rangle_2)$}
     \label{alg:Parameter}
     \LinesNumbered
-	\KwIn{$ED$ holds $\langle x \rangle_1$. \\
-	\hspace{33pt}$S$ holds $\langle x \rangle_2$, $w$, and $b$.}
+	\KwIn{$ED$ holds $\langle x_{j-1} \rangle_1$. \\
+	\hspace{33pt}$S$ holds $\langle x_{j-1} \rangle_2$, $w_{j-1}$, and $b_{j-1}$.}
     \KwOut {Secret shares $\langle y_j \rangle_1 $ and $\langle y_j \rangle_2$.}
      $S$ sends $\llbracket w_{j-1}\rrbracket_{pk_s}$ to $ED$;
     
-     $ED$ evaluates $\llbracket w_{j-1}\langle x \rangle_1 \rrbracket_{pk_s} = \llbracket w_{j-1} \rrbracket_{pk_s} \otimes \llbracket \langle x \rangle_1 \rrbracket_{pk_s}$;
+     $ED$ evaluates $\llbracket w_{j-1}\langle x_{j-1} \rangle_1 \rrbracket_{pk_s} = \llbracket w_{j-1} \rrbracket_{pk_s} \otimes \llbracket \langle x_{j-1} \rangle_1 \rrbracket_{pk_s}$;
     
-     $ED$  calculates $\llbracket C\rrbracket_{pk_s} = \llbracket w_{j-1}\langle x \rangle_1 \rrbracket_{pk_s} \oplus \llbracket r_1 \rrbracket_{pk_s}$;
+     $ED$  calculates $\llbracket C\rrbracket_{pk_s} = \llbracket w_{j-1}\langle x_{j-1} \rangle_1 \rrbracket_{pk_s} \oplus \llbracket r_{j-1} \rrbracket_{pk_s}$;
      
      $ED$ sends $\llbracket C\rrbracket_{pk_s}$ back to $S$;
     
-     $S$ decrypts $\llbracket C\rrbracket_{pk_s}$ to get $w_{j-1}\langle x \rangle_1 + r_1$;
+     $S$ decrypts $\llbracket C\rrbracket_{pk_s}$ to get $w_{j-1} x_{j-1} + r_{j-1}$;
      
-     $ED$ obtains $\langle y_p\rangle_1=-r_{j-1}$ and $S$ obtains $\langle y_p\rangle_2 = w_{j-1} x  + b_{j-1} + r_1$.
+     $ED$ obtains $\langle y_j\rangle_1=-r_{j-1}$ and $S$ obtains $\langle y_j\rangle_2 = w_{j-1} x_{{j-1}}  + b_{j-1} + r_{j-1}$.
 \end{algorithm}
 
-As show in Figure \ref{fig:MIND Overview}, in the \DEnc~algorithm, the inputs include $\langle y_p\rangle_1$ and $\langle  y_p\rangle_2$ as the encrypted outputs from the previous operation, the weight $w$, and the bias $b$. Specifically, $ED$ holds $\langle y_p\rangle_1$, while $S$ holds $\langle y_p\rangle_2$, $w$ and $b$. As illustrated in \DEnc~(Algorithm \ref{alg:DataHE}), $ED$ encrypts its secret share $\langle y_p \rangle_1$ of the held data using the public key $pk_e$ and transmits $\llbracket\langle y_p \rangle_1\rrbracket_{pk_e}$ to server $S$ for model inference. Upon receiving the encrypted secret share, $S$ performs a homomorphic addition operation to combine the two encrypted portions of the secret share, $\llbracket\langle y_p \rangle_1\rrbracket_{pk_e}$ and $\llbracket\langle y_p \rangle_2\rrbracket_{pk_e}$, into a single encrypted value $\llbracket y_p \rrbracket_{pk_e}=\llbracket \langle y_p \rangle_1 +  \langle y_p \rangle_2\rrbracket_{pk_e}$. After that, $S$ performs homomorphic multiplication between the $\llbracket y_p \rrbracket_{pk_e}$ and the model weights $w_d$ as $\llbracket y_p\times w_d \rrbracket_{pk_e}$. Simultaneously, a random number $r_2 \in \mathbb{Z}_t$ is generated and summed with the result. This step ensures that the data remains encrypted throughout the computation process, maintaining data privacy and security during inference.
+As show in Figure \ref{fig:MIND Overview}, in the \DEnc~algorithm, the inputs include $\langle y_j\rangle_1$ and $\langle  y_j\rangle_2$ as the encrypted outputs from the previous operation, the weight $w_j$, and the bias $b_j$. Specifically, $ED$ holds $\langle y_j\rangle_1$, while $S$ holds $\langle y_j\rangle_2$, $w_j$ and $b_j$. As illustrated in \DEnc~(Algorithm \ref{alg:DataHE}), $ED$ encrypts its secret share $\langle y_j \rangle_1$ of the held data using the public key $pk_e$ and transmits $\llbracket\langle y_j \rangle_1\rrbracket_{pk_e}$ to server $S$ for model inference. Upon receiving the encrypted secret share, $S$ performs a homomorphic addition operation to combine the two encrypted portions of the secret share, $\llbracket\langle y_j \rangle_1\rrbracket_{pk_e}$ and $\llbracket\langle y_j \rangle_2\rrbracket_{pk_e}$, into a single encrypted value $\llbracket y_j \rrbracket_{pk_e}=\llbracket \langle y_j \rangle_1 +  \langle y_j \rangle_2\rrbracket_{pk_e}$. After that, $S$ performs homomorphic multiplication between the $\llbracket y_j \rrbracket_{pk_e}$ and the model weights $w_j$ as $\llbracket y_j\times w_j \rrbracket_{pk_e}$. Simultaneously, a random number $r_2 \in \mathbb{Z}_t$ is generated and summed with the result. This step ensures that the data remains encrypted throughout the computation process, maintaining data privacy and security during inference.
  
-After $S$ completes the homomorphic encryption operations, it sends its computed share back to $ED$. At this point, both servers possess partial results, $\langle y_d \rangle_1$ and $\langle y_d \rangle_2$, which are the respective secret shares. These secret shares are then combined through a secure protocol to reconstruct the complete result $y_d$.
+After $S$ completes the homomorphic encryption operations, it sends its computed share back to $ED$. At this point, both servers possess partial results, $\langle y_{j+1} \rangle_1$ and $\langle y_{j+1} \rangle_2$, which are the respective secret shares. These secret shares are then combined through a secure protocol to reconstruct the complete result $y_d$.
 \begin{algorithm}[htbp]
-	\caption{\DEnc$(\langle y_p \rangle_1,\langle y_p \rangle_2,w,b) \rightarrow (\langle y_d\rangle_1,\langle y_d\rangle_2)$\!\!\!\!\!}
+	\caption{\DEnc$(\langle y_j \rangle_1,\langle y_j \rangle_2,w_{j},b_{j}) \rightarrow (\langle y_{j+1}\rangle_1,\langle y_{j+1}\rangle_2)$\!\!\!\!\!}
     \label{alg:DataHE}
     \LinesNumbered
-	\KwIn{$ED$ holds $\langle y_p \rangle_1$.\\
-	\hspace{32pt}$S$ holds $\langle y_p \rangle_2, w$, and $b$.}
-    \KwOut{Secret shares $\langle y_d \rangle_1 $ and $\langle y_d \rangle_2$.}
-    $ED$ sends $\llbracket\langle y_p \rangle_1\rrbracket_{pk_e}$ to $S$;
+	\KwIn{$ED$ holds $\langle y_j \rangle_1$.\\
+	\hspace{32pt}$S$ holds $\langle y_j \rangle_2, w_{j}$, and $b_{j}$.}
+    \KwOut{Secret shares $\langle y_{j+1} \rangle_1 $ and $\langle y_{j+1} \rangle_2$.}
+    $ED$ sends $\llbracket\langle y_j \rangle_1\rrbracket_{pk_e}$ to $S$;
     
-    $S$ evaluates $\llbracket y_p \rrbracket_{pk_e} = \llbracket \langle y_p \rangle_1 \rrbracket_{pk_e}  \oplus  \llbracket\langle y_p\rangle_2\rrbracket_{pk_e}$;
+    $S$ evaluates $\llbracket y_j \rrbracket_{pk_e} = \llbracket \langle y_j \rangle_1 \rrbracket_{pk_e}  \oplus  \llbracket\langle y_j\rangle_2\rrbracket_{pk_e}$;
     
-    $S$ computes $\llbracket w_d \times y_p \rrbracket_{pk_e} = \llbracket w_d \rrbracket_{pk_e} \otimes \llbracket  y_p \rrbracket_{pk_e}$;
+    $S$ computes $\llbracket w_{j} \times y_j \rrbracket_{pk_e} = \llbracket w_{j} \rrbracket_{pk_e} \otimes \llbracket  y_{j} \rrbracket_{pk_e}$;
     
-    $S$ calculates $\llbracket C \rrbracket_{pk_e} = \llbracket w_d \times y_p \rrbracket_{pk_e} \oplus \llbracket r_2 \rrbracket_{pk_e}$;
+    $S$ calculates $\llbracket C \rrbracket_{pk_e} = \llbracket w_{j} \times y_{j} \rrbracket_{pk_e} \oplus \llbracket r_{j} \rrbracket_{pk_e}$;
     
     $S$ returns $\llbracket C \rrbracket_{pk_e}$ to $ED$;
     
-    $ED$ obtains $\langle y_d\rangle_1=w_d \times y_p+r_2$ and $S$ obtains $\langle y_d \rangle_2 = w_d \times y_p-r_2+b_2$.
+    $ED$ obtains $\langle y_{j+1}\rangle_1=w_{j} \times y_{j}+r_{j}$ and $S$ obtains $\langle y_{j+1} \rangle_2 = w_j \times y_{j}-r_j+b_j$.
 \end{algorithm}
 
 \PEnc~and \DEnc not only preserve the confidentiality of the input data but also allow for secure computations on encrypted data, enabling privacy-preserving machine learning in cloud environments. The use of homomorphic encryption techniques in this manner facilitates collaborative model training and inference without exposing sensitive information to potential security threats.
@@ -337,17 +330,17 @@ After $S$ completes the homomorphic encryption operations, it sends its computed
     $ED$ sets $\langle x_0 \rangle_1=x$ and  $S$ sets the $\langle x_0 \rangle_2 = 0$.
     
     % $S$ sends $\llbracket w \rrbracket_{pk_s}$ to $ED$.
-
 	\For{$j=1$ to $l$}{
-	    \eIf{$ j \leq k$}{
+	    \eIf{The current layer is a linear layer
+	    }{\eIf{$ N_{model} \leq N_{data}$}{
 	            $(\langle x_{j} \rangle_1$, $\langle x_{j} \rangle_2 ) \leftarrow$ $\PEnc(\langle x_{j - 1}\rangle_1,\langle x_{j-1}\rangle_2,w_j,b_j)$;
 	        }{
 	             $(\langle x_{j} \rangle_1$, $\langle x_{j} \rangle_2 ) \leftarrow$ $\DEnc(\langle x_{j - 1}\rangle_1,\langle x_{j-1}\rangle_2,w_j,b_j)$;
 	            
 	           % $ED$ and $S$ call \DEnc~$(\langle y_{p_j} \rangle_1,\langle y_{p_j} \rangle_2,w_j,b_j \rightarrow \langle y_{d_j}\rangle_1, \langle y_{d_j}\rangle_2)$ to get $\langle y_{d} \rangle_1$ and $\langle y_{d} \rangle_2$, respectively;
-	        }
-	}
-    
+	        }}
+	    Use of non-linear layer protocols}{}
+	    
     $ED$ defines $\langle y \rangle_1=\langle x_l \rangle_1$ and  $S$ defines the $\langle y \rangle_2=\langle x_l \rangle_2$.
     
    $S$ sends $\langle y \rangle_2$ to $ED$.
