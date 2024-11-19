@@ -257,7 +257,7 @@ In this section, we first detail the hierarchical cryptographic inference algori
 % The sum of share $\langle x \rangle_1$ and share $\langle x \rangle_2$ equals the original feature vector $v$. This design protects the privacy of feature information. It also enables secure distributed storage. Even when data is split and stored in a distributed manner, it can be securely reconstructed. This mechanism greatly enhances the system's security and privacy protection. At the same time, it maintains data usability and integrity.
 
 
-\subsection{Parameter and Data Encryption}
+\subsection{Linear layer }
 Traditional encryption methods for collaborative inference between cloud servers and end devices often encrypt image data directly. Although this approach protects data privacy, it has limitations in terms of computational efficiency and communication overhead. To address these issues, we propose MIND, a novel end-cloud collaborative encryption method. This new approach divides the encryption process into two parts: model parameter encryption and image data encryption. Our method applies these two encryption techniques to different linear network layers. This division allows for a more efficient and flexible approach to data protection.
 
 In the \PEnc~algorithm, the inputs include $\langle x_{j-1}\rangle_1$ and $\langle x_{j-1}\rangle_2$ as the feature vector to be encryted, the weight $w_{j-1}$, and the bias $b_{j-1}$. Specifically, $ED$ holds $\langle x_{j-1}\rangle_1$, while $S$ holds $\langle x_{j-1}\rangle_2$, $w_{j-1}$ and $b_{j-1}$. As described in \PEnc~(Algorithm \ref{alg:Parameter}), $S$ encrypts the model weights $w_{j-1}$ using the public key $pk_s$ and transmitting the encrypted weights $\llbracket w_{j-1} \rrbracket_{pk_s}$ to $ED$. Upon receiving $\llbracket w_{j-1} \rrbracket_{pk_s}$, $ED$ performs a homomorphic multiplication operation to evaluate the product of $\llbracket w_{j-1} \rrbracket_{pk_s}$ and $\langle x_{j-1} \rangle_1$, yielding the result $\llbracket w_{j-1} \langle x_{j-1} \rangle_1\rrbracket_{pk_s} = \llbracket w_{j-1} \times \langle x_{j-1} \rangle_1 \rrbracket_{pk_s}$. Subsequently, $ED$ introduces a random number $r_{j-1}\in \mathbb{Z}_t$ and calculates the encrypted result $\llbracket C \rrbracket_{pk_s}=\llbracket w_{j-1} \langle x_{j-1} \rangle_1 + r_{j-1} \rrbracket_{pk_s}$, which is then sent back to $S$. $S$ decrypts $\llbracket C \rrbracket_{pk_s}$ to retrieve the value $w_{j-1}\langle x_{j-1} \rangle_1+r_{j-1}$. Next, $S$ calculates the result $\langle y_j\rangle_2= w_{j-1}(\langle x_{j-1} \rangle_1 + \langle x_{j-1} \rangle_2)+r_{j-1}+b_{j-1}=w_{j-1}x+r_{j-1}+b_{j-1}$, $ED$ obtains the result $\langle y_j\rangle_1=-r_{j-1}$. 
@@ -311,7 +311,13 @@ After $S$ completes the homomorphic encryption operations, it sends its computed
 
 
 % Then $ED$ and $S$ are safely combined to reconstruct the complete result $y=wx+b$.
-\subsection{Inference Overview}
+\subsection{Non-linear layer}
+
+In the nonlinear layer protocol, we continue the approach used in \cite{279898, liu2024pencilprivateextensiblecollaborative} to support the forward and backpropagation functions of the gradient through the nonlinear layer. Specifically, we implement forward and backpropagation functions for linear functions (ReLU) and 2D average pooling layers.
+
+
+\subsubsection{ReLU function}
+\subsubsection{2D Average Pooling Layer}
 
 \subsection{Inference Overview}
 
@@ -405,7 +411,7 @@ We employ the widely used MNIST\cite{xiao2017fashion} and CIFAR-10 datasets\cite
 The learning rate $\eta$ is set to 0.01 to accelerate model convergence while maintaining stability. For the MNIST dataset, a batch size $B$ of 32 is used, while a batch size $B$ of 64 is utilized for the CIFAR-10 dataset. The momentum $\gamma$ is configured at 0.8 to effectively smooth the update process and reduce gradient oscillations during training. Additionally, the gradient bound estimation $C$ is set to 8 to limit the gradient's maximum value, preventing gradient explosion.
 
 \subsection{Effectiveness}
-In this subsection, we evaluate the effectiveness of the scheme. The MIND scheme we propose employs a hierarchical encryption method, while the non-hierarchical encryption scheme is referred to as the Naive scheme. We evaluate the performance using models with different architectures on the MNIST dataset, specifically MNIST ABY3\cite{10.1145/3243734.3243760}, MNIST Sphinx\cite{Tian2022SphinxEP}, MNIST Chameleon\cite{10.1145/3196494.3196522} and MNIST Quotient 2$\times$512\cite{10.1145/3319535.3339819}. On the CIFAR-10 dataset, we employ AlexNet\cite{NIPS2012_c399862d} and ResNet50\cite{7780459}. The evaluation focuses on comparing the accuracy, precision, recall, and F1 score between the hierarchical and non-hierarchical encryption schemes using these MNIST models.
+In this subsection, we evaluate the effectiveness of the scheme. The MIND scheme we propose employs a hierarchical encryption method, while Pencil \cite{liu2024} is a non layered encryption scheme. We evaluate the performance using models with different architectures on the MNIST dataset, specifically MNIST ABY3\cite{10.1145/3243734.3243760}, MNIST Sphinx\cite{Tian2022SphinxEP}, MNIST Chameleon\cite{10.1145/3196494.3196522} and MNIST Quotient 2$\times$512\cite{10.1145/3319535.3339819}. On the CIFAR-10 dataset, we employ AlexNet\cite{NIPS2012_c399862d} and ResNet50\cite{7780459}. The evaluation focuses on comparing the accuracy, precision, recall, and F1 score between the hierarchical and non-hierarchical encryption schemes using these MNIST models.
 
 Based on the results presented in Figure \ref{fig:ACC}, we observe no significant difference in recognition accuracy between the layered and non-layered encryption scheme. This demonstrates that our proposed MIND scheme effectively maintains model performance while implementing enhanced privacy protection measures.
 
@@ -414,33 +420,33 @@ The data presented in Table \ref{tab:performance_comparison_scheme} indicates th
 It is worth noting that MIND does not significantly affect model performance, especially in simpler tasks. Even in more complex tasks, performance consistency across environments is maintained, although overall scores may decrease slightly. This suggests that MIND is effective in achieving privacy preserving goals while maintaining model accuracy.
 \begin{table}[ht]
 \centering
-\caption{Performance comparison between Native and MIND models for different tasks.}
+\caption{Performance comparison between Pencil and MIND models for different tasks.}
 \begin{tabular}{ c|c|c | c c c } 
 \hline
-\multirow{2}{*}{Task} & \multirow{2}{*}{Model} & \multirow{2}{*}{Scheme} & \multicolumn{3}{c}{Metric} \\ 
+\multirow{2}{*}{Dataset} & \multirow{2}{*}{Protocol} & \multirow{2}{*}{Scheme} & \multicolumn{3}{c}{Metric} \\ 
 \cline{4-6}
                       &                        &                        & Precision & Recall & F1 Score \\ 
 \hline
-\multirow{8}{*}{MNIST}   & \multirow{2}{*}{ABY3}      & Native & 0.978 & 0.978 & 0.978\\ 
-                      &            & MIND    & 0.978 & 0.978 & 0.978 \\ 
+\multirow{8}{*}{MNIST}   & \multirow{2}{*}{ABY3}      & Pencil & 0.964 & 0.968 & 0.969\\ 
+                      &            & MIND    & 0.979 & 0.974 & 0.973 \\ 
 \cline{2-6}
-                      & \multirow{2}{*}{Chameleon}   & Native & 0.985&0.985&0.985           \\ 
-                      &            & MIND    & 0.985  &0.985 & 0.985   \\ 
+                      & \multirow{2}{*}{Chameleon}   & Pencil & 0.975&0.974&0.974           \\ 
+                      &            & MIND    & 0.983  &0.985 & 0.985   \\ 
 \cline{2-6}
-                      & \multirow{2}{*}{Sphinx}      & Native  & 0.991 & 0.990 & 0.991 \\ 
-                      &            & MIND    & 0.991 & 0.990 & 0.991\\ 
+                      & \multirow{2}{*}{Sphinx}      & Pencil  & 0.991 & 0.990 & 0.991 \\ 
+                      &            & MIND    & 0.993 & 0.995 & 0.995\\ 
 \cline{2-6}
-                      & \multirow{2}{*}{Quotient}   & Native  & 0.980 & 0.980 & 0.980 \\ 
-                      &            & MIND    & 0.980 & 0.980 & 0.980 \\ 
+                      & \multirow{2}{*}{Quotient}   & Pencil  & 0.980 & 0.980 & 0.980 \\ 
+                      &            & MIND    & 0.986 & 0.985 & 0.986 \\ 
 \hline
-\multirow{4}{*}{CIFAR-10} & \multirow{2}{*}{AlexNet}    & Native  &  0.867  & 0.866  & 0.867   \\ 
-                      &            & MIND    &  0.867  & 0.866  & 0.867  \\ 
-\cline{2-6}
-                      & \multirow{2}{*}{ResNet50}    & Native  & 0.805 & 0.767 & 0.785 \\ 
-                      &            & MIND    & 0.805 & 0.767 & 0.785\\ 
-\cline{2-6}
-                    %   & \centering DenseNet121 & Native  & 0.649 & 0.597 &0.622  \\ 
-                    %   &            & MIND    & 0.649 & 0.597 &0.622 \\ 
+% \multirow{4}{*}{CIFAR-10} & \multirow{2}{*}{AlexNet}    & Pencil  &  0.867  & 0.866  & 0.867   \\ 
+%                       &            & MIND    &  0.871  & 0.872  & 0.872  \\ 
+% \cline{2-6}
+%                       & \multirow{2}{*}{ResNet50}    & Native  & 0.805 & 0.767 & 0.785 \\ 
+%                       &            & MIND    & 0.822 & 0.784 & 0.793\\ 
+% \cline{2-6}
+%                     %   & \centering DenseNet121 & Native  & 0.649 & 0.597 &0.622  \\ 
+%                     %   &            & MIND    & 0.649 & 0.597 &0.622 \\ 
                     
 \hline
 \end{tabular}
@@ -500,7 +506,7 @@ Our experiments demonstrate the superior efficiency of MIND compared to Naive ac
 
 Specifically, the MIND scheme demonstrates varying degrees of efficiency across different models. As shown in Figure \ref{subfig:ABY3}, MNIST ABY3 is the most efficient in reducing communication cost when applied to the MNIST ABY3 model and the most efficient in reducing runtime when applied to the MNIST Quotient 2$\times$512 model. Our experiments reveal that while the Naive encryption scheme requires a communication cost of 1,933 MB, MIND only requires 1,008 MB, resulting in a significant reduction of approximately 49.42\% in communication cost. Additionally, MIND reduces the runtime by approximately 10.34\% compared to the Naive scheme.
 
-To further validate MIND's efficiency, we conduct experiments on more complex neural networks. Figures \ref{subfig:AlexNet} and \ref{subfig:ResNet} reveal that for both AlexNet and ResNet models, MIND maintains lower communication and running times compared to the Native scenario. This trend extends to the CIFAR-10 dataset, where these complex models exhibit consistently lower transmission rates under the MIND scheme. The transmission reduction is attributed to the layered encryption’s increased efficiency, which enhances performance and consequently reduces MIND's runtime.
+To further validate MIND's efficiency, we conduct experiments on more complex neural networks. Figures \ref{subfig:AlexNet} and \ref{subfig:ResNet} reveal that for both AlexNet and ResNet models, MIND maintains lower communication and running times compared to the Pencil scenario. This trend extends to the CIFAR-10 dataset, where these complex models exhibit consistently lower transmission rates under the MIND scheme. The transmission reduction is attributed to the layered encryption’s increased efficiency, which enhances performance and consequently reduces MIND's runtime.
 
 These results consistently highlight MIND's ability to optimize both communication cost and runtime across various neural network architectures and datasets, showcasing its potential for improving efficiency in privacy-preserving machine learning applications.
 
@@ -519,8 +525,8 @@ These results consistently highlight MIND's ability to optimize both communicati
      \subfigure[MNIST Quotient %2$\times$512%
      ]{\includegraphics[width=.46\columnwidth]{exp/Quotient_2.pdf}\label{subfig:Quotient_2x512}}
     
-    \subfigure[AlexNet]{\includegraphics[width=.467\columnwidth]{exp/AlexNet.pdf}\label{subfig:AlexNet}} \hspace{2pt}
-    \subfigure[ResNet50]{\includegraphics[width=.47\columnwidth]{exp/ResNet.pdf}\label{subfig:ResNet}} 
+    % \subfigure[AlexNet]{\includegraphics[width=.467\columnwidth]{exp/AlexNet.pdf}\label{subfig:AlexNet}} \hspace{2pt}
+    % \subfigure[ResNet50]{\includegraphics[width=.47\columnwidth]{exp/ResNet.pdf}\label{subfig:ResNet}} 
     \caption{Efficiency evaluation.}
     \label{fig:efficiency}
 \end{figure}
