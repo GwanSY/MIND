@@ -121,7 +121,7 @@ Existing privacy-preserving schemes for model inference attempt to address these
 To address these limitations, we propose MIND, a novel privacy-preserving model inference framework enabled by end-to-cloud collaboration. MIND integrates advanced technologies such as homomorphic encryption and secret sharing to secure both data and model parameters throughout the inference process. By distributing computational tasks between end devices and cloud servers, MIND enhances data privacy, reduces communication overhead, and maintains inference efficiency. A key feature of MIND is its layered encryption scheme, which dynamically adjusts encryption methods based on the model structure, optimizing computational and communication costs. The main contributions of our work are summarized as follows:
 
 \begin{itemize}
-    \item We propose a novel privacy-preserving model inference framework via end-cloud collaboration, named MIND\footnote{MIND: a privacy-preserving \underline{m}odel \underline{i}nference framework via a\underline{n}d-clou\underline{d} collaboration}. MIND incorporates secret sharing and homomorphic encryption to safeguard sensitive information in both data and models. Additionally, MIND enables collaborative computations between cloud server while ensuring that privacy is not compromised.
+    \item We propose a novel privacy-preserving model inference framework via end-cloud collaboration, named MIND\footnote{MIND: a privacy-preserving \underline{m}odel \underline{i}nference framework via\underline{n}d-clou\underline{d} collaboration}. MIND incorporates secret sharing and homomorphic encryption to safeguard sensitive information in both data and models. Additionally, MIND enables collaborative computations between cloud server while ensuring that privacy is not compromised.
     
     \item We present a novel method that employs hierarchical encryption, which introduces a layered approach using both data and parameter encryption. MIND overcomes the limitations of existing solutions while maintaining the original recognition accuracy.
     
@@ -372,7 +372,7 @@ After non-linear operations (e.g., ReLU and pooling), the outputs are truncated 
 
 \begin{figure*}[ht]
 \centering
-\includegraphics[scale=0.5]{fig3.pdf}
+\includegraphics[scale=0.6]{fig3.pdf}
 \caption{MIND Overview.} \label{fig:MIND Overview}
 \end{figure*}
 In this inference process, we consider $ED$ holds an image $img$ with the size $n\times m$, and a main computational cloud server $S$ storing the model $M$. The model $M$ is consisted of a sequence of sub-models: $M=M_1 || M_2 || \dots || M_l$, where each model $M_j$ is characterized by specific weights $w_{j}$ and biases $b_{j}$ for $j \in \{1, 2, \dots, l\}$. Formally, $M$ can be represented as a collection of layer-specific parameters $M=\{(w_{1},b_{1}),(w_{2},b_{2}),\dots,(w_{l},b_{l})\}$, where $l$ denotes the number of layers in $M$. This representation encapsulates the complete structure of the neural network model.
@@ -418,7 +418,7 @@ In the MIND experiments, we perform comparative studies to evaluate the layered 
 \subsection{Setting}
 \subsubsection{Environment} Our experiments are conducted on two servers, each equipped with an AMD EPYC 7402 CPU and 128 GB of RAM.
 \subsubsection{Datasets} 
-We employ the widely used MNIST\cite{xiao2017fashion} to train and evaluate our models. To ensure the data is suitable for model input, the following preprocessing steps are applied. The MNIST dataset consists of 60,000 training images and 10,000 test images, each a 28$\times$28 pixel grayscale image of handwritten digits. We normalize the pixel values to the [0, 1] range and implemente data augmentation techniques such as random rotations and translations during training. We standardize these images so that pixel values for each channel have zero mean and unit variance. We train each neural network on the training dataset for 10 epochs. To further improve the model's generalization ability, we apply data augmentation techniques, including random cropping, horizontal flipping, and color jittering.
+We employ the widely used MNIST\cite{xiao2017fashion} to train and evaluate our models. To ensure the data is suitable for model input, the following preprocessing steps are applied. The MNIST dataset consists of 60,000 training images and 10,000 test images, each a 28$\times$28 pixel grayscale image of handwritten digits. We normalize the pixel values to the [0, 1] range and implemente data augmentation techniques such as random rotations and translations during training. The CIFAR-10 dataset consists of 50,000 training images and 10,000 test images, each a 32$\times$32 pixel color image categorize into 10 classes. We standardize these images so that pixel values for each channel have zero mean and unit variance. We train each neural network on the training dataset for 10 epochs. To further improve the model's generalization ability, we apply data augmentation techniques, including random cropping, horizontal flipping, and color jittering.
 
 
 
@@ -443,17 +443,17 @@ It is worth noting that MIND does not significantly affect model performance, es
 \cline{4-6}
                       &                        &                        & Precision & Recall & F1 Score \\ 
 \hline
-\multirow{8}{*}{MNIST}   & \multirow{2}{*}{ABY3}      & Pencil & 0.978 & 0.978 & 0.978\\ 
-                      &            & MIND    & 0.978 & 0.978 & 0.978 \\ 
+\multirow{8}{*}{MNIST}   & \multirow{2}{*}{ABY3}      & Pencil & 0.964 & 0.968 & 0.969\\ 
+                      &            & MIND    & 0.979 & 0.974 & 0.973 \\ 
 \cline{2-6}
-                      & \multirow{2}{*}{Chameleon}   & Pencil & 0.985&0.985&0.985           \\ 
-                      &            & MIND    & 0.985  &0.985 & 0.985   \\ 
+                      & \multirow{2}{*}{Chameleon}   & Pencil & 0.975&0.974&0.974           \\ 
+                      &            & MIND    & 0.983  &0.985 & 0.985   \\ 
 \cline{2-6}
                       & \multirow{2}{*}{Sphinx}      & Pencil  & 0.991 & 0.990 & 0.991 \\ 
-                      &            & MIND    & 0.991 & 0.990 & 0.991\\ 
+                      &            & MIND    & 0.993 & 0.995 & 0.995\\ 
 \cline{2-6}
                       & \multirow{2}{*}{Quotient}   & Pencil  & 0.980 & 0.980 & 0.980 \\ 
-                      &            & MIND    & 0.980 & 0.980 & 0.980 \\ 
+                      &            & MIND    & 0.986 & 0.985 & 0.986 \\ 
 \hline
 % \multirow{4}{*}{CIFAR-10} & \multirow{2}{*}{AlexNet}    & Pencil  &  0.867  & 0.866  & 0.867   \\ 
 %                       &            & MIND    &  0.871  & 0.872  & 0.872  \\ 
@@ -522,7 +522,7 @@ Our experiments demonstrate the superior efficiency of MIND compared to Pencil a
 
 Specifically, the MIND scheme demonstrates varying degrees of efficiency across different protocols. As shown in Figure \ref{subfig:ABY3}, ABY3 is the most efficient in reducing communication cost when applied to the ABY3 model and the most efficient in reducing runtime when applied to the Quotient 2$\times$512 model. Our experiments reveal that while the Pencil encryption scheme requires a communication cost of 1,933 MB, MIND only requires 1,008 MB, resulting in a significant reduction of approximately 49.42\% in communication cost. Additionally, MIND reduces the runtime by approximately 10.34\% compared to the Pencil scheme.
 
-To further validate the efficiency of MIND, we found that compared to the Pencil scheme, MIND maintained lower communication and runtime in the MNIST dataset.
+To further validate the efficiency of MIND, we found that compared to the Pencil scheme, MIND maintained lower communication and runtime in the CIFAR-10 dataset.
 
 These results consistently highlight MIND's ability to optimize both communication cost and runtime across various neural network architectures and datasets, showcasing its potential for improving efficiency in privacy-preserving machine learning applications.
 
