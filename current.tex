@@ -283,7 +283,7 @@ In the \PEnc~algorithm, the inputs include $\langle x_{j-1}\rangle_1$ and $\lang
 
 As show in Figure \ref{fig:MIND Overview}, in the \DEnc~algorithm, the inputs include $\langle y_j\rangle_1$ and $\langle  y_j\rangle_2$ as the encrypted outputs from the previous operation, the weight $w_j$, and the bias $b_j$. Specifically, $ED$ holds $\langle y_j\rangle_1$, while $S$ holds $\langle y_j\rangle_2$, $w_j$ and $b_j$. As illustrated in \DEnc~(Algorithm \ref{alg:DataHE}), $ED$ encrypts its secret share $\langle y_j \rangle_1$ of the held data using the public key $pk_e$ and transmits $\llbracket\langle y_j \rangle_1\rrbracket_{pk_e}$ to server $S$ for model inference. Upon receiving the encrypted secret share, $S$ performs a homomorphic addition operation to combine the two encrypted portions of the secret share, $\llbracket\langle y_j \rangle_1\rrbracket_{pk_e}$ and $\llbracket\langle y_j \rangle_2\rrbracket_{pk_e}$, into a single encrypted value $\llbracket y_j \rrbracket_{pk_e}=\llbracket \langle y_j \rangle_1 +  \langle y_j \rangle_2\rrbracket_{pk_e}$. After that, $S$ performs homomorphic multiplication between the $\llbracket y_j \rrbracket_{pk_e}$ and the model weights $w_j$ as $\llbracket y_j\times w_j \rrbracket_{pk_e}$. Simultaneously, a random number $r_2 \in \mathbb{Z}_t$ is generated and summed with the result. This step ensures that the data remains encrypted throughout the computation process, maintaining data privacy and security during inference.
  
-After $S$ completes the homomorphic encryption operations, it sends its computed share back to $ED$. At this point, both servers possess partial results, $\langle y_{j+1} \rangle_1$ and $\langle y_{j+1} \rangle_2$, which are the respective secret shares. These secret shares are then combined through a secure protocol to reconstruct the complete result $y_d$.
+After $S$ completes the homomorphic encryption operations, it sends its computed share back to $ED$. At this point, both servers possess partial results, $\langle y_{j+1} \rangle_1$ and $\langle y_{j+1} \rangle_2$, which are the respective secret shares. These secret shares are then combined through a secure protocol to reconstruct the complete result $y_{j+1}$.
 \begin{algorithm}[htbp]
 	\caption{\DEnc$(\langle y_j \rangle_1,\langle y_j \rangle_2,w_{j},b_{j}) \rightarrow (\langle y_{j+1}\rangle_1,\langle y_{j+1}\rangle_2)$\!\!\!\!\!}
     \label{alg:DataHE}
@@ -304,13 +304,14 @@ After $S$ completes the homomorphic encryption operations, it sends its computed
     $ED$ obtains $\langle y_{j+1}\rangle_1=w_{j} \times y_{j}+r_{j}$ and $S$ obtains $\langle y_{j+1} \rangle_2 = w_j \times y_{j}-r_j+b_j$.
 \end{algorithm}
 
-\PEnc~and \DEnc not only preserve the confidentiality of the input data but also allow for secure computations on encrypted data, enabling privacy-preserving machine learning in cloud environments. The use of homomorphic encryption techniques in this manner facilitates collaborative model training and inference without exposing sensitive information to potential security threats.
+\PEnc~and \DEnc not only safeguard the confidentiality of the input data but also enable secure computations on encrypted data, thus supporting privacy-preserving machine learning in collaborative end-to-cloud environments. By employing homomorphic encryption techniques in this context, it becomes possible to perform joint model training and inference without exposing sensitive information to potential security threats.
 
 
 % While experimenting we found that the computational consumption of different layers in a neural network varies significantly. Typically, the number of parameters in the convolutional layer is less than the amount of data, while the number of parameters in the linear layer is greater than the amount of data. However, if the batch size of the training is large, the number of parameters may be less than the amount of data. The number of parameters for the linear layer can be determined by defining a fully connected layer with a specified number of input features and output features. In this context, the number of parameters is calculated by multiplying the number of input features by the number of output features. The amount of input data is calculated by multiplying the number of input features by the batch size. To ensure optimal performance, the batch size needs to be larger than the output features.
 
 
 % Then $ED$ and $S$ are safely combined to reconstruct the complete result $y=wx+b$.
+\subsection{Inference Overview}
 
 \subsection{Inference Overview}
 
@@ -322,7 +323,7 @@ After $S$ completes the homomorphic encryption operations, it sends its computed
 	$ED$ holds an image $x$ and batchsize $B$.
 	Server $S$ holds the network model $M = M_1 || M_2 || \dots || M_l$.
 	The weights and biases of each layer $M_j$ are $w_j$ and $b_j$, respectively.
-	Define $k$ as the number of model cut layers.
+% 	Define $k$ as the number of model cut layers.
 	}
 	\KwOut{
 	The final inference result $y$
@@ -332,13 +333,12 @@ After $S$ completes the homomorphic encryption operations, it sends its computed
     % $S$ sends $\llbracket w \rrbracket_{pk_s}$ to $ED$.
 	\For{$j=1$ to $l$}{
 	    \eIf{The current layer is a linear layer
-	    }{\eIf{$ N_{model} \leq N_{data}$}{
+	    }{\eIf{$ N_{p} \leq N_{d}$}{
 	            $(\langle x_{j} \rangle_1$, $\langle x_{j} \rangle_2 ) \leftarrow$ $\PEnc(\langle x_{j - 1}\rangle_1,\langle x_{j-1}\rangle_2,w_j,b_j)$;
 	        }{
 	             $(\langle x_{j} \rangle_1$, $\langle x_{j} \rangle_2 ) \leftarrow$ $\DEnc(\langle x_{j - 1}\rangle_1,\langle x_{j-1}\rangle_2,w_j,b_j)$;
-	            
-	           % $ED$ and $S$ call \DEnc~$(\langle y_{p_j} \rangle_1,\langle y_{p_j} \rangle_2,w_j,b_j \rightarrow \langle y_{d_j}\rangle_1, \langle y_{d_j}\rangle_2)$ to get $\langle y_{d} \rangle_1$ and $\langle y_{d} \rangle_2$, respectively;
-	        }}
+	        }
+	       }
 	    Use of non-linear layer protocols}{}
 	    
     $ED$ defines $\langle y \rangle_1=\langle x_l \rangle_1$ and  $S$ defines the $\langle y \rangle_2=\langle x_l \rangle_2$.
@@ -353,15 +353,20 @@ After $S$ completes the homomorphic encryption operations, it sends its computed
 \includegraphics[scale=0.6]{fig3.pdf}
 \caption{MIND Overview.} \label{fig:MIND Overview}
 \end{figure*}
-In this inference process, we consider $ED$ holds an image $img$ with the size $n\times m$, and a main computational cloud server $S$ storing the model $M$. The model $M$ is consisted of a sequence of sub-models: $M=M_1 || M_2 || \dots || M_l$, where each model $M_j$ is characterized by specific weights $w_{j}$ and biases $b_{j}$ for $j \in \{1, 2, \dots, l\}$. Here, $k$ $(1 \leq k \leq l)$ denotes the number of initial layers processed on $ED$ using \PEnc, which encrypts model parameters rather than image pixels to reduce computational cost on $ED$. Formally, $M$ can be represented as a collection of layer-specific parameters $M=\{(w_{1},b_{1}),(w_{2},b_{2}),\dots,(w_{l},b_{l})\}$, where $l$ denotes the number of layers in $M$. This representation encapsulates the complete structure of the neural network model.
+In this inference process, we consider $ED$ holds an image $img$ with the size $n\times m$, and a main computational cloud server $S$ storing the model $M$. The model $M$ is consisted of a sequence of sub-models: $M=M_1 || M_2 || \dots || M_l$, where each model $M_j$ is characterized by specific weights $w_{j}$ and biases $b_{j}$ for $j \in \{1, 2, \dots, l\}$. Formally, $M$ can be represented as a collection of layer-specific parameters $M=\{(w_{1},b_{1}),(w_{2},b_{2}),\dots,(w_{l},b_{l})\}$, where $l$ denotes the number of layers in $M$. This representation encapsulates the complete structure of the neural network model.
 
 The computation at each layer is denoted as $x_j = f_j(x_{j-1})$, where $x_j=\langle x_j \rangle_1 + \langle x_j \rangle_2$. Here, $\langle x_j \rangle_1$ and $\langle x_j \rangle_2$ represent secret shares held by $ED$ and $S$ respectively. The secure computation protocol $f_j$ generates these shares according to the following equation:
 \begin{equation}
     \langle x_j \rangle_1+\langle x_j \rangle_2 = f_j(\langle x_{j-1} \rangle_1 + \langle x_{j-1} \rangle_2).
 \end{equation}
-As described in Algorithm \ref{algo:search}, the process begins with initialization. $S$ encrypts a subset of the model parameters $w_j$ for $j \in [1,k]$ , where $k$ is defined as the number of model cut layers, with the first $k$ layers operating in $ED$ and the last $l-k$ layers operating in $S$. Then $S$ transmits these encrypted parameters $\llbracket w_j \rrbracket_{pk_s}$ to $ED$. The input $x_0=x$ is split between $ED$ and $S$, with $ED$ setting $\langle x_0\rangle_1=x$ and $S$ setting $\langle x_0\rangle_2=0$. This setup lays the foundation for the secure computation that follows.
+As described in Algorithm \ref{algo:search}, the process begins with initialization. $ED$ sets the initial secret share as $\langle x_0 \rangle
+_1=x$, and $S$ sets $\langle x_0 \rangle
+_2=0$. The inference computation proceeds layer by layer. For linear layers, $ED$ and $S$ decide between two encryption protocols (\PEnc~and \DEnc) based on a comparison of the number of bits of parameters in the model ($N_p$) and the number of bits of data in the model ($N_d$). Specifically, when $N_p \leq N_d$, \PEnc~is chosen, where the parameters ($w_j$ and $b_j$) are encrypted and sent for computation. When $N_p > N_d$, \DEnc~is applied, where the input data $\langle x_{j-1} \rangle_1 + \langle x_{j-1} \rangle_2$ is encrypted instead. For non-linear layers, a separate protocol handles their computation securely.
 
-The core of the process involves layer-wise computation. For each layer $j$ from 1 to $l$, the computation method varies based on the layer's position. For the initial layers $(j \leq k)$, $ED$ uses homomorphic encryption proposed in \PEnc~to perform inference. After applying the \PEnc~method, $ED$ holds the partial encrypted share $\langle x_j \rangle_1$ of the activation value at layer $j$, and $S$ holds the corresponding partial encrypted share $\langle x_j \rangle_2$. As the process moves to later layers $(j > k)$, the method switches to \DEnc, with $S$ continuing the inference using the encrypted data received from $ED$. This switch to \DEnc~in later layers is due to the fact that as the number of neural network layers increases, the computational cost of parameter encryption becomes greater than that of data encryption. Therefore, using the \DEnc~method in later layers can improve computational efficiency.
+Finally, $S$ sends the resulting secret share $\langle y \rangle_2$ back to $ED$, where $ED$ reconstructs the final inference result $y$ as $y=\langle y \rangle_1 + \langle y \rangle_2$.
+
+
+% The core of the process involves layer-wise computation. For each layer $j$ from 1 to $l$, the computation method varies based on the layer's position. For the initial layers $(j \leq k)$, $ED$ uses homomorphic encryption proposed in \PEnc~to perform inference. After applying the \PEnc~method, $ED$ holds the partial encrypted share $\langle x_j \rangle_1$ of the activation value at layer $j$, and $S$ holds the corresponding partial encrypted share $\langle x_j \rangle_2$. As the process moves to later layers $(j > k)$, the method switches to \DEnc, with $S$ continuing the inference using the encrypted data received from $ED$. This switch to \DEnc~in later layers is due to the fact that as the number of neural network layers increases, the computational cost of parameter encryption becomes greater than that of data encryption. Therefore, using the \DEnc~method in later layers can improve computational efficiency.
 
 % After processing all layers, the computation reaches its final stage. At this point, $ED$ holds $\langle y \rangle_1=\langle x_n\rangle_1$ and $S$ holds $\langle y \rangle_2=\langle x_n\rangle_2$. To complete the inference, $S$ sends $\langle y \rangle_2$ to $ED$. $ED$ then reconstructs the final inference result by computing $y=\langle y \rangle_1+\langle y \rangle_2$, effectively combining the shares to produce the output.
 
@@ -378,7 +383,7 @@ The core of the process involves layer-wise computation. For each layer $j$ from
 % For each layer $j$ from 1 to $n$, if $j \leq k$ (where $k$ is the number of layers processed by the $ED$), the $ED$ and $S$ use the \PEnc~method to compute the encrypted shares $\langle x_j \rangle_1$ and $\langle x_j \rangle_2$. Otherwise, we use \DEnc~method.
 %  After all layers are processed, $ED$ holds $\langle y \rangle_1=\langle x_n\rangle_1$ and $S$ holds $\langle y \rangle_2=\langle x_n\rangle_2$. Finally, $S$ then sends $\langle y \rangle_2$ to $ED$, which then reconstructs the final inference result by computing $y=\langle y \rangle_1+\langle y \rangle_2$.
 
-In summary, this algorithm ensures that the computational process is carried out securely and efficiently, with server only having access to a share of the data. By employing secret sharing and encryption techniques, the privacy of the input image is preserved throughout the inference procedure, thereby providing a robust solution for secure cloud-based neural network computations.
+In summary, this algorithm ensures that the computational process is carried out securely and efficiently, with the server only having access to a share of the data. By employing secret sharing and encryption techniques, the privacy of the input image is preserved throughout the inference procedure, thereby providing a robust solution for end-cloud collaborative privacy-preserving inference computations.
 %In forward propagation, $ED$ draws a batch of input data $\langle x_0\rangle_1$ to feed into the model $M_1$.  
 
 
