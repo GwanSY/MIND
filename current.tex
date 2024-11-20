@@ -111,9 +111,9 @@ Homomorphic encryption, secret sharing, model inference, privacy protection.
 \end{IEEEkeywords}
 
 \section{Introduction}
-Advancements in artificial intelligence and cloud computing have revolutionized image processing and analysis across various industries \cite{makridakis2017forthcoming} \cite{zhang2010cloud}. Model inference has become a critical component in cloud-based image processing and analysis, leveraging deep learning models to extract valuable insights from visual data. \cite{shokri2017membership}. This approach enables sophisticated image interpretation across various domains, from medical diagnostics to autonomous systems. However, the widespread adoption of cloud-based model inference has raised significant privacy concerns, as it often requires the transmission and processing of sensitive personal data \cite{shokri2017membership}\cite{wang2018stealing}. For instance, facial recognition systems in residential areas and financial institutions' use of image data for commercial purposes exemplify scenarios where user privacy may be compromised \cite{cui2018security}. These practices highlight the tension between leveraging advanced technologies and protecting individual privacy rights \cite{van2014datafication}.
+Advancements in artificial intelligence and cloud computing have revolutionized image processing and analysis across various industries \cite{makridakis2017forthcoming} \cite{zhang2010cloud}. Model inference has become a critical component in cloud-based image processing and analysis, leveraging deep learning models to extract valuable insights from visual data. This approach enables sophisticated image interpretation across various domains, from medical diagnostics to autonomous systems. However, the widespread adoption of cloud-based model inference has raised significant privacy concerns, as it often requires the transmission and processing of sensitive personal data \cite{shokri2017membership}\cite{wang2018stealing}. For instance, facial recognition systems in residential areas and financial institutions' use of image data for commercial purposes exemplify scenarios where user privacy may be compromised \cite{cui2018security}. These practices highlight the tension between leveraging advanced technologies and protecting individual privacy rights.
 
-Conventionally, image analysis involves encrypting the entire image before uploading it to the cloud server. However, this method results in significant storage and communication overhead due to the large size of encrypted images. Moreover, conducting image analysis during transmission presents considerable challenges in terms of privacy protection, as sensitive data must be securely handled to prevent unauthorized access \cite{cui2018security}\cite{van2014datafication}.
+Conventionally, image analysis involves encrypting the entire image before uploading it to the cloud. However, this approach leads to substantial storage and communication overhead due to the size of encrypted images. Additionally, conducting image analysis during transmission poses significant privacy challenges, as sensitive data must be securely handled to prevent unauthorized access \cite{van2014datafication}.
 
 Existing privacy-preserving schemes for model inference attempt to address these concerns through various encryption techniques \cite{fu2020vfl}\cite{yang2012efficient}. Traditional encryption methods, while providing a degree of data security, often introduce substantial computational overhead and communication cost \cite{kerschbaum2012outsourced}. This inefficiency becomes particularly pronounced when dealing with large-scale data, which hinders the practicality of such approaches in real-world scenarios \cite{li2015encdb}. Moreover, current solutions struggle to balance privacy protection, computational efficiency, and communication overhead, especially in end-to-cloud collaborative environments.
 % \subsection{Contribution}
@@ -135,7 +135,7 @@ Federated learning (FL) is an innovative approach to machine learning that prior
 
 To safeguard both data and model privacy, the research community has developed a range of distributed training methods centered on secure multiparty computation (MPC, e.g., \cite{7958569}, \cite{Escudero2020ImprovedPF}, \cite{Dalskov2020FantasticFH}). In these approaches, the typical scenario involves a server-assisted framework where a group of data owners uploads secret-shared versions of their private data to at least two independent, non-colluding third-party servers. These servers collaboratively train the model using the secret-shared data. During the training process, the model itself is also secret-shared across all servers, ensuring complete protection of model privacy. However, as previously mentioned, these approaches face a significant trade-off between the requirements for non-collusion and the need for extensibility.
 
-The third subcategory of research depends on homomorphic encryption (HE, e.g, \cite{Nandakumar2019TowardsDN}, \cite{CiC-1-2-22,9888863,zhao2023identifiable}). In cloud computing \cite{gentry2009fully}, which allows computations to be performed on encrypted data without the need for decryption. This approach makes it feasible to execute complex operations on cloud servers while maintaining data privacy. However, the computational overhead associated with fully homomorphic encryption remains non-trivial when dealing with large-scale data \cite{xu2019cryptonn}. Although Cheon \textit{et al.} \cite{cheon2017homomorphic} have attempted to optimize homomorphic encryption scheme to reduce this overhead, the trade-off between computational efficiency and security continues to be a critical issue.
+The third subcategory of research depends on homomorphic encryption (HE, e.g, \cite{Nandakumar2019TowardsDN,CiC-1-2-22,9888863,zhao2023identifiable}). In cloud computing \cite{gentry2009fully}, which allows computations to be performed on encrypted data without the need for decryption. This approach makes it feasible to execute complex operations on cloud servers while maintaining data privacy. However, the computational overhead associated with fully homomorphic encryption remains non-trivial when dealing with large-scale data \cite{xu2019cryptonn}. Although Cheon \textit{et al.} \cite{cheon2017homomorphic} have attempted to optimize homomorphic encryption scheme to reduce this overhead, the trade-off between computational efficiency and security continues to be a critical issue.
 
 As research progresses, there is a growing interest in leveraging the strengths of both edge and cloud computing to enhance security and efficiency. To leverage the advantages of both approaches, Mao \textit{et al.} \cite{mao2017survey} proposed an end-cloud collaborative model. While this approach shows promise, it imposes certain performance requirements on the end devices and does not effectively address the issue of reducing communication overhead. In a related effort, Akshaya and Khadir \textit{et al.} \cite{kakkad2019biometric} explored approaches to enhance image security in cloud frameworks using biometric authentication and image encryption.
 
@@ -335,6 +335,31 @@ After non-linear operations (e.g., ReLU and pooling), the outputs are truncated 
 
 \subsection{Inference Overview}
 
+
+% \begin{figure*}[ht]
+% \centering
+% \includegraphics[scale=0.6]{fig3.pdf}
+% \caption{MIND Overview.} \label{fig:MIND Overview}
+% \end{figure*}
+
+\begin{figure}[ht]
+\includegraphics[width=1\linewidth]{fig3.pdf}
+\caption{System model.} \label{fig:MIND Overview}
+\end{figure}
+
+In this inference process, we consider $ED$ holds an image $img$ with the size $n\times m$, and a main computational cloud server $S$ storing the model $M$. The model $M$ is consisted of a sequence of sub-models: $M=M_1 || M_2 || \dots || M_l$, where each model $M_j$ is characterized by specific weights $w_{j}$ and biases $b_{j}$ for $j \in \{1, 2, \dots, l\}$. Formally, $M$ can be represented as a collection of layer-specific parameters $M=\{(w_{1},b_{1}),(w_{2},b_{2}),\dots,(w_{l},b_{l})\}$, where $l$ denotes the number of layers in $M$. This representation encapsulates the complete structure of the neural network model.
+
+The computation at each layer is denoted as $x_j = f_j(x_{j-1})$, where $x_j=\langle x_j \rangle_1 + \langle x_j \rangle_2$. Here, $\langle x_j \rangle_1$ and $\langle x_j \rangle_2$ represent secret shares held by $ED$ and $S$ respectively. The secure computation protocol $f_j$ generates these shares according to the following equation:
+\begin{equation}
+    \langle x_j \rangle_1+\langle x_j \rangle_2 = f_j(\langle x_{j-1} \rangle_1 + \langle x_{j-1} \rangle_2).
+\end{equation}
+
+As described in Algorithm \ref{algo:search}, the process begins with initialization. $ED$ sets the initial secret share as $\langle x_0 \rangle
+_1=x$, and $S$ sets $\langle x_0 \rangle
+_2=0$. The inference computation proceeds layer by layer. For linear layers, $ED$ and $S$ decide between two encryption protocols (\PEnc~and \DEnc) based on a comparison of the number of bits of parameters in the model ($N_p$) and the number of bits of data in the model ($N_d$). Specifically, when $N_p \leq N_d$, \PEnc~is chosen, where the parameters ($w_j$ and $b_j$) are encrypted and sent for computation. When $N_p > N_d$, \DEnc~is applied, where the input data $\langle x_{j-1} \rangle_1 + \langle x_{j-1} \rangle_2$ is encrypted instead. For non-linear layers, a separate protocol handles their computation securely.
+
+Finally, $S$ sends the resulting secret share $\langle y \rangle_2$ back to $ED$, where $ED$ reconstructs the final inference result $y$ as $y=\langle y \rangle_1 + \langle y \rangle_2$.
+
 \begin{algorithm}[htbp]
 	\caption{The Search Procedure}
 	\label{algo:search}
@@ -369,24 +394,6 @@ After non-linear operations (e.g., ReLU and pooling), the outputs are truncated 
     
     $ED$ reconstructs the final inference result by computing $y = \langle y \rangle_1 + \langle y \rangle_2$.
 \end{algorithm}
-
-\begin{figure*}[ht]
-\centering
-\includegraphics[scale=0.5]{fig3.pdf}
-\caption{MIND Overview.} \label{fig:MIND Overview}
-\end{figure*}
-In this inference process, we consider $ED$ holds an image $img$ with the size $n\times m$, and a main computational cloud server $S$ storing the model $M$. The model $M$ is consisted of a sequence of sub-models: $M=M_1 || M_2 || \dots || M_l$, where each model $M_j$ is characterized by specific weights $w_{j}$ and biases $b_{j}$ for $j \in \{1, 2, \dots, l\}$. Formally, $M$ can be represented as a collection of layer-specific parameters $M=\{(w_{1},b_{1}),(w_{2},b_{2}),\dots,(w_{l},b_{l})\}$, where $l$ denotes the number of layers in $M$. This representation encapsulates the complete structure of the neural network model.
-
-The computation at each layer is denoted as $x_j = f_j(x_{j-1})$, where $x_j=\langle x_j \rangle_1 + \langle x_j \rangle_2$. Here, $\langle x_j \rangle_1$ and $\langle x_j \rangle_2$ represent secret shares held by $ED$ and $S$ respectively. The secure computation protocol $f_j$ generates these shares according to the following equation:
-\begin{equation}
-    \langle x_j \rangle_1+\langle x_j \rangle_2 = f_j(\langle x_{j-1} \rangle_1 + \langle x_{j-1} \rangle_2).
-\end{equation}
-As described in Algorithm \ref{algo:search}, the process begins with initialization. $ED$ sets the initial secret share as $\langle x_0 \rangle
-_1=x$, and $S$ sets $\langle x_0 \rangle
-_2=0$. The inference computation proceeds layer by layer. For linear layers, $ED$ and $S$ decide between two encryption protocols (\PEnc~and \DEnc) based on a comparison of the number of bits of parameters in the model ($N_p$) and the number of bits of data in the model ($N_d$). Specifically, when $N_p \leq N_d$, \PEnc~is chosen, where the parameters ($w_j$ and $b_j$) are encrypted and sent for computation. When $N_p > N_d$, \DEnc~is applied, where the input data $\langle x_{j-1} \rangle_1 + \langle x_{j-1} \rangle_2$ is encrypted instead. For non-linear layers, a separate protocol handles their computation securely.
-
-Finally, $S$ sends the resulting secret share $\langle y \rangle_2$ back to $ED$, where $ED$ reconstructs the final inference result $y$ as $y=\langle y \rangle_1 + \langle y \rangle_2$.
-
 
 % The core of the process involves layer-wise computation. For each layer $j$ from 1 to $l$, the computation method varies based on the layer's position. For the initial layers $(j \leq k)$, $ED$ uses homomorphic encryption proposed in \PEnc~to perform inference. After applying the \PEnc~method, $ED$ holds the partial encrypted share $\langle x_j \rangle_1$ of the activation value at layer $j$, and $S$ holds the corresponding partial encrypted share $\langle x_j \rangle_2$. As the process moves to later layers $(j > k)$, the method switches to \DEnc, with $S$ continuing the inference using the encrypted data received from $ED$. This switch to \DEnc~in later layers is due to the fact that as the number of neural network layers increases, the computational cost of parameter encryption becomes greater than that of data encryption. Therefore, using the \DEnc~method in later layers can improve computational efficiency.
 
@@ -433,7 +440,9 @@ Subsequently, we compare the efficiency and communication complexity of MIND wit
 
 
 \subsubsection{Datasets} 
-We use the MNIST dataset\cite{xiao2017fashion}, a widely recognized benchmark in machine learning and computer vision research. MNIST consists of 70,000 grayscale images of handwritten digits, including 60,000 training samples and 10,000 test samples. Each image is represented as a 28$\times$28 pixel matrix, where each pixel indicates the intensity of grayscale values ranging from 0 to 255. This dataset is widely used for developing and evaluating image classification models due to its simplicity and versatility. It serves as a standard for testing various preprocessing, feature extraction, and classification techniques, providing a consistent foundation for assessing model performance.
+We use the MNIST dataset\cite{xiao2017fashion} and CIFAR-10 dataset\cite{krizhevsky2009learning}, a widely recognized benchmark in machine learning and computer vision research. MNIST consists of 70,000 grayscale images of handwritten digits, including 60,000 training samples and 10,000 test samples. Each image is represented as a 28$\times$28 pixel matrix, where each pixel indicates the intensity of grayscale values ranging from 0 to 255. The CIFAR-10 dataset is a classic image classification dataset consisting of 60000 32 × 32 color images from 10 categories, with 50000 for training and 10000 for testing. These categories include airplanes, cars, birds, cats, deer, dogs, frogs, horses, boats, and trucks. 
+% These datasets are widely used for developing and evaluating image classification models due to their simplicity and versatility. 
+They serve as standards for testing various preprocessing, feature extraction, and classification techniques, providing a consistent basis for evaluating model performance.
 % We employ the widely used MNIST\cite{xiao2017fashion} to train and evaluate our models. To ensure the data is suitable for model input, the following preprocessing steps are applied. The MNIST dataset consists of 60,000 training images and 10,000 test images, each a 28$\times$28 pixel grayscale image of handwritten digits. We normalize the pixel values to the [0, 1] range and implemente data augmentation techniques such as random rotations and translations during training. We standardize these images so that pixel values for each channel have zero mean and unit variance. We train each neural network on the training dataset for 10 epochs. To further improve the model's generalization ability, we apply data augmentation techniques, including random cropping, horizontal flipping, and color jittering.
 % \subsubsection{Parameters} 
 % The learning rate $\eta$ is set to 0.01 to accelerate model convergence while maintaining stability. For the MNIST dataset, a batch size $B$ of 32 is used. The momentum $\gamma$ is configured at 0.8 to effectively smooth the update process and reduce gradient oscillations during training. Additionally, the gradient bound estimation $C$ is set to 8 to limit the gradient's maximum value, preventing gradient explosion.
@@ -445,13 +454,21 @@ We chose four commonly used neural networks in privacy-preserving machine learni
 
 \begin{itemize}
     \item Network-A.
-    Network-A is a 3-layer DNN for MNIST classification. It starts with a Flatten layer converting 1×28×28 input into a vector of size 784. The first Linear layer maps size 784 to 128 with ReLU, followed by another Linear layer mapping size 128 to 128 with ReLU. The final Linear layer maps size 128 to 10, representing class probabilities.
+    Network-A is a fully connected deep neural network (DNN) designed for MNIST classification, implemented in a structure suitable for secure multi-party computation using the ABY3 protocol \cite{10.1145/3243734.3243760}. It starts with a Flatten layer converting 1×28×28 input into a vector of size 784. The first Linear layer maps size 784 to 128 with ReLU, followed by another Linear layer mapping size 128 to 128 with ReLU. The final Linear layer maps size 128 to 10, representing class probabilities.
     \item Network-B.
-    Network-B is a 3-layer CNN for MNIST classification. It begins with a Conv2d layer (input: 1×28×28, kernel: 5×5, stride: 2, padding: 2) producing 5 output channels (5×14×14), followed by ReLU. A Flatten layer converts the feature map into a vector of size 980. A Linear layer maps this to size 100, followed by ReLU, and another Linear layer maps it to size 10 for classification probabilities.
+    Network-B is a privacy-preserving convolutional neural network (CNN) implemented under the Chameleon protocol \cite{10.1145/3196494.3196522}.  Network-B is a 3-layer CNN for MNIST classification. It begins with a Conv2d layer (input: 1×28×28, kernel: 5×5, stride: 2, padding: 2) producing 5 output channels (5×14×14), followed by ReLU. A Flatten layer converts the feature map into a vector of size 980. A Linear layer maps this to size 100, followed by ReLU, and another Linear layer maps it to size 10 for classification probabilities.
     \item Network-C.
+    Network-C is a privacy-preserving convolutional neural network (CNN) implemented under the Sphinx protocol \cite{Tian2022SphinxEP}.
     Network-C is a 5-layer CNN for MNIST classification. It starts with a Conv2d layer (kernel size 5×5, 16 output channels) reducing the input size from 1×28×28 to 16×24×24, followed by ReLU and AvgPool2d (stride 2), resulting in 16×12×12. A second Conv2d layer (16 output channels, kernel (5×5) reduces the size to 16×8×8, followed by ReLU and AvgPool2d, yielding 16×4×4. The feature map is flattened into a vector of size 256, passed through a Linear layer (256 to 100, with ReLU) and another Linear layer (100 to 10) for classification.
     \item Network-D.
+    Network-D is a privacy-preserving convolutional neural network (DNN) implemented under the Quotient protocol \cite{10.1145/3319535.3339819}.
     Network-D is a 3-layer Deep Neural Network (DNN) designed for MNIST classification. It starts with a Flatten layer that converts the input 1×28×28 into a vector of size 784. The first Linear layer maps this vector to size 512, followed by a ReLU activation. The second Linear layer maps the vector of size 512 to another vector of size 512, also followed by ReLU. The final Linear layer maps the vector of size 512 to size 10, representing class probabilities.
+    
+    \item AlexNet
+    AlexNet is a classic convolutional neural network structure consisting of 8 layers, where the first 5 layers are convolutional layers used to extract image features, and the last 3 layers are fully connected layers used for classification tasks, ultimately outputting class probabilities through Softmax.
+    \item ResNet50
+    ResNet-50 consists of an initial convolutional layer and a max pooling layer, followed by four residual stages, each stage containing several residual modules, each module having three convolutional layers, for a total of fifty layers. Finally, the classification results are output through a global average pooling layer and a fully connected layer.
+    
 \end{itemize}
 
 
@@ -465,7 +482,7 @@ We chose four commonly used neural networks in privacy-preserving machine learni
 
 
 \subsection{Effectiveness}
-In this subsection, we compare the effectiveness of secure inference across different networks on the MNIST dataset with MIND and Pencil \cite{liu2024pencilprivateextensiblecollaborative}.
+In this subsection, we compare the effectiveness of secure inference across different networks on the MNIST and CIFAR-10 datasets with MIND and Pencil \cite{liu2024pencilprivateextensiblecollaborative}.
 Specifically, the evaluation focuses on comparing the accuracy, precision, recall, and F1 score between MIND and Pencil.
 MIND starts by proposing a layer-wise adaptive encryption method, which encrypts the data and parameters with relatively smaller sizes at each layer, while Pencil only encrypts the data.
 
@@ -490,16 +507,13 @@ MIND starts by proposing a layer-wise adaptive encryption method, which encrypts
 
 
 
-Table \ref{tab
-} shows that when using Network-A for privacy-preserving secure inference on the MNIST dataset, MIND achieves an accuracy, precision, recall, and F1 score of 0.978, 0.978, 0.978, and 0.978, respectively.
-In contrast, Pencil achieves an accuracy, precision, recall, and F1 score of 0.978, 0.978, 0.978, and 0.978, respectively.
-The performance of the remaining networks is similar.
+Table \ref{tab:performance_comparison_scheme} shows that when using Network-A for privacy-preserving secure inference on the MNIST dataset, MIND achieves an accuracy, precision, recall, and F1 score of 0.978, 0.978, 0.978, and 0.978, respectively.
+In contrast, Pencil achieves an accuracy, precision, recall, and F1 score of 0.978, 0.978, 0.978, and 0.978, respectively. The performance of the remaining networks is similar.
 
 
 
 
-
-The results indicate that when performing secure inference on the MNIST dataset using different networks, MIND exhibits nearly identical precision, recall, and F1 scores compared to previous secure inference work \cite{liu2024pencilprivateextensiblecollaborative}.
+The results indicate that when performing secure inference on the MNIST dataset and CIFAR-10 dataset using different networks, MIND exhibits nearly identical precision, recall, and F1 scores compared to previous secure inference work \cite{liu2024pencilprivateextensiblecollaborative}.
 It is worth noting that MIND does not significantly affect model effectiveness, especially in simpler tasks. 
 This suggests that MIND is effective in achieving privacy preserving secure inference while maintaining model accuracy.
 
@@ -522,26 +536,26 @@ This suggests that MIND is effective in achieving privacy preserving secure infe
 \cline{4-7}
                       &                        &                        & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} & \textbf{Acc.} \\ 
 \hline
-\multirow{8}{*}{MNIST}   & \multirow{2}{*}{ABY3}      & Pencil & 0.978 & 0.978 & 0.978 & 0.978 \\ 
+\multirow{8}{*}{MNIST}   & \multirow{2}{*}{Network-A}      & Pencil & 0.978 & 0.978 & 0.978 & 0.978 \\ 
                       &            & MIND    & 0.978 & 0.978 & 0.978 & 0.978 \\ 
 \cline{2-7}
-                      & \multirow{2}{*}{Chameleon}   & Pencil & 0.985 & 0.985 & 0.985 & 0.985 \\ 
+                      & \multirow{2}{*}{Network-B}   & Pencil & 0.985 & 0.985 & 0.985 & 0.985 \\ 
                       &            & MIND    & 0.985 & 0.985 & 0.985 & 0.985 \\ 
 \cline{2-7}
-                      & \multirow{2}{*}{Sphinx}      & Pencil & 0.991 & 0.990 & 0.991 & 0.991 \\ 
+                      & \multirow{2}{*}{Network-C}      & Pencil & 0.991 & 0.990 & 0.991 & 0.991 \\ 
                       &            & MIND    & 0.991 & 0.990 & 0.991 & 0.991 \\ 
 \cline{2-7}
-                      & \multirow{2}{*}{Quotient}   & Pencil & 0.980 & 0.980 & 0.980 & 0.980 \\ 
+                      & \multirow{2}{*}{Network-D}   & Pencil & 0.980 & 0.980 & 0.980 & 0.980 \\ 
                       &            & MIND    & 0.980 & 0.980 & 0.980 & 0.980 \\ 
 \hline
-% \multirow{4}{*}{CIFAR-10} & \multirow{2}{*}{AlexNet}    & Pencil  &  0.867  & 0.866  & 0.867   \\ 
-%                       &            & MIND    &  0.871  & 0.872  & 0.872  \\ 
-% \cline{2-6}
-%                       & \multirow{2}{*}{ResNet50}    & Native  & 0.805 & 0.767 & 0.785 \\ 
-%                       &            & MIND    & 0.822 & 0.784 & 0.793\\ 
-% \cline{2-6}
-%                     %   & \centering DenseNet121 & Native  & 0.649 & 0.597 &0.622  \\ 
-%                     %   &            & MIND    & 0.649 & 0.597 &0.622 \\ 
+\multirow{4}{*}{CIFAR-10} & \multirow{2}{*}{AlexNet}    & Pencil  &  0.867  & 0.866  & 0.867 & 0.867  \\ 
+                      &            & MIND    &  0.867  & 0.866  & 0.867 & 0.867  \\ 
+\cline{2-7}
+                      & \multirow{2}{*}{ResNet50}    & Native  & 0.805 & 0.767 & 0.785 & 0.819 \\ 
+                      &            & MIND    & 0.805 & 0.767 & 0.785 & 0.819\\ 
+\cline{2-7}
+                    %   & \centering DenseNet121 & Native  & 0.649 & 0.597 &0.622  \\ 
+                    %   &            & MIND    & 0.649 & 0.597 &0.622 \\ 
                     
 \hline
 \end{tabular}
@@ -621,32 +635,24 @@ For fairness, neither MIND nor Pencil adopts the above-mentioned optimization sc
 
 Figure \ref{subfig:ABY3}, \ref{subfig:Sphinx}, \ref{subfig:Chameleon}, and \ref{subfig:Quotient_2x512} show that for the MNIST dataset, MIND consistently requires less transmission and runtime across all four networks compared to Pencil.
 
-
-
-
-As shown in Figure \ref{subfig:ABY3}, ABY3 is the most efficient in reducing communication cost when applied to the ABY3 model and the most efficient in reducing runtime when applied to the Quotient 2$\times$512 model. Our experiments reveal that while the Pencil encryption scheme requires a communication cost of 1,933 MB, MIND only requires 1,008 MB, resulting in a significant reduction of approximately 49.42\% in communication cost. Additionally, MIND reduces the runtime by approximately 10.34\% compared to the Pencil scheme.
+% As shown in Figure \ref{subfig:ABY3}, ABY3 is the most efficient in reducing communication cost when applied to the ABY3 model and the most efficient in reducing runtime when applied to the Quotient 2$\times$512 model. Our experiments reveal that while the Pencil encryption scheme requires a communication cost of 1,933 MB, MIND only requires 1,008 MB, resulting in a significant reduction of approximately 49.42\% in communication cost. Additionally, MIND reduces the runtime by approximately 10.34\% compared to the Pencil scheme.
 
 % 采用network-A时，MIND的通信开销和runtime分别为多少MB和多少seconds，对比Pencil通信开销减少 多少MB，效率提升几倍。在采用其他network时，MIND对比Pencil通信开销降低%，效率提升多少X。
+As shown in Figure \ref{subfig:ABY3}, When using network-A, the communication overhead of MIND is 1008MB, and the runtime is 49.8 seconds. Compared with Pencil, the communication overhead is reduced by 925MB, and the efficiency is improved by 7.8\%. When using other networks, MIND reduces communication overhead by 7.5\% to 62.3\% and improves efficiency by 0.3\% to 10.3\% compared to Pencil.
 
-
-
-
-Experiments demonstrate that MIND outperforms Pencil in terms of efficiency across various networks in MNIST dataset.
-These results consistently highlight MIND's ability to optimize both communication cost and runtime across various neural network architectures and datasets, showcasing its potential for improving efficiency in privacy-preserving machine learning applications.
-
-
+Experiments demonstrate that MIND outperforms Pencil in various network efficiency aspects in the MNIST dataset and CIFA-10 dataset. These results consistently highlight MIND's ability to optimize both communication cost and runtime across various neural network architectures and datasets, showcasing its potential for improving efficiency in privacy-preserving machine learning applications.
 
 \begin{figure}[ht]
     \centering
-    \subfigure[ABY3]{\includegraphics[width=.45\columnwidth]{exp/ABY3.pdf}\label{subfig:ABY3}} \hspace{5pt}
+    \subfigure[Network-A]{\includegraphics[width=.45\columnwidth]{exp/ABY3.pdf}\label{subfig:ABY3}} \hspace{5pt}
     % \subfigure[MNIST Quotient 3$\times$128]{\includegraphics[width=.45\columnwidth]{exp/Quotient_3.pdf}\label{subfig:Quotient_3x128}} \hspace{5pt}
-    \subfigure[Chameleon]{\includegraphics[width=.45\columnwidth]{exp/Chameleon.pdf}\label{subfig:Chameleon}} \hspace{5pt}\\
-    \subfigure[Sphinx]{\includegraphics[width=.45\columnwidth]{exp/Sphinx.pdf}\label{subfig:Sphinx}} 
-     \subfigure[Quotient %2$\times$512%
+    \subfigure[Network-B]{\includegraphics[width=.45\columnwidth]{exp/Chameleon.pdf}\label{subfig:Chameleon}} \hspace{5pt}\\
+    \subfigure[Network-C]{\includegraphics[width=.45\columnwidth]{exp/Sphinx.pdf}\label{subfig:Sphinx}} 
+    \subfigure[Network-D %2$\times$512%
      ]{\includegraphics[width=.46\columnwidth]{exp/Quotient_2.pdf}\label{subfig:Quotient_2x512}}
     
-    % \subfigure[AlexNet]{\includegraphics[width=.467\columnwidth]{exp/AlexNet.pdf}\label{subfig:AlexNet}} \hspace{2pt}
-    % \subfigure[ResNet50]{\includegraphics[width=.47\columnwidth]{exp/ResNet.pdf}\label{subfig:ResNet}} 
+    \subfigure[AlexNet]{\includegraphics[width=.467\columnwidth]{exp/AlexNet.pdf}\label{subfig:AlexNet}} \hspace{2pt}
+    \subfigure[ResNet50]{\includegraphics[width=.47\columnwidth]{exp/ResNet.pdf}\label{subfig:ResNet}} 
     \caption{Efficiency evaluation.}
     \label{fig:efficiency}
 \end{figure}
