@@ -413,47 +413,126 @@ In summary, this algorithm ensures that the computational process is carried out
 % Formally, each sub-model $m_i$ can be represented as a collection of layer-specific parameters $m_i=\{(w_{i1},b_{i1}),(w_{i2},b_{i2}),\dots,(w_{ik},b_{ik})\}$, where $k_i$ denotes the number of layers in $m_i$. Therefore, the overall model m can be expressed as $m =\{(w_{i1}, b_{i1}), (w_{i2}, b_{i2}), \dots,$ $(w_{ik_i}, b_{ik_i}) | i=1,2,\dots,n\}$, with each $m_i$ containing its corresponding set of weights and biases for each layer.
 
 \section{Experimental Evaluations}
-In the MIND experiments, we perform comparative studies to evaluate the layered encryption method against the method proposed in this paper. The evaluation criteria include accuracy, F1 score, recall, runtime, and communication cost.
+
+In this section, we first compare the effectiveness of MIND and previous work \cite{liu2024pencilprivateextensiblecollaborative} in terms of effectiveness, including accuracy, F1 score, and recall.
+The layer-wise adaptive encryption method proposed by MIND encrypts user inputs or server parameters based on the characteristics of each layer, whereas Pencil \cite{liu2024pencilprivateextensiblecollaborative} only encrypt user inputs.
+Subsequently, we compare the efficiency and communication complexity of MIND with that of Pencil \cite{liu2024pencilprivateextensiblecollaborative}.
+
+
+
+
+
+
 
 \subsection{Setting}
 \subsubsection{Environment} Our experiments are conducted on two servers, each equipped with an AMD EPYC 7402 CPU and 128 GB of RAM.
+
+
+
+
+
+
 \subsubsection{Datasets} 
-We employ the widely used MNIST\cite{xiao2017fashion} to train and evaluate our models. To ensure the data is suitable for model input, the following preprocessing steps are applied. The MNIST dataset consists of 60,000 training images and 10,000 test images, each a 28$\times$28 pixel grayscale image of handwritten digits. We normalize the pixel values to the [0, 1] range and implemente data augmentation techniques such as random rotations and translations during training. We standardize these images so that pixel values for each channel have zero mean and unit variance. We train each neural network on the training dataset for 10 epochs. To further improve the model's generalization ability, we apply data augmentation techniques, including random cropping, horizontal flipping, and color jittering.
+We use the MNIST dataset\cite{xiao2017fashion}, a widely recognized benchmark in machine learning and computer vision research. MNIST consists of 70,000 grayscale images of handwritten digits, including 60,000 training samples and 10,000 test samples. Each image is represented as a 28$\times$28 pixel matrix, where each pixel indicates the intensity of grayscale values ranging from 0 to 255. This dataset is widely used for developing and evaluating image classification models due to its simplicity and versatility. It serves as a standard for testing various preprocessing, feature extraction, and classification techniques, providing a consistent foundation for assessing model performance.
+% We employ the widely used MNIST\cite{xiao2017fashion} to train and evaluate our models. To ensure the data is suitable for model input, the following preprocessing steps are applied. The MNIST dataset consists of 60,000 training images and 10,000 test images, each a 28$\times$28 pixel grayscale image of handwritten digits. We normalize the pixel values to the [0, 1] range and implemente data augmentation techniques such as random rotations and translations during training. We standardize these images so that pixel values for each channel have zero mean and unit variance. We train each neural network on the training dataset for 10 epochs. To further improve the model's generalization ability, we apply data augmentation techniques, including random cropping, horizontal flipping, and color jittering.
+% \subsubsection{Parameters} 
+% The learning rate $\eta$ is set to 0.01 to accelerate model convergence while maintaining stability. For the MNIST dataset, a batch size $B$ of 32 is used. The momentum $\gamma$ is configured at 0.8 to effectively smooth the update process and reduce gradient oscillations during training. Additionally, the gradient bound estimation $C$ is set to 8 to limit the gradient's maximum value, preventing gradient explosion.
+
+
+
+\subsubsection{Models}
+We chose four commonly used neural networks in privacy-preserving machine learning \cite{liu2024pencilprivateextensiblecollaborative} for subsequent experiments.
+
+\begin{itemize}
+    \item Network-A.
+    Network-A is a 3-layer DNN for MNIST classification. It starts with a Flatten layer converting 1×28×28 input into a vector of size 784. The first Linear layer maps size 784 to 128 with ReLU, followed by another Linear layer mapping size 128 to 128 with ReLU. The final Linear layer maps size 128 to 10, representing class probabilities.
+    \item Network-B.
+    Network-B is a 3-layer CNN for MNIST classification. It begins with a Conv2d layer (input: 1×28×28, kernel: 5×5, stride: 2, padding: 2) producing 5 output channels (5×14×14), followed by ReLU. A Flatten layer converts the feature map into a vector of size 980. A Linear layer maps this to size 100, followed by ReLU, and another Linear layer maps it to size 10 for classification probabilities.
+    \item Network-C.
+    Network-C is a 5-layer CNN for MNIST classification. It starts with a Conv2d layer (kernel size 5×5, 16 output channels) reducing the input size from 1×28×28 to 16×24×24, followed by ReLU and AvgPool2d (stride 2), resulting in 16×12×12. A second Conv2d layer (16 output channels, kernel (5×5) reduces the size to 16×8×8, followed by ReLU and AvgPool2d, yielding 16×4×4. The feature map is flattened into a vector of size 256, passed through a Linear layer (256 to 100, with ReLU) and another Linear layer (100 to 10) for classification.
+    \item Network-D.
+    Network-D is a 3-layer Deep Neural Network (DNN) designed for MNIST classification. It starts with a Flatten layer that converts the input 1×28×28 into a vector of size 784. The first Linear layer maps this vector to size 512, followed by a ReLU activation. The second Linear layer maps the vector of size 512 to another vector of size 512, also followed by ReLU. The final Linear layer maps the vector of size 512 to size 10, representing class probabilities.
+\end{itemize}
 
 
 
 
-\subsubsection{Parameters} 
-The learning rate $\eta$ is set to 0.01 to accelerate model convergence while maintaining stability. For the MNIST dataset, a batch size $B$ of 32 is used. The momentum $\gamma$ is configured at 0.8 to effectively smooth the update process and reduce gradient oscillations during training. Additionally, the gradient bound estimation $C$ is set to 8 to limit the gradient's maximum value, preventing gradient explosion.
+
+
+
+
+
+
 
 \subsection{Effectiveness}
-In this subsection, we evaluate the effectiveness of the scheme. The MIND scheme we propose employs a hierarchical encryption method, while Pencil \cite{liu2024pencilprivateextensiblecollaborative} is a non layered encryption scheme. We evaluate the performance using models with different architectures on the MNIST dataset, specifically ABY3\cite{10.1145/3243734.3243760}, Sphinx\cite{Tian2022SphinxEP}, Chameleon\cite{10.1145/3196494.3196522} and Quotient 2$\times$512\cite{10.1145/3319535.3339819}. The evaluation focuses on comparing the accuracy, precision, recall, and F1 score between the hierarchical and non-hierarchical encryption schemes using these MNIST models.
+In this subsection, we compare the effectiveness of secure inference across different networks on the MNIST dataset with MIND and Pencil \cite{liu2024pencilprivateextensiblecollaborative}.
+Specifically, the evaluation focuses on comparing the accuracy, precision, recall, and F1 score between MIND and Pencil.
+MIND starts by proposing a layer-wise adaptive encryption method, which encrypts the data and parameters with relatively smaller sizes at each layer, while Pencil only encrypts the data.
 
-Based on the results presented in Figure \ref{fig:ACC}, we observe no significant difference in recognition accuracy between the layered and non-layered encryption scheme. This demonstrates that our proposed MIND scheme effectively maintains model performance while implementing enhanced privacy protection measures.
 
-The data presented in Table \ref{tab:performance_comparison_scheme} indicates that all tested models perform consistently in both the Pencil and MIND schemes. In the MNIST dataset, protocols like ABY3, Chameleon, Sphinx, and Quotient show nearly identical precision, recall, and F1 scores in both environments. 
 
-It is worth noting that MIND does not significantly affect model performance, especially in simpler tasks. Even in more complex tasks, performance consistency across environments is maintained, although overall scores may decrease slightly. This suggests that MIND is effective in achieving privacy preserving goals while maintaining model accuracy.
+
+% In this subsection, we evaluate the effectiveness of the scheme. The MIND scheme we propose employs a hierarchical encryption method, while Pencil \cite{liu2024pencilprivateextensiblecollaborative} is a non layered encryption scheme. 
+
+
+% We evaluate the performance using models with different architectures on the MNIST dataset, specifically ABY3\cite{10.1145/3243734.3243760}, Sphinx\cite{Tian2022SphinxEP}, Chameleon\cite{10.1145/3196494.3196522} and Quotient 2$\times$512\cite{10.1145/3319535.3339819}. The evaluation focuses on comparing the accuracy, precision, recall, and F1 score between the hierarchical and non-hierarchical encryption schemes using these MNIST models.
+
+
+
+
+% Based on the results presented in Figure \ref{fig:ACC}, we observe no significant difference in recognition accuracy between the layered and non-layered encryption scheme. This demonstrates that our proposed MIND scheme effectively maintains model performance while implementing enhanced privacy protection measures.
+
+
+
+
+% The data presented in Table \ref{tab:performance_comparison_scheme} indicates that all tested models perform consistently in both the Pencil and MIND schemes. In the MNIST dataset, protocols like ABY3, Chameleon, Sphinx, and Quotient show nearly identical precision, recall, and F1 scores in both environments. 
+
+
+
+
+Table \ref{tab
+} shows that when using Network-A for privacy-preserving secure inference on the MNIST dataset, MIND achieves an accuracy, precision, recall, and F1 score of 0.978, 0.978, 0.978, and 0.978, respectively.
+In contrast, Pencil achieves an accuracy, precision, recall, and F1 score of 0.978, 0.978, 0.978, and 0.978, respectively.
+The performance of the remaining networks is similar.
+
+
+
+
+
+The results indicate that when performing secure inference on the MNIST dataset using different networks, MIND exhibits nearly identical precision, recall, and F1 scores compared to previous secure inference work \cite{liu2024pencilprivateextensiblecollaborative}.
+It is worth noting that MIND does not significantly affect model effectiveness, especially in simpler tasks. 
+This suggests that MIND is effective in achieving privacy preserving secure inference while maintaining model accuracy.
+
+
+
+
+
+
+
+
+
+
+
 \begin{table}[ht]
 \centering
 \caption{Performance comparison between Pencil and MIND models for different tasks.}
-\begin{tabular}{ c|c|c | c c c } 
+\begin{tabular}{ l|l|l | c c c c } 
 \hline
-\multirow{2}{*}{Dataset} & \multirow{2}{*}{Protocol} & \multirow{2}{*}{Scheme} & \multicolumn{3}{c}{Metric} \\ 
-\cline{4-6}
-                      &                        &                        & Precision & Recall & F1 Score \\ 
+\multirow{2}{*}{Dataset} & \multirow{2}{*}{Network} & \multirow{2}{*}{Scheme} & \multicolumn{4}{c}{Metric} \\ 
+\cline{4-7}
+                      &                        &                        & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} & \textbf{Acc.} \\ 
 \hline
-\multirow{8}{*}{MNIST}   & \multirow{2}{*}{ABY3}      & Pencil & 0.978 & 0.978 & 0.978\\ 
-                      &            & MIND    & 0.978 & 0.978 & 0.978 \\ 
-\cline{2-6}
-                      & \multirow{2}{*}{Chameleon}   & Pencil & 0.985&0.985&0.985           \\ 
-                      &            & MIND    & 0.985  &0.985 & 0.985   \\ 
-\cline{2-6}
-                      & \multirow{2}{*}{Sphinx}      & Pencil  & 0.991 & 0.990 & 0.991 \\ 
-                      &            & MIND    & 0.991 & 0.990 & 0.991\\ 
-\cline{2-6}
-                      & \multirow{2}{*}{Quotient}   & Pencil  & 0.980 & 0.980 & 0.980 \\ 
-                      &            & MIND    & 0.980 & 0.980 & 0.980 \\ 
+\multirow{8}{*}{MNIST}   & \multirow{2}{*}{ABY3}      & Pencil & 0.978 & 0.978 & 0.978 & 0.978 \\ 
+                      &            & MIND    & 0.978 & 0.978 & 0.978 & 0.978 \\ 
+\cline{2-7}
+                      & \multirow{2}{*}{Chameleon}   & Pencil & 0.985 & 0.985 & 0.985 & 0.985 \\ 
+                      &            & MIND    & 0.985 & 0.985 & 0.985 & 0.985 \\ 
+\cline{2-7}
+                      & \multirow{2}{*}{Sphinx}      & Pencil & 0.991 & 0.990 & 0.991 & 0.991 \\ 
+                      &            & MIND    & 0.991 & 0.990 & 0.991 & 0.991 \\ 
+\cline{2-7}
+                      & \multirow{2}{*}{Quotient}   & Pencil & 0.980 & 0.980 & 0.980 & 0.980 \\ 
+                      &            & MIND    & 0.980 & 0.980 & 0.980 & 0.980 \\ 
 \hline
 % \multirow{4}{*}{CIFAR-10} & \multirow{2}{*}{AlexNet}    & Pencil  &  0.867  & 0.866  & 0.867   \\ 
 %                       &            & MIND    &  0.871  & 0.872  & 0.872  \\ 
@@ -515,29 +594,54 @@ $\text{F1 Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{P
 % \end{table*}
 
 \subsection{Efficiency}
-To demonstrate MIND's efficiency, in this subsection, we evaluate and compare the computational overhead of Pencil and MIND across different models. Results are averaged across multiple experiments to ensure reliability.
+
+
+% To demonstrate MIND's efficiency, in this subsection, we evaluate and compare the computational overhead of Pencil and MIND across different models. Results are averaged across multiple experiments to ensure reliability.
 % In the experiment, we use two publicly available datasets, MNIST and CIFAR-10, and apply various models to each dataset. Pretrained models, such as AlexNet and ResNet50, are utilized as feature extractors. As shown in Figure \ref{fig:ACC}, across different models, the accuracy remains almost unchanged when using the MIND method (represented by the pink bars) compared to the native method (represented by the blue bars). This indicates that the impact of the MIND method on model accuracy is almost negligible.
 
-Our experiments demonstrate the superior efficiency of MIND compared to Pencil across various protocols and datasets. Figure \ref{subfig:ABY3}, \ref{subfig:Sphinx}, \ref{subfig:Chameleon}, and \ref{subfig:Quotient_2x512} show that for the MNIST dataset, MIND consistently requires less transmission and runtime across all four models (ABY3,  SPHINX,  Chameleon, and Quotient 2$\times$512).
 
-Specifically, the MIND scheme demonstrates varying degrees of efficiency across different protocols. As shown in Figure \ref{subfig:ABY3}, ABY3 is the most efficient in reducing communication cost when applied to the ABY3 model and the most efficient in reducing runtime when applied to the Quotient 2$\times$512 model. Our experiments reveal that while the Pencil encryption scheme requires a communication cost of 1,933 MB, MIND only requires 1,008 MB, resulting in a significant reduction of approximately 49.42\% in communication cost. Additionally, MIND reduces the runtime by approximately 10.34\% compared to the Pencil scheme.
 
-To further validate the efficiency of MIND, we found that compared to the Pencil scheme, MIND maintained lower communication and runtime in the MNIST dataset.
 
+Subsequently, we further compare MIND and Pencil in terms of efficiency and their corresponding communication overhead.
+The results are averaged over multiple experiments to ensure reliability.
+Specifically, Pencil \cite{liu2024pencilprivateextensiblecollaborative} considers transferring the complex homomorphic operations from the online phase to the offline phase to improve efficiency, and MIND is also applicable to these optimizations.
+For fairness, neither MIND nor Pencil adopts the above-mentioned optimization schemes in the experiments.
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+Figure \ref{subfig:ABY3}, \ref{subfig:Sphinx}, \ref{subfig:Chameleon}, and \ref{subfig:Quotient_2x512} show that for the MNIST dataset, MIND consistently requires less transmission and runtime across all four networks compared to Pencil.
+
+
+
+
+As shown in Figure \ref{subfig:ABY3}, ABY3 is the most efficient in reducing communication cost when applied to the ABY3 model and the most efficient in reducing runtime when applied to the Quotient 2$\times$512 model. Our experiments reveal that while the Pencil encryption scheme requires a communication cost of 1,933 MB, MIND only requires 1,008 MB, resulting in a significant reduction of approximately 49.42\% in communication cost. Additionally, MIND reduces the runtime by approximately 10.34\% compared to the Pencil scheme.
+
+% 采用network-A时，MIND的通信开销和runtime分别为多少MB和多少seconds，对比Pencil通信开销减少 多少MB，效率提升几倍。在采用其他network时，MIND对比Pencil通信开销降低%，效率提升多少X。
+
+
+
+
+Experiments demonstrate that MIND outperforms Pencil in terms of efficiency across various networks in MNIST dataset.
 These results consistently highlight MIND's ability to optimize both communication cost and runtime across various neural network architectures and datasets, showcasing its potential for improving efficiency in privacy-preserving machine learning applications.
 
-\begin{figure}[ht]
-\centering
-\includegraphics[width=1\linewidth]{ACC1.pdf}
-\caption{Comparison of test accuracies using different models trained with or without MIND.} \label{fig:ACC}
-\end{figure}
+
 
 \begin{figure}[ht]
     \centering
     \subfigure[ABY3]{\includegraphics[width=.45\columnwidth]{exp/ABY3.pdf}\label{subfig:ABY3}} \hspace{5pt}
-    \subfigure[Sphinx]{\includegraphics[width=.45\columnwidth]{exp/Sphinx.pdf}\label{subfig:Sphinx}} \\
     % \subfigure[MNIST Quotient 3$\times$128]{\includegraphics[width=.45\columnwidth]{exp/Quotient_3.pdf}\label{subfig:Quotient_3x128}} \hspace{5pt}
-    \subfigure[Chameleon]{\includegraphics[width=.45\columnwidth]{exp/Chameleon.pdf}\label{subfig:Chameleon}} \hspace{5pt}
+    \subfigure[Chameleon]{\includegraphics[width=.45\columnwidth]{exp/Chameleon.pdf}\label{subfig:Chameleon}} \hspace{5pt}\\
+    \subfigure[Sphinx]{\includegraphics[width=.45\columnwidth]{exp/Sphinx.pdf}\label{subfig:Sphinx}} 
      \subfigure[Quotient %2$\times$512%
      ]{\includegraphics[width=.46\columnwidth]{exp/Quotient_2.pdf}\label{subfig:Quotient_2x512}}
     
