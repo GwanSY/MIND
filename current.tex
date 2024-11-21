@@ -103,8 +103,8 @@ bwinzhao@gmail.com}
 \maketitle
 
 \begin{abstract}
-Image processing and analysis capabilities have been revolutionized by the rapid advancement of deep learning technologies. Model inference enables powerful image analytics, however, complex neural networks often require more computing and storage resources than end devices can provide. While Cloud-based model inference helps alleviate the resource constraints of these devices. However, transferring sensitive image data to the cloud server arises significant privacy concerns. Existing approaches usually either encrypt the images locally and send them to the cloud server or deploy the model locally, which fails to exploit the computing capability of the end devices or reveals machine learning model. To this end, in this paper, we proposed MIND, a privacy-preserving model inference framework via end-cloud collaboration. MIND makes the end devices and the cloud server jointly perform layer-by-layer computations required by model inference through cryptographic primitives including the homomorphic cryptosystem and additive secret sharing. For linear layers, MIND always chooses the less expensive option between data encryption and model parameters encryption. 
-Results of experimental evaluations on several models show MIND  effective and outperforms the existing solutions.
+Image processing and analysis capabilities have been revolutionized by the rapid advancement of deep learning technologies. Model inference enables powerful image analytics, however, complex neural networks often require more computing and storage resources than end device can provide. While cloud-based model inference helps alleviate the resource constraints of these devices. However, transferring sensitive image data to the cloud server raises significant privacy concerns. Existing approaches usually either encrypt the images locally and send them to the cloud server or deploy the model locally, which fails to exploit the computing capability of the end device or reveals a machine-learning model. To this end, in this paper, we proposed MIND, a privacy-preserving model inference framework via end-cloud collaboration. MIND makes the end device and the cloud server jointly perform layer-by-layer computations required by model inference through cryptographic primitives including the homomorphic cryptosystem and additive secret sharing. For linear layers, MIND always chooses the less expensive option between data encryption and model parameter encryption. 
+Results of experimental evaluations on several models show MIND is effective and outperforms the existing solutions.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -112,17 +112,17 @@ Homomorphic encryption, secret sharing, model inference, privacy protection.
 \end{IEEEkeywords}
 
 \section{Introduction}
-Advancements in artificial intelligence and cloud computing have revolutionized image processing and analysis across various industries \cite{makridakis2017forthcoming} \cite{zhang2010cloud}. Model inference has become a critical component in cloud-based image processing and analysis, leveraging deep learning models to extract valuable insights from visual data. This approach enables sophisticated image interpretation across various domains, from medical diagnostics to autonomous systems. However, the widespread adoption of cloud-based model inference has raised significant privacy concerns, as it often requires the transmission and processing of sensitive personal data \cite{shokri2017membership}\cite{wang2018stealing}. For instance, facial recognition systems in residential areas and financial institutions' use of image data for commercial purposes exemplify scenarios where user privacy may be compromised \cite{cui2018security}. These practices highlight the tension between leveraging advanced technologies and protecting individual privacy rights.
+Advancements in artificial intelligence and cloud computing have revolutionized image processing and analysis across various industries \cite{makridakis2017forthcoming, zhang2010cloud}. Model inference has become a critical component in cloud-based image processing and analysis, leveraging deep learning models to extract valuable insights from visual data. This approach enables sophisticated image interpretation across various domains, from medical diagnostics to autonomous systems. However, the widespread adoption of cloud-based model inference has raised significant privacy concerns, as it often requires the transmission and processing of sensitive personal data \cite{shokri2017membership, wang2018stealing}. For instance, facial recognition systems in residential areas and financial institutions' use of image data for commercial purposes exemplify scenarios where user privacy may be compromised \cite{cui2018security}. These practices highlight the tension between leveraging advanced technologies and protecting individual privacy rights.
 
 Conventionally, image analysis involves encrypting the entire image before uploading it to the cloud. However, this approach leads to substantial storage and communication overhead due to the size of encrypted images. Additionally, conducting image analysis during transmission poses significant privacy challenges, as sensitive data must be securely handled to prevent unauthorized access \cite{van2014datafication}.
 
-Existing privacy-preserving schemes for model inference attempt to address these concerns through various encryption techniques \cite{fu2020vfl}\cite{yang2012efficient}. Traditional encryption methods, while providing a degree of data security, often introduce substantial computational overhead and communication cost \cite{kerschbaum2012outsourced}. This inefficiency becomes particularly pronounced when dealing with large-scale data, which hinders the practicality of such approaches in real-world scenarios \cite{li2015encdb}. Moreover, current solutions struggle to balance privacy protection, computational efficiency, and communication overhead, especially in end-to-cloud collaborative environments.
+Existing privacy-preserving schemes for model inference attempt to address these concerns through various encryption techniques \cite{fu2020vfl, yang2012efficient}. Traditional encryption methods, while providing a degree of data security, often introduce substantial computational overhead and communication cost \cite{kerschbaum2012outsourced}. This inefficiency becomes particularly pronounced when dealing with large-scale data, which hinders the practicality of such approaches in real-world scenarios \cite{li2015encdb}. Moreover, current solutions struggle to balance privacy protection, computational efficiency, and communication overhead, especially in end-to-cloud collaborative environments.
 % \subsection{Contribution}
 
-To address these limitations, we propose MIND, a novel privacy-preserving model inference framework enabled by end-to-cloud collaboration. MIND integrates advanced technologies such as homomorphic encryption and secret sharing to secure both data and model parameters throughout the inference process. By distributing computational tasks between end devices and cloud servers, MIND enhances data privacy, reduces communication overhead, and maintains inference efficiency. A key feature of MIND is its layered encryption scheme, which dynamically adjusts encryption methods based on the model structure, optimizing computational and communication costs. The main contributions of our work are summarized as follows:
+To address these limitations, we propose MIND, a novel privacy-preserving model inference framework enabled by end-to-cloud collaboration. MIND integrates advanced technologies such as homomorphic encryption and secret sharing to secure both data and model parameters throughout the inference process. By distributing computational tasks between end device and cloud server, MIND enhances data privacy, reduces communication overhead, and maintains inference efficiency. A key feature of MIND is its layered encryption scheme, which dynamically adjusts encryption methods based on the model structure, optimizing computational and communication costs. The main contributions of our work are summarized as follows:
 
 \begin{itemize}
-    \item We propose a novel privacy-preserving model inference framework via end-cloud collaboration, named MIND\footnote{MIND: a privacy-preserving \underline{m}odel \underline{i}nference framework via a\underline{n}d-clou\underline{d} collaboration}. MIND incorporates secret sharing and homomorphic encryption to safeguard sensitive information in both data and models. Additionally, MIND enables collaborative computations between cloud server while ensuring that privacy is not compromised.
+    \item We propose a novel privacy-preserving model inference framework via end-cloud collaboration, named MIND\footnote{MIND: a privacy-preserving \underline{m}odel \underline{i}nference framework via a\underline{n}d-clou\underline{d} collaboration}. MIND incorporates secret sharing and homomorphic encryption to safeguard sensitive information in both data and models. Additionally, MIND enables collaborative computations between cloud servers while ensuring that privacy is not compromised.
     
     \item We present a novel method that employs hierarchical encryption, which introduces a layered approach using both data and parameter encryption. MIND overcomes the limitations of existing solutions while maintaining the original recognition accuracy.
     
@@ -130,15 +130,15 @@ To address these limitations, we propose MIND, a novel privacy-preserving model 
 %第三点还需要修改    
 \end{itemize}
 \section{Related work}
-As the demand for secure data processing in cloud computing environments increases, researchers have conducted various studies to improve the efficiency and privacy protection of collaborative inference methods between cloud servers and end devices. To address these challenges, researchers have proposed numerous solutions based on various technologies. We categorize previous work into three main subcategories.
+As the demand for secure data processing in cloud computing environments increases, researchers have conducted various studies to improve the efficiency and privacy protection of collaborative inference methods between cloud servers and end device. To address these challenges, researchers have proposed numerous solutions based on various technologies. We categorize previous work into three main subcategories.
 
-Federated learning (FL) is an innovative approach to machine learning that prioritizes the privacy of training data. In horizontal FL (e.g., \cite{pmlr-v54-mcmahan17a}, \cite{Gupta2018DistributedLO}, \cite{9252066}), each client (i.e., data owner or end devices) independently trains a local model using its private data and then submits the obfuscated local models to a central model aggregator (i.e., model owner or cloud server). However, because the global model is synchronized during each training iteration, FL does not adequately address the privacy related to the global model. Furthermore, FL tends to disproportionately favor end devices, as each end device gains access to the global model even if they contribute only a small portion of the training data. Consequently, when the server has an exclusive proprietary interest in the final model, FL is not an ideal solution.
+Federated learning (FL) is an innovative approach to machine learning that prioritizes the privacy of training data. In horizontal FL (e.g., \cite{pmlr-v54-mcmahan17a,Gupta2018DistributedLO,9252066}), each client (i.e., data owner or end device) independently trains a local model using its private data and then submits the obfuscated local models to a central model aggregator (i.e., model owner or cloud server). However, because the global model is synchronized during each training iteration, FL does not adequately address the privacy related to the global model. Furthermore, FL tends to disproportionately favor end device, as each end device gains access to the global model even if they contribute only a small portion of the training data. Consequently, when the servers have an exclusive proprietary interest in the final model, FL is not an ideal solution.
 
-To safeguard both data and model privacy, the research community has developed a range of distributed training methods centered on secure multiparty computation (MPC, e.g., \cite{7958569}, \cite{Escudero2020ImprovedPF}, \cite{Dalskov2020FantasticFH}). In these approaches, the typical scenario involves a server-assisted framework where a group of data owners uploads secret-shared versions of their private data to at least two independent, non-colluding third-party servers. These servers collaboratively train the model using the secret-shared data. During the training process, the model itself is also secret-shared across all servers, ensuring complete protection of model privacy. However, as previously mentioned, these approaches face a significant trade-off between the requirements for non-collusion and the need for extensibility.
+To safeguard both data and model privacy, the research community has developed a range of distributed training methods centered on secure multiparty computation (MPC, e.g., \cite{7958569,Escudero2020ImprovedPF,Dalskov2020FantasticFH}). In these approaches, the typical scenario involves a server-assisted framework where a group of data owners uploads secret-shared versions of their private data to at least two independent, non-colluding third-party servers. These servers collaboratively train the model using the secret-shared data. During the training process, the model itself is also secret-shared across all servers, ensuring complete protection of model privacy. However, as previously mentioned, these approaches face a significant trade-off between the requirements for non-collusion and the need for extensibility.
 
-The third subcategory of research depends on homomorphic encryption(HE, e.g, \cite{Nandakumar2019TowardsDN,CiC-1-2-22,9888863,zhao2023identifiable}). In cloud computing \cite{gentry2009fully}, which allows computations to be performed on encrypted data without the need for decryption. This approach makes it feasible to execute complex operations on cloud servers while maintaining data privacy. However, the computational overhead associated with fully HE remains non-trivial when dealing with large-scale data \cite{xu2019cryptonn}. Although Cheon \textit{et al.} \cite{cheon2017homomorphic} have attempted to optimize HE scheme to reduce this overhead, the trade-off between computational efficiency and security continues to be a critical issue.
+The third subcategory of research depends on homomorphic encryption (HE, e.g., \cite{Nandakumar2019TowardsDN, CiC-1-2-22,9888863, zhao2023identifiable}). In cloud computing \cite{gentry2009fully}, which allows computations to be performed on encrypted data without the need for decryption. This approach makes it feasible to execute complex operations on cloud server while maintaining data privacy. However, the computational overhead associated with fully HE remains non-trivial when dealing with large-scale data \cite{xu2019cryptonn}. Although Cheon \textit{et al.} \cite{cheon2017homomorphic} have attempted to optimize the HE to reduce this overhead, the trade-off between computational efficiency and security continues to be a critical issue.
 
-As research progresses, there is a growing interest in leveraging the strengths of both edge and cloud computing to enhance security and efficiency. To leverage the advantages of both approaches, Mao \textit{et al.} \cite{mao2017survey} proposed an end-cloud collaborative model. While this approach shows promise, it imposes certain performance requirements on the end devices and does not effectively address the issue of reducing communication overhead. In a related effort, Akshaya and Khadir \textit{et al.} \cite{kakkad2019biometric} explored approaches to enhance image security in cloud frameworks using biometric authentication and image encryption.
+As research progresses, there is a growing interest in leveraging the strengths of both edge and cloud computing to enhance security and efficiency. To leverage the advantages of both approaches, Mao \textit{et al.} \cite{mao2017survey} proposed an end-cloud collaborative model. While this approach shows promise, it imposes certain performance requirements on the end device and does not effectively address the issue of reducing communication overhead. In a related effort, Akshaya and Khadir \textit{et al.} \cite{kakkad2019biometric} explored approaches to enhance image security in cloud frameworks using biometric authentication and image encryption.
 
 % In summary, the traditional encryption methods for collaborative inference between cloud server and terminals typically involve directly encrypting image data. While this approach can protect data privacy, it has certain limitations in terms of computational efficiency and communication overhead. The end-cloud collaboration has proven to be a promising approach for privacy-preserving data processing, with various models and techniques contributing to its development.  The MIND framework advances this field by addressing the limitations of existing methods and offering a efficient and secure solution for model inference in cloud computing environments.
 
@@ -152,33 +152,27 @@ This section provides some preliminaries of MIND, with a particular focus on HE 
 \toprule
 \textbf{Notations} & \textbf{Description} \\ 
 \midrule
-$pk_e$                                   & Public key of the end devices. \\
-$pk_s$                                   & Public key of the cloud servers. \\
-$sk_e$                                   & Private key of the end devices. \\
-$sk_s$                                   & Private key of the cloud servers. \\
+$pk_e$                                   & Public key of the end device. \\
+$pk_s$                                   & Public key of the cloud server. \\
+$sk_e$                                   & Private key of the end device. \\
+$sk_s$                                   & Private key of the cloud server. \\
 $\llbracket \cdot \rrbracket_{pk_e}$     & Ciphertext encrypted using the public key $pk_e$. \\
 $\llbracket \cdot \rrbracket_{pk_s}$     & Ciphertext encrypted using the public key $pk_s$. \\
 $\langle \cdot \rangle_i$                & Secret share between $ED$ and $S$. \\
-$r_j$                                    & Random vector generated by 
-$ED$ and $S$. \\
-% $w_p$                                    & The model weights of parametric encryption (\PEnc).\\
-% $w_d$                                    & The model weights of data encryption (\DEnc).\\
-$w_j$                                      & Weights of the model in layer $j$. \\
-$b_j$                                      & Bias parameters of the model in layer $j$. \\
-% \multirow{2}{*}{$y_p$}                                    & The intermediate computed result after the encryption \\
-%                                               & of model parameters on the end devices.\\
-$y_j$                                    & Computation result after encryption in layer $j$.\\
-$N_{p}$          & Number of bits representing the model parameters..\\
-$N_{d}$          & Number of bits representing the model data.\\
-\circ            & Linear operator.\\
-\multirow{2}{*}{\oplus}           & Addition operation for two \\                                       & encrypted values in the HE scheme.\\
-\multirow{2}{*}{\ominus}          & Denotes the subtraction of two\\  
-                                  & encrypted values in the HE scheme.\\
-\multirow{2}{*}{\otimes}          & Denotes the multiplication of two\\
-                                  & encrypted values in the HE scheme.\\
+$r_j$                                    & Random vector generated by $ED$ and $S$. \\
+$w_j$                                    & Weights of the model in layer $j$. \\
+$b_j$                                    & Bias parameters of the model in layer $j$. \\
+$y_j$                                    & Computation result after encryption in layer $j$. \\
+$N_{p}$                                  & Number of bits representing the model parameters. \\
+$N_{d}$                                  & Number of bits representing the model data. \\
+$\circ$                                  & Linear operator. \\
+$\oplus$                                 & Addition of two encrypted values through the HE. \\
+$\ominus$                                & Subtraction of two encrypted values through the HE. \\
+$\otimes$                                & Multiplication of two encrypted values through the HE. \\
 \bottomrule
 \end{tabular}
 \end{table}
+
 
 \subsection{Homomorphic Encryption}\label{HE}
 In this work, we consider the BFV-level homomorphic encryption cryptosystem, which is based on the Ring-Learning With Errors (RLWE) problem with residual number system (RNS) optimization \cite{bajard2016full}. Specifically, the BFV scheme takes a set of parameters $\{N, t, q\}$ as input, where $N$ represents the polynomial degree with a power of two, and $t$, $q$ denote the modulus of the plaintext and the ciphertext, respectively. $\mathcal{R}_{t,N} = \mathbb{Z}_t [X]/(X^N + 1)$ is the polynomial ring that denotes the plaintext space, and $\mathcal{R}_{q, N}^2$ defines the ciphertext space.
@@ -206,7 +200,7 @@ where $r$ is a randomly chosen from $\mathbb{Z}_t$.
 \end{equation}
 \end{itemize}
 
-Considering the BFV scheme and integer-based secret sharing, input data may involve decimal numbers rather than integers. The work \cite{liu2024pencilprivateextensiblecollaborative,8611203} convert decimal numbers to integers. In this work, we adopt a fixed-point representation of decimal numbers with a precision of $\ell$ bits, formulated as $x \gets \lfloor \tilde{x} \cdot 2^\ell \rfloor \in \mathbb{Z}$, where $\tilde{x} \in \mathbb{R}$. To avoid overflow, truncation is required after each multiplication operation, and all intermediate results must not exceed $\pm t/2^{2\ell + 1}$ in their decimal form.
+Considering the BFV scheme and integer-based secret sharing, input data may involve decimal numbers rather than integers. These work \cite{liu2024pencilprivateextensiblecollaborative,8611203} convert decimal numbers to integers. In this work, we adopt a fixed-point representation of decimal numbers with a precision of $\ell$ bits, formulated as $x \gets \lfloor \tilde{x} \cdot 2^\ell \rfloor \in \mathbb{Z}$, where $\tilde{x} \in \mathbb{R}$. To avoid overflow, truncation is required after each multiplication operation, and all intermediate results must not exceed $\pm t/2^{2\ell + 1}$ in their decimal form.
 
 \subsection{Forward Propagation in Neural Networks}
 
@@ -234,22 +228,22 @@ In this section, we formalize the system model, threat model, and security objec
 \caption{System model.} \label{fig:system_model}
 \end{figure}
 
-$ED$: The end device ($ED$) serves as the image data owner. $ED$ holds the architecture of a deep learning model along with a set of public and private keys ($pk_e,sk_e$). $ED$ performs iterative computations by interacting with the cloud server using HE and secret splitting. Finally, $ED$ combines the secret shares received from the cloud server and local endpoints to derive inference results.
+$ED$: The end device ($ED$) serves as the image data owner. $ED$ holds the architecture of a deep learning model along with a set of public and private keys ($pk_e,sk_e$). $ED$ performs iterative computations by interacting with the $S$ using HE and secret splitting. Finally, $ED$ combines the secret shares received from the cloud server and local endpoints to derive inference results.
 
-$S$: The cloud server ($S$) acts as an auxiliary computing entity. $S$ stores the parameters of the deep learning model and maintains a set of public and private keys ($pk_s,sk_s$). $S$ engages in iterative computations by interacting with the endpoints through homomorphic encryption and secret splitting. Finally, $S$ sends its secret share of the computations to $ED$.
+$S$: The cloud server ($S$) acts as an auxiliary computing entity. $S$ stores the parameters of the deep learning model and maintains a set of public and private keys ($pk_s,sk_s$). $S$ engages in iterative computations by interacting with the endpoints through HE and secret splitting. Finally, $S$ sends its secret share of the computations to $ED$.
 
 %  TODO: 下面这段话应该放到后面
 %  This architecture ensures both security and efficiency in face recognition processes by distributing computational tasks and securely handling sensitive data. Moreover, it leverages advanced cryptographic techniques to protect data privacy throughout the entire workflow.	
 
 \subsection{Threat Model and Security Goal}
-In our system, the main threats include: attackers intercepting and tampering with image data, model parameters, or computation results transmitted between the $ED$ and $S$, leading to unauthorized access or data manipulation; the cloud server, or a compromised part of it, analyzing shared data to infer the original image or its features, thereby violating user privacy; and attackers targeting the $ED$ or cloud server to gain access to raw or secretly shared data, compromising the security of the entire system. Based on the above threat model, our security goals are listed as follows:
+In our system, the main threats include: attackers intercepting and tampering with image data, model parameters, or computation results transmitted between the $ED$ and $S$, leading to unauthorized access or data manipulation; the cloud server, or a compromised part of it, analyzing shared data to infer the original image or its features, thereby violating user privacy; and attackers targeting the $ED$ or $S$ to gain access to raw or secretly shared data, compromising the security of the entire system. Based on the above threat model, our security goals are listed as follows:
 \begin{itemize}
-     \item \textit{Data integrity and confidentiality}: Before transmitting images to $S$ or sending model parameters to $ED$, the data is encrypted using a public key. During the computation process, a combination of homomorphic encryption and additive secret sharing (e.g., $\langle x \rangle_1$ and $\langle x \rangle_2$) is employed. This ensures that no single server possesses sufficient information to reconstruct the original data. These measures safeguard the image and its features from exposure to unauthorized parties during transmission and storage. Additionally, they ensure the integrity of the data exchanged between $ED$ and $S$, preventing tampering during transit. 
+     \item \textit{Data integrity and confidentiality}: Before transmitting images to $S$ or sending model parameters to $ED$, the data is encrypted using a public key. During the computation process, a combination of HE and additive secret sharing (e.g., $\langle x \rangle_1$ and $\langle x \rangle_2$) is employed. This ensures that no single server possesses sufficient information to reconstruct the original data. These measures safeguard the image and its features from exposure to unauthorized parties during transmission and storage. Additionally, they ensure the integrity of the data exchanged between $ED$ and $S$, preventing tampering during transit. 
      \item \textit{Collusion Resistance}: Ensure that only authorized entities $ED$ and $S$ can access and process encrypted feature vectors, preventing unauthorized inference of biometric information. If one of the servers is compromised or colludes with an attacker, they cannot reconstruct the original feature vectors without the shares from the other server.
  \end{itemize}
  
 \section{MIND Design}
-In this section, we first detail the hierarchical cryptographic inference algorithm designed for the linear layer of the model, followed by describing the design of the algorithm for the nonlinear layer, and finally explaining the whole inference process. Table \ref{table:notations} summarizes the notation used in this paper.
+In this section, we first detail the hierarchical cryptographic inference algorithm designed for the linear layer of the model, followed by describing the design of the algorithm for the nonlinear layer and finally explaining the whole inference process. Table \ref{table:notations} summarizes the notation used in this paper.
 % \subsection{Scheme Construction}
 % 详细解释系统如何实现加法秘密共享和同态加密，包括技术细节和算法。
 
@@ -262,9 +256,9 @@ In this section, we first detail the hierarchical cryptographic inference algori
 
 
 \subsection{Encrypted Inference for Linear Layers }
-Traditional encryption methods for collaborative inference between cloud servers and end devices often encrypt image data directly. Although this approach protects data privacy, it has limitations in terms of computational efficiency and communication overhead. To address these issues, we propose MIND, a novel end-cloud collaborative encryption method. This new approach divides the encryption process into two parts: model parameter encryption and image data encryption. As shown in Figure\ref{fig:MIND Overview} ,our method applies these two encryption techniques to different linear network layers. This division allows for a more efficient and flexible approach to data protection.
+Traditional encryption methods for collaborative inference between cloud server and end device often encrypt image data directly. Although this approach protects data privacy, it has limitations in terms of computational efficiency and communication overhead. To address these issues, we propose MIND, a novel end-cloud collaborative encryption method. This new approach divides the encryption process into two parts: model parameter encryption and image data encryption. As shown in Figure \ref{fig:MIND Overview} , our method applies these two encryption techniques to different linear network layers. This division allows for a more efficient and flexible approach to data protection.
 
-In the \PEnc~algorithm (Algorithm \ref{alg:Parameter}), the inputs include $\langle x_{j-1}\rangle_1$ and $\langle x_{j-1}\rangle_2$ as the feature vector to be encryted, the weight $w_{j-1}$, and the bias $b_{j-1}$. Specifically, $ED$ holds $\langle x_{j-1}\rangle_1$, while $S$ holds $\langle x_{j-1}\rangle_2$, $w_{j-1}$ and $b_{j-1}$. As described in \PEnc~, $S$ encrypts the model weights $w_{j-1}$ using the public key $pk_s$ and transmitting the encrypted weights $\llbracket w_{j-1} \rrbracket_{pk_s}$ to $ED$. Upon receiving $\llbracket w_{j-1} \rrbracket_{pk_s}$, $ED$ performs a homomorphic multiplication operation to evaluate the product of $\llbracket w_{j-1} \rrbracket_{pk_s}$ and $\langle x_{j-1} \rangle_1$, yielding the result $\llbracket w_{j-1} \langle x_{j-1} \rangle_1\rrbracket_{pk_s} = \llbracket w_{j-1} \times \langle x_{j-1} \rangle_1 \rrbracket_{pk_s}$. Subsequently, $ED$ introduces a random number $r_{j-1}\in \mathbb{Z}_t$ and calculates the encrypted result $\llbracket C \rrbracket_{pk_s}=\llbracket w_{j-1} \langle x_{j-1} \rangle_1 + r_{j-1} \rrbracket_{pk_s}$, which is then sent back to $S$. $S$ decrypts $\llbracket C \rrbracket_{pk_s}$ to retrieve the value $w_{j-1}\langle x_{j-1} \rangle_1+r_{j-1}$. Next, $S$ calculates the result $\langle y_j\rangle_2= w_{j-1}(\langle x_{j-1} \rangle_1 + \langle x_{j-1} \rangle_2)+r_{j-1}+b_{j-1}=w_{j-1}x+r_{j-1}+b_{j-1}$, $ED$ obtains the result $\langle y_j\rangle_1=-r_{j-1}$. 
+In the \PEnc~algorithm (Algorithm \ref{alg:Parameter}), the inputs include $\langle x_{j-1}\rangle_1$ and $\langle x_{j-1}\rangle_2$ as the feature vector to be encryted, the weight $w_{j-1}$, and the bias $b_{j-1}$. Specifically, $ED$ holds $\langle x_{j-1}\rangle_1$, while $S$ holds $\langle x_{j-1}\rangle_2$, $w_{j-1}$ and $b_{j-1}$. As described in \PEnc~, $S$ encrypts the model weights $w_{j-1}$ using the public key $pk_s$ and transmits the encrypted weights $\llbracket w_{j-1} \rrbracket_{pk_s}$ to $ED$. Upon receiving $\llbracket w_{j-1} \rrbracket_{pk_s}$, $ED$ performs a homomorphic multiplication operation to evaluate the product of $\llbracket w_{j-1} \rrbracket_{pk_s}$ and $\langle x_{j-1} \rangle_1$, yielding the result $\llbracket w_{j-1} \langle x_{j-1} \rangle_1\rrbracket_{pk_s} = \llbracket w_{j-1} \times \langle x_{j-1} \rangle_1 \rrbracket_{pk_s}$. Subsequently, $ED$ introduces a random number $r_{j-1}\in \mathbb{Z}_t$ and calculates the encrypted result $\llbracket C \rrbracket_{pk_s}=\llbracket w_{j-1} \langle x_{j-1} \rangle_1 + r_{j-1} \rrbracket_{pk_s}$, which is then sent back to $S$. $S$ decrypts $\llbracket C \rrbracket_{pk_s}$ to retrieve the value $w_{j-1}\langle x_{j-1} \rangle_1+r_{j-1}$. Next, $S$ calculates the result $\langle y_j\rangle_2= w_{j-1}(\langle x_{j-1} \rangle_1 + \langle x_{j-1} \rangle_2)+r_{j-1}+b_{j-1}=w_{j-1}x+r_{j-1}+b_{j-1}$, $ED$ obtains the result $\langle y_j\rangle_1=-r_{j-1}$. 
 \begin{algorithm}[htbp]
 	\caption{\PEnc$(\langle x_{j-1} \rangle_1,\langle x_{j-1} \rangle_2,w_{j-1},b_{j-1}) \rightarrow (\langle y_j\rangle_1, \langle y_j\rangle_2)$}
     \label{alg:Parameter}
@@ -287,7 +281,7 @@ In the \PEnc~algorithm (Algorithm \ref{alg:Parameter}), the inputs include $\lan
 
 In the \DEnc~algorithm (Algorithm \ref{alg:DataHE}), the inputs include $\langle y_j\rangle_1$ and $\langle  y_j\rangle_2$ as the encrypted outputs from the previous operation, the weight $w_j$, and the bias $b_j$. Specifically, $ED$ holds $\langle y_j\rangle_1$, while $S$ holds $\langle y_j\rangle_2$, $w_j$ and $b_j$. As illustrated in \DEnc~, $ED$ encrypts its secret share $\langle y_j \rangle_1$ of the held data using the public key $pk_e$ and transmits $\llbracket\langle y_j \rangle_1\rrbracket_{pk_e}$ to server $S$ for model inference. Upon receiving the encrypted secret share, $S$ performs a homomorphic addition operation to combine the two encrypted portions of the secret share, $\llbracket\langle y_j \rangle_1\rrbracket_{pk_e}$ and $\llbracket\langle y_j \rangle_2\rrbracket_{pk_e}$, into a single encrypted value $\llbracket y_j \rrbracket_{pk_e}=\llbracket \langle y_j \rangle_1 +  \langle y_j \rangle_2\rrbracket_{pk_e}$. After that, $S$ performs homomorphic multiplication between the $\llbracket y_j \rrbracket_{pk_e}$ and the model weights $w_j$ as $\llbracket y_j\times w_j \rrbracket_{pk_e}$. Simultaneously, a random number $r_2 \in \mathbb{Z}_t$ is generated and summed with the result. This step ensures that the data remains encrypted throughout the computation process, maintaining data privacy and security during inference.
  
-After $S$ completes the homomorphic encryption operations, it sends its computed share back to $ED$. At this point, both servers possess partial results, $\langle y_{j+1} \rangle_1$ and $\langle y_{j+1} \rangle_2$, which are the respective secret shares. These secret shares are then combined through a secure protocol to reconstruct the complete result $y_{j+1}$.
+After $S$ completes the HE operations, it sends its computed share back to $ED$. At this point, both servers possess partial results, $\langle y_{j+1} \rangle_1$ and $\langle y_{j+1} \rangle_2$, which are the respective secret shares. These secret shares are then combined through a secure protocol to reconstruct the complete result $y_{j+1}$.
 \begin{algorithm}[htbp]
 	\caption{\DEnc$(\langle y_j \rangle_1,\langle y_j \rangle_2,w_{j},b_{j}) \rightarrow (\langle y_{j+1}\rangle_1,\langle y_{j+1}\rangle_2)$\!\!\!\!\!}
     \label{alg:DataHE}
@@ -316,7 +310,7 @@ After $S$ completes the homomorphic encryption operations, it sends its computed
 % Then $ED$ and $S$ are safely combined to reconstruct the complete result $y=wx+b$.
 \subsection{Encrypted Inference for Non-Linear Layers}
 
-In the nonlinear layer, we continue the approach used in \cite{279898}. Specifically, in cryptographic inference, forward propagation in the nonlinear layer mainly involves operations such as rectified linear function (ReLU) and 2D Average Pooling.
+In the nonlinear layer, we continue the approach used in the work \cite{279898}. Specifically, in cryptographic inference, forward propagation in the nonlinear layer mainly involves operations such as rectified linear function (ReLU) and 2D Average Pooling.
 
  For ReLU, defined as $ReLU(x)=max\{0,x\}$, the computation in an encrypted environment is performed as follows:
  
@@ -352,7 +346,7 @@ After non-linear operations (e.g., ReLU and pooling), the outputs are truncated 
 % \caption{System model.} \label{fig:MIND Overview}
 % \end{figure}
 
-In this inference process, we consider $ED$ holds an image $img$ with the size $n\times m$, and a main computational cloud server $S$ storing the model $M$. The model $M$ is consisted of a sequence of sub-models: $M=M_1 || M_2 || \dots || M_l$, where each model $M_j$ is characterized by specific weights $w_{j}$ and biases $b_{j}$ for $j \in \{1, 2, \dots, l\}$. Formally, $M$ can be represented as a collection of layer-specific parameters $M=\{(w_{1},b_{1}),(w_{2},b_{2}),\dots,(w_{l},b_{l})\}$, where $l$ denotes the number of layers in $M$. This representation encapsulates the complete structure of the neural network model.
+In this inference process, we consider $ED$ holds an image $img$ with the size $n\times m$, and a main computational $S$ storing the model $M$. The model $M$ is consisted of a sequence of sub-models: $M=M_1 || M_2 || \dots || M_l$, where each model $M_j$ is characterized by specific weights $w_{j}$ and biases $b_{j}$ for $j \in \{1, 2, \dots, l\}$. Formally, $M$ can be represented as a collection of layer-specific parameters $M=\{(w_{1},b_{1}),(w_{2},b_{2}),\dots,(w_{l},b_{l})\}$, where $l$ denotes the number of layers in $M$. This representation encapsulates the complete structure of the neural network model.
 
 The computation at each layer is denoted as $x_j = f_j(x_{j-1})$, where $x_j=\langle x_j \rangle_1 + \langle x_j \rangle_2$. Here, $\langle x_j \rangle_1$ and $\langle x_j \rangle_2$ represent secret shares held by $ED$ and $S$ respectively. The secure computation protocol $f_j$ generates these shares according to the following equation:
 \begin{equation}
@@ -426,8 +420,8 @@ In summary, this algorithm ensures that the computational process is carried out
 
 \section{Experimental Evaluations}
 
-In this section, we first compare the effectiveness of MIND and previous work Pencil\cite{liu2024pencilprivateextensiblecollaborative} in terms of effectiveness, including accuracy, Macro F1 Score, Weighted F1 Score, and Micro F1 Score.
-The encryption method proposed by MIND encrypts user inputs or server parameters based on the characteristics of each layer, whereas Pencil only encrypt user inputs.
+In this section, we first compare the effectiveness of MIND and previous work Pencil \cite{liu2024pencilprivateextensiblecollaborative} in terms of effectiveness, including accuracy (Acc), macro precision (M-Pre), macro recall (M-Rec), and macro F1 score (M-F1).
+The encryption method proposed by MIND encrypts user inputs or server parameters based on the characteristics of each layer, whereas Pencil only encrypts user inputs.
 Subsequently, we compare the efficiency and communication complexity of MIND with that of Pencil.
 
 
@@ -444,11 +438,11 @@ Subsequently, we compare the efficiency and communication complexity of MIND wit
 
 
 
-\subsubsection{Datasets} 
-We use the MNIST dataset\cite{xiao2017fashion}a widely recognized benchmark in machine learning and computer vision research. MNIST consists of 70,000 grayscale images of handwritten digits, including 60,000 training samples and 10,000 test samples. Each image is represented as a 28$\times$28 pixel matrix, where each pixel indicates the intensity of grayscale values ranging from 0 to 255. 
+\subsubsection{Dataset} 
+We use the MNIST dataset \cite{xiao2017fashion} a widely recognized benchmark in machine learning and computer vision research. MNIST consists of 70,000 grayscale images of handwritten digits, including 60,000 training samples and 10,000 test samples. Each image is represented as a 28$\times$28 pixel matrix, where each pixel indicates the intensity of grayscale values ranging from 0 to 255. 
 % The CIFAR-10 dataset is a classic image classification dataset consisting of 60000 32 × 32 color images from 10 categories, with 50000 for training and 10000 for testing. These categories include airplanes, cars, birds, cats, deer, dogs, frogs, horses, boats, and trucks. 
 % These datasets are widely used for developing and evaluating image classification models due to their simplicity and versatility. 
-It serves as standards for testing various preprocessing, feature extraction, and classification techniques, providing a consistent basis for evaluating model performance.
+It serves as a standard for testing various preprocessing, feature extraction, and classification techniques, providing a consistent basis for evaluating model performance.
 % We employ the widely used MNIST\cite{xiao2017fashion} to train and evaluate our models. To ensure the data is suitable for model input, the following preprocessing steps are applied. The MNIST dataset consists of 60,000 training images and 10,000 test images, each a 28$\times$28 pixel grayscale image of handwritten digits. We normalize the pixel values to the [0, 1] range and implemente data augmentation techniques such as random rotations and translations during training. We standardize these images so that pixel values for each channel have zero mean and unit variance. We train each neural network on the training dataset for 10 epochs. To further improve the model's generalization ability, we apply data augmentation techniques, including random cropping, horizontal flipping, and color jittering.
 % \subsubsection{Parameters} 
 % The learning rate $\eta$ is set to 0.01 to accelerate model convergence while maintaining stability. For the MNIST dataset, a batch size $B$ of 32 is used. The momentum $\gamma$ is configured at 0.8 to effectively smooth the update process and reduce gradient oscillations during training. Additionally, the gradient bound estimation $C$ is set to 8 to limit the gradient's maximum value, preventing gradient explosion.
@@ -459,13 +453,13 @@ We chose four commonly used neural networks in privacy-preserving machine learni
 
 \begin{itemize}
     \item \textbf{Network-A.}
-    Network-A is a fully connected deep neural network (DNN) designed for MNIST classification. It starts with a Flatten layer converting 1×28×28 input into a vector of size 784. The first Linear layer maps size 784 to 128 with ReLU, followed by another Linear layer mapping size 128 to 128 with ReLU. The final Linear layer maps size 128 to 10, representing class probabilities.
+    Network-A is a fully connected deep neural network (DNN) designed for MNIST classification. It starts with a flatten layer converting 1×28×28 input into a vector of size 784. The first linear layer maps size 784 to 128 with ReLU, followed by another linear layer mapping size 128 to 128 with ReLU. The final linear layer maps size 128 to 10, representing class probabilities.
     \item \textbf{Network-B.}
-    Network-B is a 3-layer CNN for MNIST classification. It begins with a Conv2d layer (input: 1×28×28, kernel: 5×5, stride: 2, padding: 2) producing 5 output channels (5×14×14), followed by ReLU. A Flatten layer converts the feature map into a vector of size 980. A Linear layer maps this to size 100, followed by ReLU, and another Linear layer maps it to size 10 for classification probabilities.
+    Network-B is a 3-layer CNN for MNIST classification. It begins with a conv2d layer (input: 1×28×28, kernel: 5×5, stride: 2, padding: 2) producing 5 output channels (5×14×14), followed by ReLU. A flatten layer converts the feature map into a vector of size 980. A linear layer maps this to size 100, followed by ReLU, and another linear layer maps it to size 10 for classification probabilities.
     \item \textbf{Network-C.}
-    Network-C is a 5-layer CNN for MNIST classification. It starts with a Conv2d layer (kernel size 5×5, 16 output channels) reducing the input size from 1×28×28 to 16×24×24, followed by ReLU and AvgPool2d (stride 2), resulting in 16×12×12. A second Conv2d layer (16 output channels, kernel (5×5) reduces the size to 16×8×8, followed by ReLU and AvgPool2d, yielding 16×4×4. The feature map is flattened into a vector of size 256, passed through a Linear layer (256 to 100, with ReLU) and another Linear layer (100 to 10) for classification.
+    Network-C is a 5-layer CNN for MNIST classification. It starts with a conv2d layer (kernel size 5×5, 16 output channels) reducing the input size from 1×28×28 to 16×24×24, followed by ReLU and avgPool2d (stride 2), resulting in 16×12×12. A second conv2d layer (16 output channels, kernel (5×5) reduces the size to 16×8×8, followed by ReLU and avgPool2d, yielding 16×4×4. The feature map is flattened into a vector of size 256, passed through a linear layer (256 to 100, with ReLU) and another linear layer (100 to 10) for classification.
     \item \textbf{Network-D.}
-    Network-D is a 3-layer Deep Neural Network (DNN) designed for MNIST classification. It starts with a Flatten layer that converts the input 1×28×28 into a vector of size 784. The first Linear layer maps this vector to size 512, followed by a ReLU activation. The second Linear layer maps the vector of size 512 to another vector of size 512, also followed by ReLU. The final Linear layer maps the vector of size 512 to size 10, representing class probabilities.
+    Network-D is a 3-layer deep neural network (DNN) designed for MNIST classification. It starts with a flatten layer that converts the input 1×28×28 into a vector of size 784. The first linear layer maps this vector to size 512, followed by a ReLU activation. The second linear layer maps the vector of size 512 to another vector of size 512, also followed by ReLU. The final linear layer maps the vector of size 512 to size 10, representing class probabilities.
     % \item AlexNet.
     % AlexNet is a classic convolutional neural network structure consisting of 8 layers, where the first 5 layers are convolutional layers used to extract image features, and the last 3 layers are fully connected layers used for classification tasks, ultimately outputting class probabilities through Softmax.
     % \item ResNet50.
@@ -484,9 +478,9 @@ We chose four commonly used neural networks in privacy-preserving machine learni
 
 
 \subsection{Effectiveness}
-In this subsection, we compare the effectiveness of secure inference across different networks on the MNIST dataset with MIND and Pencil \cite{liu2024pencilprivateextensiblecollaborative}.
-Specifically, the evaluation focuses on comparing the accuracy, precision, Macro F1 Score, Weighted F1 Score, and Micro F1 Score between MIND and Pencil.
-MIND starts by proposing a layer-wise adaptive encryption method, which encrypts the data and parameters with relatively smaller sizes at each layer, while Pencil only encrypts the data.
+In this subsection, we compare the effectiveness of secure inference across different networks on the MNIST dataset with MIND and Pencil \cite{liu2024pencilprivateextensiblecollaborative}, and the baseline without any privacy preservation.
+Specifically, the evaluation focuses on comparing the accuracy, macro precision, macro recall, and macro F1 score between MIND, Pencil, and baseline.
+MIND starts by proposing a layer-wise adaptive encryption method, which encrypts the data or parameters with relatively smaller sizes at each layer, while Pencil only encrypts the data. The baseline, without any encryption, serves as a reference for the performance in the absence of privacy protection.
 
 
 
@@ -507,16 +501,13 @@ MIND starts by proposing a layer-wise adaptive encryption method, which encrypts
 % The data presented in Table \ref{tab:performance_comparison_scheme} indicates that all tested models perform consistently in both the Pencil and MIND schemes. In the MNIST dataset, protocols like ABY3, Chameleon, Sphinx, and Quotient show nearly identical precision, recall, and F1 scores in both environments. 
 
 
+Table \ref{tab:performance_comparison_scheme} shows that when using Network-A for privacy-preserving secure inference on the MNIST dataset, the baseline, MIND, and Pencil all achieve identical results, with an accuracy, macro precision, macro recall, and macro F1 score of 97.87\%, 97.85\%, 97.85\%, and 97.85\%, respectively. The performance of the remaining networks is also similar.
 
+% Table \ref{tab:performance_comparison_scheme} shows that when using Network-A for privacy-preserving secure inference on the MNIST dataset, MIND achieves an accuracy, Macro precision, Macro Recall, and Macro F1 Score of 0.9787, 0.9785, 0.9785, and 0.9785, respectively. In contrast, Pencil achieves an accuracy, Macro precision, Macro Recall, and Macro F1 Score of 0.9787, 0.9785, 0.9785, and 0.9785, respectively. The performance of the remaining networks is similar.
 
-Table \ref{tab:performance_comparison_scheme} shows that when using Network-A for privacy-preserving secure inference on the MNIST dataset, MIND achieves an accuracy, Macro F1 Score, Weighted F1 Score, and Micro F1 Score of 0.9787, 0.9785, 0.9787, and 0.9786, respectively. In contrast, Pencil achieves an accuracy, Macro F1 Score, Weighted F1 Score, and Micro F1 Score of 0.9787, 0.9785, 0.9787, and 0.9786, respectively. The performance of the remaining networks is similar. Note that the values in Table \ref{tab:performance_comparison_scheme} are scaled by a factor of 100 for clarity.
-
-
-
-
-The results indicate that when performing secure inference on the MNIST dataset using different networks, MIND exhibits nearly identical Macro F1 Score, Weighted F1 Score, and Micro F1 Score compared to previous secure inference work \cite{liu2024pencilprivateextensiblecollaborative}.
+The results indicate that when performing secure inference on the MNIST dataset using different networks, MIND exhibits nearly identical macro precision, macro recall, and macro F1 score compared to previous secure inference work \cite{liu2024pencilprivateextensiblecollaborative}.
 It is worth noting that MIND does not significantly affect model effectiveness, especially in simpler tasks. 
-This suggests that MIND is effective in achieving privacy preserving secure inference while maintaining model accuracy.
+This suggests that MIND is effective in achieving privacy-preserving secure inference while maintaining model accuracy.
 
 
 
@@ -535,27 +526,27 @@ This suggests that MIND is effective in achieving privacy preserving secure infe
 \hline
 \multirow{2}{*}{Dataset} & \multirow{2}{*}{Network} & \multirow{2}{*}{Scheme} & \multicolumn{4}{c}{Metric} \\ 
 \cline{4-7}
-                      &                        &                        & \textbf{Acc.} & \textbf{Macro F1} & \textbf{Wtd F1} & \textbf{Micro F1} \\ 
+                      &                        &                        & \textbf{Acc.} & \textbf{M-Pre} & \textbf{M-Rec} & \textbf{M-F1} \\ 
 \hline
-\multirow{8}{*}{MNIST}   & \multirow{3}{*}{Network-A}  
-                         & Baseline & 97.87 & 97.85 & 97.87 & 97.86 \\ 
-                         &           & Pencil & 97.87 & 97.85 & 97.87 & 97.86 \\ 
-                         &            & MIND    & 97.87 & 97.85 & 97.87 & 97.86 \\ 
+\multirow{12}{*}{MNIST}   & \multirow{3}{*}{Network-A}  
+                         & Baseline & 97.87 & 97.85 & 97.85 & 97.85 \\ 
+                         &           & Pencil & 97.87 & 97.85 & 97.85 & 97.85 \\ 
+                         &            & MIND    & 97.87 & 97.85 & 97.85 & 97.85 \\ 
 \cline{2-7}
                       & \multirow{3}{*}{Network-B}
-                      & Baseline & 98.55 & 98.54 & 98.55 & 98.54 \\
-                      &           & Pencil & 98.55 & 98.54 & 98.55 & 98.54 \\ 
-                      &            & MIND    & 98.55 & 98.54 & 98.55 & 98.54 \\ 
+                      & Baseline & 98.55 & 98.54 & 98.54 & 98.54 \\
+                      &           & Pencil & 98.55 & 98.54 & 98.54 & 98.54 \\ 
+                      &            & MIND    & 98.55 & 98.54 & 98.54 & 98.54 \\ 
 \cline{2-7}
                       & \multirow{3}{*}{Network-C}    
                       & Baseline & 99.11 & 99.10 & 99.11 & 99.10 \\
-                      &          & Pencil & 99.11 & 99.10 & 99.11 & 99.10 \\ 
-                      &            & MIND    & 99.11 & 99.10 & 99.11 & 99.10 \\ 
+                      &          & Pencil & 99.11 & 99.10 & 99.10 & 99.10 \\ 
+                      &            & MIND    & 99.11 & 99.10 & 99.10 & 99.10 \\ 
 \cline{2-7}
                       & \multirow{3}{*}{Network-D}
-                      & Baseline & 98.06 & 98.05 & 98.05 & 98.04 \\
-                      &         & Pencil & 98.06 & 98.04 & 98.06 & 98.05 \\ 
-                      &            & MIND    & 98.06 & 98.04 & 98.06 & 98.05 \\ 
+                      & Baseline & 98.06 & 98.05 & 98.05 & 98.05 \\
+                      &         & Pencil & 98.06 & 98.05 & 98.05 & 98.04 \\ 
+                      &            & MIND    & 98.06 & 98.05 & 98.05 & 98.04 \\ 
 \hline
 % \multirow{4}{*}{CIFAR-10} & \multirow{2}{*}{AlexNet}    & Pencil  &  0.867  & 0.866  & 0.867 & 0.867  \\ 
 %                       &            & MIND    &  0.867  & 0.866  & 0.867 & 0.867  \\ 
@@ -572,10 +563,12 @@ This suggests that MIND is effective in achieving privacy preserving secure infe
 \begin{flushleft}
 \begin{adjustwidth}{2pt}{2pt}  % 这里调整Note与左右边界的距离
 \textbf{Note.}
-$\text{Accuracy} = \frac{\text{TP} + \text{TN}}{\text{TP} + \text{TN} + \text{FP} + \text{FN}}$,
-$\text{Macro Precision} = \frac{1}{N} \sum_{i=1}^{N} \frac{\text{TP}_i}{\text{TP}_i + \text{FP}_i}$, \\
-$\text{Macro Recall} = \frac{1}{N} \sum_{i=1}^{N} \frac{\text{TP}_i}{\text{TP}_i + \text{FN}_i}$, \\
-$\text{Macro F1} = \frac{1}{N} \sum_{i=1}^{N} 2 \times \frac{\text{Precision}_i \times \text{Recall}_i}{\text{Precision}_i + \text{Recall}_i}$, \\
+All values in the table are presented as percentages (\%).
+$\text{Acc} = \frac{\text{TP} + \text{TN}}{\text{TP} + \text{TN} + \text{FP} + \text{FN}}$,
+$\text{M-Pre} = \frac{1}{N} \sum_{i=1}^{N} \frac{\text{TP}_i}{\text{TP}_i + \text{FP}_i}$, \\
+$\text{M-Rec} = \frac{1}{N} \sum_{i=1}^{N} \frac{\text{TP}_i}{\text{TP}_i + \text{FN}_i}$, \\
+$\text{M-F1} = \frac{1}{N} \sum_{i=1}^{N} 2 \times \frac{\text{Precision}_i \times \text{Recall}_i}{\text{Precision}_i + \text{Recall}_i}$, \\
+
 % $\text{Weighted F1} = \frac{\sum_{i=1}^{N} w_i \cdot F1_i}{\sum_{i=1}^{N} w_i}$, 
 % where $w_i = \frac{\text{TP}_i + \text{FN}_i}{\sum_{j=1}^{N} (\text{TP}_j + \text{FN}_j)}$, \\
 % $\text{Micro Precision} = \frac{\sum_{i=1}^{N} \text{TP}_i}{\sum_{i=1}^{N} (\text{TP}_i + \text{FP}_i)}$, \\
@@ -664,9 +657,6 @@ Subsequently, we further compare MIND and Pencil \cite{liu2024pencilprivateexten
 % The results are averaged over multiple experiments to ensure reliability.
 Specifically, Pencil considers transferring the complex homomorphic operations from the online phase to the offline phase to improve efficiency, and MIND is also applicable to these optimizations.
 For fairness, neither MIND nor Pencil adopts the above-mentioned optimization schemes in the experiments.
-
-
-
 
 
 
