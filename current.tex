@@ -136,14 +136,14 @@ Federated learning (FL) is an innovative approach to machine learning that prior
 
 To safeguard both data and model privacy, the research community has developed a range of distributed training methods centered on secure multiparty computation (MPC, e.g., \cite{7958569}, \cite{Escudero2020ImprovedPF}, \cite{Dalskov2020FantasticFH}). In these approaches, the typical scenario involves a server-assisted framework where a group of data owners uploads secret-shared versions of their private data to at least two independent, non-colluding third-party servers. These servers collaboratively train the model using the secret-shared data. During the training process, the model itself is also secret-shared across all servers, ensuring complete protection of model privacy. However, as previously mentioned, these approaches face a significant trade-off between the requirements for non-collusion and the need for extensibility.
 
-The third subcategory of research depends on homomorphic encryption (HE, e.g, \cite{Nandakumar2019TowardsDN,CiC-1-2-22,9888863,zhao2023identifiable}). In cloud computing \cite{gentry2009fully}, which allows computations to be performed on encrypted data without the need for decryption. This approach makes it feasible to execute complex operations on cloud servers while maintaining data privacy. However, the computational overhead associated with fully homomorphic encryption remains non-trivial when dealing with large-scale data \cite{xu2019cryptonn}. Although Cheon \textit{et al.} \cite{cheon2017homomorphic} have attempted to optimize homomorphic encryption scheme to reduce this overhead, the trade-off between computational efficiency and security continues to be a critical issue.
+The third subcategory of research depends on homomorphic encryption(HE, e.g, \cite{Nandakumar2019TowardsDN,CiC-1-2-22,9888863,zhao2023identifiable}). In cloud computing \cite{gentry2009fully}, which allows computations to be performed on encrypted data without the need for decryption. This approach makes it feasible to execute complex operations on cloud servers while maintaining data privacy. However, the computational overhead associated with fully HE remains non-trivial when dealing with large-scale data \cite{xu2019cryptonn}. Although Cheon \textit{et al.} \cite{cheon2017homomorphic} have attempted to optimize HE scheme to reduce this overhead, the trade-off between computational efficiency and security continues to be a critical issue.
 
 As research progresses, there is a growing interest in leveraging the strengths of both edge and cloud computing to enhance security and efficiency. To leverage the advantages of both approaches, Mao \textit{et al.} \cite{mao2017survey} proposed an end-cloud collaborative model. While this approach shows promise, it imposes certain performance requirements on the end devices and does not effectively address the issue of reducing communication overhead. In a related effort, Akshaya and Khadir \textit{et al.} \cite{kakkad2019biometric} explored approaches to enhance image security in cloud frameworks using biometric authentication and image encryption.
 
 % In summary, the traditional encryption methods for collaborative inference between cloud server and terminals typically involve directly encrypting image data. While this approach can protect data privacy, it has certain limitations in terms of computational efficiency and communication overhead. The end-cloud collaboration has proven to be a promising approach for privacy-preserving data processing, with various models and techniques contributing to its development.  The MIND framework advances this field by addressing the limitations of existing methods and offering a efficient and secure solution for model inference in cloud computing environments.
 
 \section{Preliminaries}
-This section provides some preliminaries of MIND, with a particular focus on homomorphic encryption and additive secret sharing.
+This section provides some preliminaries of MIND, with a particular focus on HE and additive secret sharing.
 \begin{table}[h]
 \centering
 \caption{Notations}
@@ -181,7 +181,7 @@ $N_{d}$          & Number of bits representing the model data.\\
 \end{table}
 
 \subsection{Homomorphic Encryption}\label{HE}
-In this work, we consider the BFV-level homomorphic encryption homomorphic encryption cryptosystem, which is based on the Ring-Learning With Errors (RLWE) problem with residual number system (RNS) optimization \cite{bajard2016full}. Specifically, the BFV scheme takes a set of parameters $\{N, t, q\}$ as input, where $N$ represents the polynomial degree with a power of two, and $t$, $q$ denote the modulus of the plaintext and the ciphertext, respectively. $\mathcal{R}_{t,N} = \mathbb{Z}_t [X]/(X^N + 1)$ is the polynomial ring that denotes the plaintext space, and $\mathcal{R}_{q, N}^2$ defines the ciphertext space.
+In this work, we consider the BFV-level homomorphic encryption cryptosystem, which is based on the Ring-Learning With Errors (RLWE) problem with residual number system (RNS) optimization \cite{bajard2016full}. Specifically, the BFV scheme takes a set of parameters $\{N, t, q\}$ as input, where $N$ represents the polynomial degree with a power of two, and $t$, $q$ denote the modulus of the plaintext and the ciphertext, respectively. $\mathcal{R}_{t,N} = \mathbb{Z}_t [X]/(X^N + 1)$ is the polynomial ring that denotes the plaintext space, and $\mathcal{R}_{q, N}^2$ defines the ciphertext space.
 
 The BFV scheme based on RLWE supports additive homomorphism and multiplication homomorphism. Given two ciphertexts $\llbracket x \rrbracket_{pk}$ and $\llbracket y \rrbracket_{pk}$ encrypted with public key $pk$, the addition $\oplus$ (also subtraction $\ominus$) and multiplication $\otimes$ of polynomials in the encrypted domain are formulated in the following:
 \begin{equation*}
@@ -234,7 +234,7 @@ In this section, we formalize the system model, threat model, and security objec
 \caption{System model.} \label{fig:system_model}
 \end{figure}
 
-$ED$: The end device ($ED$) serves as the image data owner. $ED$ holds the architecture of a deep learning model along with a set of public and private keys ($pk_e,sk_e$). $ED$ performs iterative computations by interacting with the cloud server using homomorphic encryption and secret splitting. Finally, $ED$ combines the secret shares received from the cloud server and local endpoints to derive inference results.
+$ED$: The end device ($ED$) serves as the image data owner. $ED$ holds the architecture of a deep learning model along with a set of public and private keys ($pk_e,sk_e$). $ED$ performs iterative computations by interacting with the cloud server using HE and secret splitting. Finally, $ED$ combines the secret shares received from the cloud server and local endpoints to derive inference results.
 
 $S$: The cloud server ($S$) acts as an auxiliary computing entity. $S$ stores the parameters of the deep learning model and maintains a set of public and private keys ($pk_s,sk_s$). $S$ engages in iterative computations by interacting with the endpoints through homomorphic encryption and secret splitting. Finally, $S$ sends its secret share of the computations to $ED$.
 
@@ -426,7 +426,7 @@ In summary, this algorithm ensures that the computational process is carried out
 
 \section{Experimental Evaluations}
 
-In this section, we first compare the effectiveness of MIND and previous work Pencil\cite{liu2024pencilprivateextensiblecollaborative} in terms of effectiveness, including accuracy, precision, recall and F1 score.
+In this section, we first compare the effectiveness of MIND and previous work Pencil\cite{liu2024pencilprivateextensiblecollaborative} in terms of effectiveness, including accuracy, Macro F1 Score, Weighted F1 Score, and Micro F1 Score.
 The encryption method proposed by MIND encrypts user inputs or server parameters based on the characteristics of each layer, whereas Pencil only encrypt user inputs.
 Subsequently, we compare the efficiency and communication complexity of MIND with that of Pencil.
 
@@ -458,13 +458,13 @@ We chose four commonly used neural networks in privacy-preserving machine learni
 
 
 \begin{itemize}
-    \item Network-A.
+    \item \textbf{Network-A.}
     Network-A is a fully connected deep neural network (DNN) designed for MNIST classification. It starts with a Flatten layer converting 1×28×28 input into a vector of size 784. The first Linear layer maps size 784 to 128 with ReLU, followed by another Linear layer mapping size 128 to 128 with ReLU. The final Linear layer maps size 128 to 10, representing class probabilities.
-    \item Network-B.
+    \item \textbf{Network-B.}
     Network-B is a 3-layer CNN for MNIST classification. It begins with a Conv2d layer (input: 1×28×28, kernel: 5×5, stride: 2, padding: 2) producing 5 output channels (5×14×14), followed by ReLU. A Flatten layer converts the feature map into a vector of size 980. A Linear layer maps this to size 100, followed by ReLU, and another Linear layer maps it to size 10 for classification probabilities.
-    \item Network-C.
+    \item \textbf{Network-C.}
     Network-C is a 5-layer CNN for MNIST classification. It starts with a Conv2d layer (kernel size 5×5, 16 output channels) reducing the input size from 1×28×28 to 16×24×24, followed by ReLU and AvgPool2d (stride 2), resulting in 16×12×12. A second Conv2d layer (16 output channels, kernel (5×5) reduces the size to 16×8×8, followed by ReLU and AvgPool2d, yielding 16×4×4. The feature map is flattened into a vector of size 256, passed through a Linear layer (256 to 100, with ReLU) and another Linear layer (100 to 10) for classification.
-    \item Network-D.
+    \item \textbf{Network-D.}
     Network-D is a 3-layer Deep Neural Network (DNN) designed for MNIST classification. It starts with a Flatten layer that converts the input 1×28×28 into a vector of size 784. The first Linear layer maps this vector to size 512, followed by a ReLU activation. The second Linear layer maps the vector of size 512 to another vector of size 512, also followed by ReLU. The final Linear layer maps the vector of size 512 to size 10, representing class probabilities.
     % \item AlexNet.
     % AlexNet is a classic convolutional neural network structure consisting of 8 layers, where the first 5 layers are convolutional layers used to extract image features, and the last 3 layers are fully connected layers used for classification tasks, ultimately outputting class probabilities through Softmax.
@@ -485,7 +485,7 @@ We chose four commonly used neural networks in privacy-preserving machine learni
 
 \subsection{Effectiveness}
 In this subsection, we compare the effectiveness of secure inference across different networks on the MNIST dataset with MIND and Pencil \cite{liu2024pencilprivateextensiblecollaborative}.
-Specifically, the evaluation focuses on comparing the accuracy, precision, recall, and F1 score between MIND and Pencil.
+Specifically, the evaluation focuses on comparing the accuracy, precision, Macro F1 Score, Weighted F1 Score, and Micro F1 Score between MIND and Pencil.
 MIND starts by proposing a layer-wise adaptive encryption method, which encrypts the data and parameters with relatively smaller sizes at each layer, while Pencil only encrypts the data.
 
 
@@ -509,13 +509,12 @@ MIND starts by proposing a layer-wise adaptive encryption method, which encrypts
 
 
 
-Table \ref{tab:performance_comparison_scheme} shows that when using Network-A for privacy-preserving secure inference on the MNIST dataset, MIND achieves an accuracy, precision, recall, and F1 score of 0.978, 0.978, 0.978, and 0.978, respectively.
-In contrast, Pencil achieves an accuracy, precision, recall, and F1 score of 0.978, 0.978, 0.978, and 0.978, respectively. The performance of the remaining networks is similar.
+Table \ref{tab:performance_comparison_scheme} shows that when using Network-A for privacy-preserving secure inference on the MNIST dataset, MIND achieves an accuracy, Macro F1 Score, Weighted F1 Score, and Micro F1 Score of 0.9787, 0.9785, 0.9787, and 0.9786, respectively. In contrast, Pencil achieves an accuracy, Macro F1 Score, Weighted F1 Score, and Micro F1 Score of 0.9787, 0.9785, 0.9787, and 0.9786, respectively. The performance of the remaining networks is similar. Note that the values in Table \ref{tab:performance_comparison_scheme} are scaled by a factor of 100 for clarity.
 
 
 
 
-The results indicate that when performing secure inference on the MNIST dataset using different networks, MIND exhibits nearly identical precision, recall, and F1 scores compared to previous secure inference work \cite{liu2024pencilprivateextensiblecollaborative}.
+The results indicate that when performing secure inference on the MNIST dataset using different networks, MIND exhibits nearly identical Macro F1 Score, Weighted F1 Score, and Micro F1 Score compared to previous secure inference work \cite{liu2024pencilprivateextensiblecollaborative}.
 It is worth noting that MIND does not significantly affect model effectiveness, especially in simpler tasks. 
 This suggests that MIND is effective in achieving privacy preserving secure inference while maintaining model accuracy.
 
@@ -536,27 +535,27 @@ This suggests that MIND is effective in achieving privacy preserving secure infe
 \hline
 \multirow{2}{*}{Dataset} & \multirow{2}{*}{Network} & \multirow{2}{*}{Scheme} & \multicolumn{4}{c}{Metric} \\ 
 \cline{4-7}
-                      &                        &                        & \textbf{Acc.} & \textbf{Prec.} & \textbf{F1} & \textbf{Rec.} \\ 
+                      &                        &                        & \textbf{Acc.} & \textbf{Macro F1} & \textbf{Wtd F1} & \textbf{Micro F1} \\ 
 \hline
 \multirow{8}{*}{MNIST}   & \multirow{3}{*}{Network-A}  
-                         & Baseline & 97.89 & 97.87 & 97.87 & 97.87 \\ 
-                         &           & Pencil & 0.9787 & 0.9787 & 0.9787 & 0.9787 \\ 
-                         &            & MIND    & 0.9787 & 0.9787 & 0.9787 & 0.9787 \\ 
+                         & Baseline & 97.87 & 97.85 & 97.87 & 97.86 \\ 
+                         &           & Pencil & 97.87 & 97.85 & 97.87 & 97.86 \\ 
+                         &            & MIND    & 97.87 & 97.85 & 97.87 & 97.86 \\ 
 \cline{2-7}
                       & \multirow{3}{*}{Network-B}
-                      & Baseline & 0.9854 & 0.9854 & 0.9854 & 0.9854 \\
-                      &           & Pencil & 0.9855 & 0.9855 & 0.9855 & 0.9855 \\ 
-                      &            & MIND    & 0.9855 & 0.9855 & 0.9855 & 0.9855 \\ 
+                      & Baseline & 98.55 & 98.54 & 98.55 & 98.54 \\
+                      &           & Pencil & 98.55 & 98.54 & 98.55 & 98.54 \\ 
+                      &            & MIND    & 98.55 & 98.54 & 98.55 & 98.54 \\ 
 \cline{2-7}
                       & \multirow{3}{*}{Network-C}    
-                      & Baseline & 0.9911 & 0.9911 & 0.9910 & 0.9910 \\
-                      &          & Pencil & 0.9911 & 0.990 & 0.991 & 0.991 \\ 
-                      &            & MIND    & 0.991 & 0.990 & 0.991 & 0.991 \\ 
+                      & Baseline & 99.11 & 99.10 & 99.11 & 99.10 \\
+                      &          & Pencil & 99.11 & 99.10 & 99.11 & 99.10 \\ 
+                      &            & MIND    & 99.11 & 99.10 & 99.11 & 99.10 \\ 
 \cline{2-7}
                       & \multirow{3}{*}{Network-D}
-                      & Baseline & 0.9813 & 0.9814 & 0.9810 & 0.9811 \\
-                      &         & Pencil & 0.981 & 0.981 & 0.981 & 0.981 \\ 
-                      &            & MIND    & 0.981 & 0.981 & 0.981 & 0.981 \\ 
+                      & Baseline & 98.06 & 98.05 & 98.05 & 98.04 \\
+                      &         & Pencil & 98.06 & 98.04 & 98.06 & 98.05 \\ 
+                      &            & MIND    & 98.06 & 98.04 & 98.06 & 98.05 \\ 
 \hline
 % \multirow{4}{*}{CIFAR-10} & \multirow{2}{*}{AlexNet}    & Pencil  &  0.867  & 0.866  & 0.867 & 0.867  \\ 
 %                       &            & MIND    &  0.867  & 0.866  & 0.867 & 0.867  \\ 
@@ -574,12 +573,28 @@ This suggests that MIND is effective in achieving privacy preserving secure infe
 \begin{adjustwidth}{2pt}{2pt}  % 这里调整Note与左右边界的距离
 \textbf{Note.}
 $\text{Accuracy} = \frac{\text{TP} + \text{TN}}{\text{TP} + \text{TN} + \text{FP} + \text{FN}}$,
-$\text{Precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}$,
-$\text{Recall} = \frac{\text{TP}}{\text{TP} + \text{FN}}$,
-$\text{F1 Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$ 
-(TP: True Positive, TN: True Negative, FP: False Positive, FN: False Negative).
+$\text{Macro Precision} = \frac{1}{N} \sum_{i=1}^{N} \frac{\text{TP}_i}{\text{TP}_i + \text{FP}_i}$, \\
+$\text{Macro Recall} = \frac{1}{N} \sum_{i=1}^{N} \frac{\text{TP}_i}{\text{TP}_i + \text{FN}_i}$, \\
+$\text{Macro F1} = \frac{1}{N} \sum_{i=1}^{N} 2 \times \frac{\text{Precision}_i \times \text{Recall}_i}{\text{Precision}_i + \text{Recall}_i}$, \\
+% $\text{Weighted F1} = \frac{\sum_{i=1}^{N} w_i \cdot F1_i}{\sum_{i=1}^{N} w_i}$, 
+% where $w_i = \frac{\text{TP}_i + \text{FN}_i}{\sum_{j=1}^{N} (\text{TP}_j + \text{FN}_j)}$, \\
+% $\text{Micro Precision} = \frac{\sum_{i=1}^{N} \text{TP}_i}{\sum_{i=1}^{N} (\text{TP}_i + \text{FP}_i)}$, \\
+% $\text{Micro Recall} = \frac{\sum_{i=1}^{N} \text{TP}_i}{\sum_{i=1}^{N} (\text{TP}_i + \text{FN}_i)}$, \\
+% $\text{Micro F1} = 2 \times \frac{\text{Micro Precision} \times \text{Micro Recall}}{\text{Micro Precision} + \text{Micro Recall}}$. \\
+(TP: True Positive, FP: False Positive, FN: False Negative, $N$: Number of MNIST classes).
 \end{adjustwidth}
 \end{flushleft}
+
+% \begin{flushleft}
+% \begin{adjustwidth}{2pt}{2pt}  % 这里调整Note与左右边界的距离
+% \textbf{Note.}
+% $\text{Accuracy} = \frac{\text{TP} + \text{TN}}{\text{TP} + \text{TN} + \text{FP} + \text{FN}}$,
+% $\text{Precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}$,
+% $\text{Recall} = \frac{\text{TP}}{\text{TP} + \text{FN}}$,
+% $\text{F1 Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$ 
+% (TP: True Positive, TN: True Negative, FP: False Positive, FN: False Negative).
+% \end{adjustwidth}
+% \end{flushleft}
 \label{tab:performance_comparison_scheme}
 \end{table}
 
@@ -645,9 +660,9 @@ $\text{F1 Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{P
 
 
 
-Subsequently, we further compare MIND and Pencil in terms of efficiency and their corresponding communication overhead on the MNIST test set.
+Subsequently, we further compare MIND and Pencil \cite{liu2024pencilprivateextensiblecollaborative}  in terms of runtime and their corresponding communication overhead on the MNIST test set.
 % The results are averaged over multiple experiments to ensure reliability.
-Specifically, Pencil \cite{liu2024pencilprivateextensiblecollaborative} considers transferring the complex homomorphic operations from the online phase to the offline phase to improve efficiency, and MIND is also applicable to these optimizations.
+Specifically, Pencil considers transferring the complex homomorphic operations from the online phase to the offline phase to improve efficiency, and MIND is also applicable to these optimizations.
 For fairness, neither MIND nor Pencil adopts the above-mentioned optimization schemes in the experiments.
 
 
@@ -662,11 +677,9 @@ For fairness, neither MIND nor Pencil adopts the above-mentioned optimization sc
 
 
 
-Figure \ref{subfig:ABY3}, \ref{subfig:Sphinx}, \ref{subfig:Chameleon}, and \ref{subfig:Quotient_2x512} show that for the MNIST dataset, MIND consistently requires less transmission and runtime across all four networks compared to Pencil.
+Figure \ref{subfig:ABY3}, \ref{subfig:Chameleon}, \ref{subfig:Sphinx}, and \ref{subfig:Quotient_2x512} show that for the MNIST dataset, MIND consistently requires less transmission and runtime across all four networks compared to Pencil.
 % As shown in Figure \ref{subfig:ABY3}, ABY3 is the most efficient in reducing communication cost when applied to the ABY3 model and the most efficient in reducing runtime when applied to the Quotient 2$\times$512 model. Our experiments reveal that while the Pencil encryption scheme requires a communication cost of 1,933 MB, MIND only requires 1,008 MB, resulting in a significant reduction of approximately 49.42\% in communication cost. Additionally, MIND reduces the runtime by approximately 10.34\% compared to the Pencil scheme.
-As shown in Figure \ref{subfig:ABY3}, When using network-A, the communication overhead of MIND is 1008MB, and the runtime is 49.8 seconds. Compared with Pencil, the communication overhead is reduced by 925MB, and the efficiency is improved by 7.8\%. When using other networks, MIND reduces communication overhead by 7.5\% to 62.3\% and improves efficiency by 0.3\% to 10.3\% compared to Pencil.
-
-Experiments demonstrate that MIND outperforms Pencil in various network efficiency aspects in the MNIST dataset and CIFA-10 dataset. These results consistently highlight MIND's ability to optimize both communication cost and runtime across various neural network architectures, showcasing its potential for improving efficiency in privacy-preserving machine learning applications.
+As shown in Figure \ref{subfig:ABY3}, When using Network-A, the communication overhead of MIND is 1008 MB, and the runtime is 49.8 seconds. Compared with Pencil, the communication overhead is reduced by 925MB, and the efficiency is improved by 7.8\%. When using other networks, MIND reduces communication overhead by 7.5\% to 62.3\% and improves efficiency by 0.3\% to 10.3\% compared to Pencil. Experiments demonstrate that MIND outperforms Pencil in various network efficiency aspects in the MNIST dataset and CIFA-10 dataset. These results consistently highlight MIND's ability to optimize both communication cost and runtime across various neural network architectures, showcasing its potential for improving efficiency in privacy-preserving machine learning applications.
 
 
 \section{Conclusion}
