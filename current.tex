@@ -299,7 +299,7 @@ After $S$ completes the HE operations, it sends its computed share back to $ED$.
     
     $S$ returns $\llbracket C \rrbracket_{pk_e}$ to $ED$;
     
-    $ED$ obtains $\langle y_{j+1}\rangle_1=w_{j} \times y_{j}+r_{j}$ and $S$ obtains $\langle y_{j+1} \rangle_2 = w_j \times y_{j}-r_j+b_j$.
+    $ED$ obtains $\langle y_{j+1}\rangle_1=w_{j} \times y_{j}+r_{j}$ and $S$ obtains $\langle y_{j+1} \rangle_2 = -r_j+b_j$.
 \end{algorithm}
 
 \PEnc~and \DEnc~not only protect the confidentiality of input data but also enable secure computations directly on encrypted data. This method facilitates privacy-preserving machine learning in collaborative end-to-cloud environments, allowing for joint model inference without exposing sensitive information to potential security risks.
